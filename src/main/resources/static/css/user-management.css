@@ -1,0 +1,31 @@
+/* user-management.css */
+
+/* Tablo stilleri */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid black;
+}
+
+th, td {
+    padding: 8px;
+    text-align: left;
+}
+
+/* Buton stilleri */
+.btn {
+    margin-right: 5px;
+}
+
+/* Modal stilleri */
+.modal-dialog {
+    max-width: 500px;
+    margin: 30px auto;
+}
+
+.modal-content {
+    padding: 20px;
+}

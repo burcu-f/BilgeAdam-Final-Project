@@ -6,19 +6,27 @@ import com.techathome.services.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/accounts")
+@RequestMapping("/user-management")
 public class AccountController {
 
     @Autowired
     private AccountService accountService;
 
-    // Method to retrieve all accounts
     @GetMapping("")
+    public ModelAndView userManagementPage() {
+        ModelAndView modelAndView = new ModelAndView("user-management");
+        modelAndView.addObject("pageTitle", "User Management");
+        return modelAndView;
+    }
+
+    // Method to retrieve all accounts
+    @GetMapping("/accounts")
     public ResponseEntity<List<Account>> getAllAccounts() {
         List<Account> accounts = accountService.getAllAccounts();
         if (!accounts.isEmpty()) {
