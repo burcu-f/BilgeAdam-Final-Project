@@ -11,6 +11,20 @@ $(document).ready(function() {
         });
     }
 
+    // Function to refresh the user list
+    function refreshUserList() {
+        $.ajax({
+            url: "/user-management/accounts",
+            type: "GET",
+            success: function(users) {
+                populateUserTable(users);
+            },
+            error: function(xhr, status, error) {
+                console.error("Error refreshing user list: " + error);
+            }
+        });
+    }
+
     // Sample user data
     var users = [
         { id: 1, name: "User 1", email: "user1@example.com" },
@@ -24,9 +38,38 @@ $(document).ready(function() {
     // Click event handler for the "Add User" button
     $("#btnAddUser").click(function() {
         $("#userModal").modal("show");
-        // Reset the form fields when the modal is opened
-        $("#userModal").on("shown.bs.modal", function() {
-            $("#userForm")[0].reset();
+    });
+
+    // Function to handle registration of a new user
+    $("#btnRegister").click(function() {
+        var name = $("#name").val();
+        var surname = $("#surname").val();
+        var email = $("#email").val();
+        var password = $("#password").val();
+        var accountType = $("#accountType").val();
+
+        var newUser = {
+            name: name,
+            surname: surname,
+            email: email,
+            password: password,
+            accountType: accountType
+        };
+
+        // AJAX request to register the new user
+        $.ajax({
+            url: "/user-management",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(newUser),
+            success: function(response) {
+                alert("User registration successful!");
+                $("#userModal").modal("hide");
+                refreshUserList(); // Refresh the user list after registration
+            },
+            error: function(xhr, status, error) {
+                alert("Error registering user: " + error);
+            }
         });
     });
 

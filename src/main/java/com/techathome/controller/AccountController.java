@@ -77,6 +77,7 @@ public class AccountController {
         return ResponseEntity.ok().body(savedAccount);
     }
 
+
     // Method to update an existing account
     @PutMapping("/{id}")
     public ResponseEntity<Account> updateAccount(@PathVariable("id") Integer accountId,

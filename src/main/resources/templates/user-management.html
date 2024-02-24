@@ -9,7 +9,7 @@
   <!-- Font Awesome CSS -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <!-- Custom CSS -->
-  <link rel="stylesheet" href="/static/css/user-management.css">
+  <link rel="stylesheet" type="text/css" href="../static/css/user-management.css">
 </head>
 <body>
 
@@ -42,11 +42,44 @@
   </div>
 </div>
 
-<!-- Modal for Add/Edit User -->
+<!-- Modal for Add User -->
 <div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <!-- Modal content will be loaded here -->
+      <div class="modal-header">
+        <h4 class="modal-title">Add User</h4>
+      </div>
+      <div class="modal-body">
+        <form id="userForm">
+          <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" class="form-control" id="name" required>
+          </div>
+          <div class="form-group">
+            <label for="surname">Surname:</label>
+            <input type="text" class="form-control" id="surname" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" class="form-control" id="email" required>
+          </div>
+          <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" class="form-control" id="password" required>
+          </div>
+          <div class="form-group">
+            <label for="accountType">Account Type:</label>
+            <select class="form-control" id="accountType" required>
+              <option value="ADMIN">Admin</option>
+              <option value="CUSTOMER">Customer</option>
+            </select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="btnRegister">Register</button>
+      </div>
     </div>
   </div>
 </div>
