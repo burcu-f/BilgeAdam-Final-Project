@@ -9,7 +9,7 @@
   <!-- Font Awesome CSS -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <!-- Custom CSS -->
-  <link rel="stylesheet" type="text/css" href="../static/css/user-management.css">
+  <link rel="stylesheet" type="text/css" href="css/user-management.css">
 </head>
 <body>
 
@@ -19,17 +19,18 @@
       <h2>User Management</h2>
       <div class="pull-right">
         <!-- Add User Button -->
-        <button class="btn btn-success" id="btnAddUser" data-toggle="modal" data-target="#userModal">Add User</button>
+        <button class="btn btn-success" id="btnAddUser">Add User</button>
         <!-- Back to Admin Panel Button -->
         <a href="/admin" class="btn btn-primary">Back to Admin Panel</a>
       </div>
       <br><br>
-      <table class="table table-bordered">
+      <table id="userTable" class="table table-bordered">
         <thead>
           <tr>
-            <th>ID</th>
+            <th>#</th>
             <th>Name</th>
             <th>Surname</th>
+            <th>Email</th>
             <th>User Type</th>
             <th>Actions</th>
           </tr>
@@ -107,7 +108,7 @@
 <!-- Bootstrap JS -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <!-- Custom JS -->
-<script src="../static/js/user-management.js"></script>
+<script src="js/user-management.js"></script>
 
 </body>
 </html>

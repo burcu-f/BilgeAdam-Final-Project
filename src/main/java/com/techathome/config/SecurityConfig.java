@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
 import org.springframework.security.config.annotation.web.configurers.FormLoginConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
@@ -62,6 +63,12 @@ public class SecurityConfig {
 //					.fullyAuthenticated();
 //			}
 //		})
+        		.csrf(new Customizer<CsrfConfigurer<HttpSecurity>>() {
+					@Override
+					public void customize(CsrfConfigurer<HttpSecurity> t) {
+						t.disable();
+					}
+				})
                 .formLogin(new Customizer<FormLoginConfigurer<HttpSecurity>>() {
                     @Override
                     public void customize(FormLoginConfigurer<HttpSecurity> t) {

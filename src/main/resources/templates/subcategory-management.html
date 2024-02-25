@@ -9,7 +9,7 @@
   <!-- Font Awesome CSS -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <!-- Custom CSS -->
-  <link rel="stylesheet" type="text/css" href="../static/css/category-management.css">
+  <link rel="stylesheet" type="text/css" href="css/category-management.css">
 </head>
 <body>
 
@@ -19,15 +19,15 @@
       <h2>Subcategory Management</h2>
       <div class="pull-right">
         <!-- Add Subcategory Button -->
-        <button class="btn btn-success" id="btnAddSubcategory" data-toggle="modal" data-target="#subcategoryModal">Add Subcategory</button>
+        <button class="btn btn-success" id="btnAddSubcategory">Add Subcategory</button>
         <!-- Back to Admin Panel Button -->
         <a href="/admin" class="btn btn-primary">Back to Admin Panel</a>
       </div>
       <br><br>
-      <table class="table table-bordered">
+      <table id="subcategoryTable" class="table table-bordered">
         <thead>
           <tr>
-            <th>ID</th>
+            <th>#</th>
             <th>Name</th>
             <th>Category</th>
             <th>Actions</th>
@@ -51,12 +51,12 @@
       <div class="modal-body">
         <form id="subcategoryForm">
           <div class="form-group">
-            <label for="name">Name:</label>
-            <input type="text" class="form-control" id="name" required>
+            <label for="subcategoryName">Name:</label>
+            <input type="text" class="form-control" id="subcategoryName" required>
           </div>
           <div class="form-group">
             <label for="description">Category:</label>
-            <input type="text" class="form-control" id="category" required>
+            <select type="text" class="form-control" id="categoryId" required></select>
           </div>
         </form>
       </div>
@@ -73,7 +73,8 @@
 <!-- Bootstrap JS -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <!-- Custom JS -->
-<script src="../static/js/subcategory-management.js"></script>
+<script src="js/subcategory-management.js"></script>
+<script src="js/common.js"></script>
 
 </body>
 </html>

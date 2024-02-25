@@ -1,24 +1,36 @@
 package com.techathome.entities;
 
-import com.techathome.enums.AccountType;
-import jakarta.persistence.*;
-import lombok.*;
+import java.util.Collection;
+import java.util.List;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import com.techathome.enums.AccountType;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Transient;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
-@Getter
-@Setter
 @Entity
 public class Account implements UserDetails {
-    @Id
+    private static final long serialVersionUID = 8790812188842213815L;
+
+	@Id
     @GeneratedValue(generator = "account_id_generator")
     @SequenceGenerator(name = "account_id_generator", sequenceName = "account_id_seq", allocationSize = 1)
     private Long accountId;
@@ -34,12 +46,6 @@ public class Account implements UserDetails {
     @ManyToOne
     @JoinColumn(name = "address_id")
     private Address address;
-
-    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
-    private List<Cart> carts = new ArrayList<>();
-
-    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
-    private List<Sale> sale = new ArrayList<>();
 
     @Transient
     private String fullName;

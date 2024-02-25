@@ -1,22 +1,27 @@
 package com.techathome.controller;
 
-import com.techathome.entities.Category;
-import com.techathome.entities.Subcategory;
-import com.techathome.services.SubcategoryService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
-
 import java.util.List;
 
-@RestController
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.techathome.entities.Subcategory;
+import com.techathome.services.SubcategoryService;
+
+@Controller
 @RequestMapping("/subcategory-management")
 public class SubcategoryController {
 
+	@Autowired
     private SubcategoryService subcategoryService;
 
     @GetMapping("")
@@ -30,6 +35,12 @@ public class SubcategoryController {
     public ResponseEntity<List<Subcategory>> getAllSubcategories() {
         List<Subcategory> subcategories = subcategoryService.getAllSubcategories();
         return new ResponseEntity<>(subcategories, HttpStatus.OK);
+    }
+    
+    @PostMapping(value = "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Subcategory> createSubcategory(@RequestBody Subcategory subcategory) {
+    	Subcategory savedSubcategory = subcategoryService.saveSubcategory(subcategory);
+    	return ResponseEntity.ok().body(savedSubcategory);
     }
 
     @GetMapping("/{id}")

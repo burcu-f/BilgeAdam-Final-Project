@@ -1,13 +1,24 @@
 $(document).ready(function() {
     // Function to populate the user table
     function populateUserTable(users) {
-        $("#userTableBody").empty();
+        $("#userTable tbody").empty();
+        let i = 1;
         users.forEach(function(user) {
-            var row = "<tr><td>" + user.name + "</td><td>" + user.email + "</td>" +
-                      "<td><button class='btn btn-info' onclick='showDetails(" + user.id + ")'>Detaylar</button>" +
-                      "<button class='btn btn-warning' onclick='editUser(" + user.id + ")'>Güncelle</button>" +
-                      "<button class='btn btn-danger' onclick='deleteUser(" + user.id + ")'>Sil</button></td></tr>";
-            $("#userTableBody").append(row);
+            let row = 
+    		  "<tr row-id=\"" + user.accountId + "\">" +
+        		  "<td>" + i + "</td>" +
+        		  "<td>" + user.name + "</td>" +
+        		  "<td>" + user.surname + "</td>" +
+        		  "<td>" + user.email + "</td>" +
+        		  "<td>" + user.accountType + "</td>" +
+                  "<td>" +
+	                  "<button class='btn btn-info' onclick='showDetails(" + user.accountId + ")'>Detaylar</button>" +
+	                  "<button class='btn btn-warning' onclick='editUser(" + user.accountId + ")'>Güncelle</button>" +
+	                  "<button class='btn btn-danger' onclick='deleteUser(" + user.accountId + ")'>Sil</button>" + 
+                  "</td>" +
+              "</tr>";
+            ++i;
+            $("#userTable tbody").append(row);
         });
     }
 
@@ -15,6 +26,9 @@ $(document).ready(function() {
     function refreshUserList() {
         $.ajax({
             url: "/user-management/accounts",
+            headers: {          
+				Accept: "application/json",         
+			},
             type: "GET",
             success: function(users) {
                 populateUserTable(users);
@@ -25,15 +39,8 @@ $(document).ready(function() {
         });
     }
 
-    // Sample user data
-    var users = [
-        { id: 1, name: "User 1", email: "user1@example.com" },
-        { id: 2, name: "User 2", email: "user2@example.com" }
-        // More users can be added here
-    ];
-
     // Populate the user table when the page is loaded
-    populateUserTable(users);
+    refreshUserList();
 
     // Click event handler for the "Add User" button
     $("#btnAddUser").click(function() {
@@ -55,11 +62,13 @@ $(document).ready(function() {
             password: password,
             accountType: accountType
         };
-
         // AJAX request to register the new user
         $.ajax({
-            url: "/user-management",
+            url: "/user-management/create",
             type: "POST",
+            headers: {          
+				Accept: "application/json",         
+			},
             contentType: "application/json",
             data: JSON.stringify(newUser),
             success: function(response) {

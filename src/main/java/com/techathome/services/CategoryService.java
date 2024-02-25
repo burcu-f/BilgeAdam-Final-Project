@@ -1,11 +1,12 @@
 package com.techathome.services;
 
-import com.techathome.entities.Category;
-import com.techathome.repository.CategoryRepository;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import com.techathome.entities.Category;
+import com.techathome.repository.CategoryRepository;
 
 @Service
 public class CategoryService {
@@ -18,5 +19,9 @@ public class CategoryService {
 
     public Category getCategoryById(Integer categoryId) {
         return categoryRepository.findById(categoryId).orElse(null);
+    }
+    
+    public Category saveCategory(Category category) {
+        return categoryRepository.save(category);
     }
 }
