@@ -16,15 +16,15 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public Product getProductById(Integer productId) {
+    public Product getProductById(Long productId) {
         return productRepository.findById(productId).orElse(null);
     }
 
-    public void saveProduct(Product product) {
-        productRepository.save(product);
+    public Product saveProduct(Product product) {
+        return productRepository.save(product);
     }
 
-    public void updateProduct(Integer productId, Product updatedProduct) {
+    public void updateProduct(Long productId, Product updatedProduct) {
         Product existingProduct = productRepository.findById(productId).orElse(null);
         if (existingProduct != null) {
             // Update existing product fields with fields from updatedProduct
@@ -41,7 +41,7 @@ public class ProductService {
         }
     }
 
-    public void deleteProduct(Integer productId) {
+    public void deleteProduct(Long productId) {
         productRepository.deleteById(productId);
     }
 }

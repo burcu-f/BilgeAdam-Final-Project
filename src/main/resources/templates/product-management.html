@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Subcategory Management</title>
+  <title>Product Management</title>
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <!-- Font Awesome CSS -->
@@ -16,53 +16,73 @@
 <div class="container">
   <div class="row">
     <div class="col-md-12">
-      <h2>Subcategory Management</h2>
+      <h2>Product Management</h2>
       <div class="pull-right">
-        <!-- Add Subcategory Button -->
-        <button class="btn btn-success" id="btnAddSubcategory">Add Subcategory</button>
+        <!-- Add Product Button -->
+        <button class="btn btn-success" id="btnAddProduct">Add Product</button>
         <!-- Back to Admin Panel Button -->
         <a href="/admin" class="btn btn-primary">Back to Admin Panel</a>
       </div>
       <br><br>
-      <table id="subcategoryTable" class="table table-bordered">
+      <table id="productTable" class="table table-bordered">
         <thead>
           <tr>
             <th>#</th>
             <th>Name</th>
+            <th>Subcategory</th>
             <th>Category</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Stock</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          <!-- Subategory list will be populated here -->
+          <!-- Product list will be populated here -->
         </tbody>
       </table>
     </div>
   </div>
 </div>
 
-<!-- Modal for Add Subcategory -->
-<div class="modal fade" id="subcategoryModal" tabindex="-1" role="dialog" aria-labelledby="subcategoryModalLabel">
+<!-- Modal for Add Product -->
+<div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-labelledby="productModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">Add Subcategory</h4>
+        <h4 class="modal-title">Add Product</h4>
       </div>
       <div class="modal-body">
-        <form id="subcategoryForm">
+        <form id="productForm">
           <div class="form-group">
-            <label for="subcategoryName">Name:</label>
-            <input type="text" class="form-control" id="subcategoryName" required>
+            <label for="productName">Name:</label>
+            <input type="text" class="form-control" id="productName" required>
+          </div>
+          <div class="form-group">
+            <label for="subcategory">Subcategory:</label>
+            <select type="text" class="form-control" id="subcategoryId" required></select>
           </div>
           <div class="form-group">
             <label for="category">Category:</label>
             <select type="text" class="form-control" id="categoryId" required></select>
           </div>
+          <div class="form-group">
+            <label for="description">Description:</label>
+            <input type="text" class="form-control" id="description" required></input>
+          </div>
+          <div class="form-group">
+            <label for="price">Price:</label>
+            <input type="text" class="form-control" id="price" required></input>
+          </div>
+          <div class="form-group">
+            <label for="stock">Stock:</label>
+            <input type="text" class="form-control" id="stock" required></input>
+          </div>
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" id="btnAddSubcategoryModal">Add Subcategory</button>
+        <button type="button" class="btn btn-primary" id="btnAddProductModal">Add Product</button>
       </div>
     </div>
   </div>
@@ -73,7 +93,7 @@
 <!-- Bootstrap JS -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <!-- Custom JS -->
-<script src="js/subcategory-management.js"></script>
+<script src="js/product-management.js"></script>
 <script src="js/common.js"></script>
 
 </body>
