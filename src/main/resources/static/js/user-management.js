@@ -12,9 +12,9 @@ $(document).ready(function() {
         		  "<td>" + user.email + "</td>" +
         		  "<td>" + user.accountType + "</td>" +
                   "<td>" +
-	                  "<button class='btn btn-info' onclick='showDetails(" + user.accountId + ")'>Detaylar</button>" +
-	                  "<button class='btn btn-warning' onclick='editUser(" + user.accountId + ")'>Güncelle</button>" +
-	                  "<button class='btn btn-danger' onclick='deleteUser(" + user.accountId + ")'>Sil</button>" + 
+	                  "<button class='btn btn-info' onclick='showDetails(" + user.accountId + ")'>Details</button>" +
+	                  "<button class='btn btn-warning' onclick='updateUser(" + user.accountId + ")'>Update</button>" +
+	                  "<button class='btn btn-danger' onclick='deleteUser(" + user.accountId + ")'>Delete</button>" + 
                   "</td>" +
               "</tr>";
             ++i;
@@ -87,13 +87,95 @@ $(document).ready(function() {
         // Implement functionality to show user details
     }
 
-    // Function to edit a user
-    function editUser(userId) {
-        // Implement functionality to edit a user
-    }
+  // Click event handler for the "Update" button
+$("#userTable").on("click", ".btn-warning", function() {
+    // Get the user's ID from the row
+    var accountId = $(this).closest("tr").attr("row-id");
+    
+    // Retrieve user details via AJAX request
+    $.ajax({
+        url: "/user-management/" + accountId,
+        type: "GET",
+        headers: {          
+				Accept: "application/json",         
+			},
+        success: function(user) {
+            // Populate the modal with user details
+            $("#updateUserId").val(user.id);
+            $("#updateName").val(user.name);
+            $("#updateSurname").val(user.surname);
+            $("#updateEmail").val(user.email);
+            $("#updateAccountType").val(user.accountType);
+            
+            // Show the update modal
+            $("#updateUserModal").modal("show");
+        },
+        error: function(xhr, status, error) {
+            console.error("Error retrieving user details: " + error);
+        }
+    });
+});
 
-    // Function to delete a user
-    function deleteUser(userId) {
-        // Implement functionality to delete a user
-    }
+// Click event handler for the "Update" button within the update modal
+$("#btnUpdateUser").click(function() {
+    var userId = $("#updateUserId").val();
+    var name = $("#updateName").val();
+    var surname = $("#updateSurname").val();
+    var email = $("#updateEmail").val();
+    var accountType = $("#updateAccountType").val();
+
+    var updatedUser = {
+        id: userId,
+        name: name,
+        surname: surname,
+        email: email,
+        accountType: accountType
+    };
+
+    // AJAX request to update the user's information
+    $.ajax({
+        url: "/user-management/" + accountId,
+        type: "PUT",
+        headers: {
+            Accept: "application/json"
+        },
+        contentType: "application/json",
+        data: JSON.stringify(updatedAccount),
+        success: function(response) {
+            alert("User information updated successfully!");
+            $("#updateUserModal").modal("hide");
+            refreshUserList(); // Refresh the user list after updating
+        },
+        error: function(xhr, status, error) {
+            alert("Error updating user information: " + error);
+        }
+    });
+});
+
+    
+    // Event delegation for the "Delete" button
+    $("#userTable").on("click", ".btn-danger", function() {
+        // Get the user's ID from the row
+        var accountId = $(this).closest("tr").attr("row-id");
+        
+        // Show the delete confirmation modal
+        $("#deleteUserModal").modal("show");
+
+        // Set up the delete confirmation button click event
+        $("#btnConfirmDelete").off("click").on("click", function() {
+            // Send an AJAX request to delete the user
+            $.ajax({
+                url: "/user-management/" + accountId,
+                type: "DELETE",
+                success: function(response) {
+                    alert("User deleted successfully!");
+                    $("#deleteUserModal").modal("hide");
+                    refreshUserList(); // Refresh the user list after deletion
+                },
+                error: function(xhr, status, error) {
+                    alert("Error deleting user: " + error);
+                }
+            });
+        });
+    });
 });

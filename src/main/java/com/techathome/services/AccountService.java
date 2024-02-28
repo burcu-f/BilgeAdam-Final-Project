@@ -18,8 +18,8 @@ public class AccountService {
         return accountRepository.findAll();
     }
 
-    public Account getAccountById(Integer accountId) {
-        return accountRepository.findById(accountId).orElse(null);
+    public Account getAccountById(Long accountId) {
+        return accountRepository.findByAccountId(accountId).orElse(null);
     }
 
     public Optional<Account> getAccountByEmail(String email) {
@@ -33,12 +33,12 @@ public class AccountService {
         return accountRepository.findByAccountType(accountType);
     }
 
-    public void deleteAccount(Integer accountId) {
-        accountRepository.deleteById(accountId);
+    public void deleteAccount(Long accountId) {
+        accountRepository.deleteByAccountId(accountId);
     }
 
-    public Account updateAccount(Integer accountId, Account updatedAccount) {
-        Account existingAccount = accountRepository.findById(accountId)
+    public Account updateAccount(Long accountId, Account updatedAccount) {
+        Account existingAccount = accountRepository.findByAccountId(accountId)
                 .orElseThrow(() -> new IllegalArgumentException("Account not found"));
 
         // Update the existing account with new values

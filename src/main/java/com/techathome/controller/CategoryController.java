@@ -9,10 +9,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.techathome.entities.Account;
 import com.techathome.entities.Category;
 import com.techathome.services.CategoryService;
 
@@ -42,13 +44,20 @@ public class CategoryController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Category> getCategoryById(@PathVariable Integer categoryId) {
+    public ResponseEntity<Category> getCategoryById(@PathVariable Long categoryId) {
         Category category = categoryService.getCategoryById(categoryId);
         if (category != null) {
             return ResponseEntity.ok().body(category);
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+    
+ // Method to update an existing category
+    @PutMapping("/{id}")
+    public ResponseEntity<Category> updateCategory(@PathVariable("id") Long categoryId, @RequestBody Category updatedCategory) {
+        Category category = categoryService.updateCategory(categoryId, updatedCategory);
+        return ResponseEntity.ok().body(category);
     }
 
 }

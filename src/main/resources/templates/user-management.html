@@ -85,6 +85,46 @@
   </div>
 </div>
 
+<!-- Modal for Update User -->
+<div class="modal fade" id="updateUserModal" tabindex="-1" role="dialog" aria-labelledby="updateUserModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Update User</h4>
+      </div>
+      <div class="modal-body">
+        <form id="updateUserForm">
+          <input type="hidden" id="updateUserId">
+          <div class="form-group">
+            <label for="updateName">Name:</label>
+            <input type="text" class="form-control" id="updateName" required>
+          </div>
+          <div class="form-group">
+            <label for="updateSurname">Surname:</label>
+            <input type="text" class="form-control" id="updateSurname" required>
+          </div>
+          <div class="form-group">
+            <label for="updateEmail">Email:</label>
+            <input type="email" class="form-control" id="updateEmail" required>
+          </div>
+          <div class="form-group">
+            <label for="updateAccountType">Account Type:</label>
+            <select class="form-control" id="updateAccountType" required>
+              <option value="ADMIN">Admin</option>
+              <option value="CUSTOMER">Customer</option>
+            </select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="btnUpdateUser">Update</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <!-- Modal for Delete User Confirmation -->
 <div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog" aria-labelledby="deleteUserModalLabel">
   <div class="modal-dialog" role="document">

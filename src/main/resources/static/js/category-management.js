@@ -10,9 +10,9 @@ $(document).ready(function() {
         		  "<td>" + category.categoryName + "</td>" +
         		  "<td>" + category.description + "</td>" +
                   "<td>" +
-	                  "<button class='btn btn-info' onclick='showDetails(" + category.categoryId + ")'>Detaylar</button>" +
-	                  "<button class='btn btn-warning' onclick='editCategory(" + category.categoryId + ")'>Güncelle</button>" +
-	                  "<button class='btn btn-danger' onclick='deleteCategory(" + category.categoryId + ")'>Sil</button>" + 
+	                  "<button class='btn btn-info' onclick='showDetails(" + category.categoryId + ")'>Details</button>" +
+	                  "<button class='btn btn-warning' onclick='updateCategory(" + category.categoryId + ")'>Update</button>" +
+	                  "<button class='btn btn-danger' onclick='deleteCategory(" + category.categoryId + ")'>Delete</button>" + 
                   "</td>" +
               "</tr>";
             ++i;
@@ -62,10 +62,62 @@ $(document).ready(function() {
         });
     });
 
-    // Function to edit a category
-    function editCategory(categoryId) {
-        // Implement functionality to edit a category
-    }
+    // Click event handler for the "Update" button
+    $("#categoryTable").on("click", ".btn-warning", function() {
+        var categoryId = $(this).closest("tr").attr("row-id");
+        // Retrieve category details via AJAX request
+        $.ajax({
+            url: "/category-management/" + categoryId,
+            type: "GET",
+            headers: {          
+                Accept: "application/json",         
+            },
+            success: function(category) {
+                // Populate the modal with category details
+                $("#updateCategoryId").val(category.categoryId);
+                $("#updateCategoryName").val(category.categoryName);
+                $("#updateDescription").val(category.description);
+                
+                // Show the update modal
+                $("#updateCategoryModal").modal("show");
+            },
+            error: function(xhr, status, error) {
+                console.error("Error retrieving category details: " + error);
+            }
+        });
+    });
+
+    // Click event handler for the "Update" button within the update modal
+    $("#btnUpdateCategory").click(function() {
+        var categoryId = $("#updateCategoryId").val();
+        var categoryName = $("#updateCategoryName").val();
+        var description = $("#updateDescription").val();
+        
+        var updatedCategory = {
+            categoryId: categoryId,
+            categoryName: categoryName,
+            description: description,
+        };
+        
+        // AJAX request to update the category's information
+        $.ajax({
+            url: "/category-management/" + categoryId,
+            type: "PUT",
+            headers: {
+                Accept: "application/json"
+            },
+            contentType: "application/json",
+            data: JSON.stringify(updatedCategory),
+            success: function(response) {
+                alert("Category information updated successfully!");
+                $("#updateCategoryModal").modal("hide");
+                refreshCategoryList(); // Refresh the category list after updating
+            },
+            error: function(xhr, status, error) {
+                alert("Error updating user information: " + error);
+            }
+        });
+    });
 
     // Function to delete a category
     function deleteCategory(categoryId) {

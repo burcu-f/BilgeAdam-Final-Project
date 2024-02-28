@@ -34,4 +34,6 @@ public class Category {
     @JsonIgnoreProperties("category")
     private List<Subcategory> subcategories = new ArrayList<>();
 
+	
+
 }

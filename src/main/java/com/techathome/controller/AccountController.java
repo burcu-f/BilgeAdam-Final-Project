@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -48,7 +49,7 @@ public class AccountController {
 
     // Method to retrieve a specific account by its ID
     @GetMapping("/{id}")
-    public ResponseEntity<Account> getAccountById(@PathVariable("id") Integer accountId) {
+    public ResponseEntity<Account> getAccountById(@PathVariable("id") Long accountId) {
         Account account = accountService.getAccountById(accountId);
         if (account != null) {
             return ResponseEntity.ok().body(account);
@@ -81,7 +82,7 @@ public class AccountController {
     }
 
     // Method to create a new account
-    @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Account> createAccount(@RequestBody Account account) {
         Account savedAccount = accountService.saveAccount(account);
         return ResponseEntity.ok().body(savedAccount);
@@ -90,7 +91,7 @@ public class AccountController {
 
     // Method to update an existing account
     @PutMapping("/{id}")
-    public ResponseEntity<Account> updateAccount(@PathVariable("id") Integer accountId,
+    public ResponseEntity<Account> updateAccount(@PathVariable("id") Long accountId,
                                                  @RequestBody Account updatedAccount) {
         Account account = accountService.updateAccount(accountId, updatedAccount);
         return ResponseEntity.ok().body(account);
@@ -98,7 +99,7 @@ public class AccountController {
 
     // Method to delete an existing account
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAccount(@PathVariable("id") Integer accountId) {
+    public ResponseEntity<Void> deleteAccount(@PathVariable("id") Long accountId) {
         accountService.deleteAccount(accountId);
         return ResponseEntity.noContent().build();
     }
