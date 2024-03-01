@@ -68,6 +68,37 @@
   </div>
 </div>
 
+<!-- Modal for Update Subcategory -->
+<div class="modal fade" id="updateSubcategoryModal" tabindex="-1" role="dialog" aria-labelledby="updateSubcategoryModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Update Subcategory</h4>
+      </div>
+      <div class="modal-body">
+        <form id="updateSubcategoryForm">
+          <div class="form-group">
+            <label for="updatedSubcategoryName">Updated Name:</label>
+            <input type="text" class="form-control" id="updatedSubcategoryName" required>
+          </div>
+          <div class="form-group">
+            <label for="updatedCategoryId">Updated Category:</label>
+            <select type="text" class="form-control" id="updatedCategoryId" required></select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <!-- Close button -->
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <!-- Update button -->
+        <button type="button" class="btn btn-warning" id="btnUpdateSubcategoryModal">Update Subcategory</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
 <!-- jQuery -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <!-- Bootstrap JS -->

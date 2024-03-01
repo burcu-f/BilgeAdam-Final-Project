@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -46,6 +47,17 @@ public class SubcategoryController {
     @GetMapping("/{id}")
     public ResponseEntity<Subcategory> getSubcategoryById(@PathVariable Long subcategoryId) {
         Subcategory subcategory = subcategoryService.getSubcategoryById(subcategoryId);
+        if (subcategory != null) {
+            return ResponseEntity.ok().body(subcategory);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+    
+ // PUT mapping for updating a subcategory
+    @PutMapping("update/{id}")
+    public ResponseEntity<Subcategory> updateSubcategory(@PathVariable Long id, @RequestBody Subcategory updatedSubcategory) {
+        Subcategory subcategory = subcategoryService.updateSubcategory(id, updatedSubcategory);
         if (subcategory != null) {
             return ResponseEntity.ok().body(subcategory);
         } else {

@@ -121,6 +121,23 @@ $(document).ready(function() {
 
     // Function to delete a category
     function deleteCategory(categoryId) {
-        // Implement functionality to delete a category
+    // Confirm with the user before proceeding with the deletion
+    if (confirm("Are you sure you want to delete this category?")) {
+        // Send AJAX request to delete the category
+        $.ajax({
+            url: "/category-management/" + categoryId,
+            type: "DELETE",
+            headers: {
+                Accept: "application/json"
+            },
+            success: function(response) {
+                alert("Category deleted successfully!");
+                refreshCategoryList(); // Refresh the category list after deletion
+            },
+            error: function(xhr, status, error) {
+                alert("Error deleting category: " + error);
+            }
+        });
     }
+}
 });

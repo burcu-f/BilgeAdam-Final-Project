@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.techathome.entities.Account;
 import com.techathome.entities.Category;
+import com.techathome.entities.Subcategory;
 import com.techathome.services.CategoryService;
 
 @Controller
@@ -58,6 +59,12 @@ public class CategoryController {
     public ResponseEntity<Category> updateCategory(@PathVariable("id") Long categoryId, @RequestBody Category updatedCategory) {
         Category category = categoryService.updateCategory(categoryId, updatedCategory);
         return ResponseEntity.ok().body(category);
+    }
+    
+    @GetMapping("/categories/{categoryId}/subcategories")
+    public ResponseEntity<List<Subcategory>> getSubcategoriesByCategory(@PathVariable Long categoryId) {
+        List<Subcategory> subcategories = categoryService.getSubcategoriesByCategory(categoryId);
+        return ResponseEntity.ok().body(subcategories);
     }
 
 }

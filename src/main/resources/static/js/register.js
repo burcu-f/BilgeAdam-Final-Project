@@ -26,4 +26,8 @@ function register() {
     .catch(error => {
         console.error("Error", error)
     })
+    
+    function goToHomePage() {
+                window.location.href = "index.html";
+            }
 }

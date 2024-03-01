@@ -43,3 +43,7 @@ function submitForm() {
     console.log(userRole);
     return userRole;
   }
+  
+  function goToHomePage() {
+            window.location.href = "index.html";
+        }

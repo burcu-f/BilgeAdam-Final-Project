@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.techathome.entities.Category;
+import com.techathome.entities.Subcategory;
 import com.techathome.repository.CategoryRepository;
 
 @Service
@@ -40,6 +41,14 @@ public class CategoryService {
             // Return the updated category
             return categoryRepository.save(categoryToUpdate);
         }
+    
+    public List<Subcategory> getSubcategoriesByCategory(Long categoryId) {
+        Category category = categoryRepository.findByCategoryId(categoryId)
+                .orElseThrow(() -> new IllegalArgumentException("Category not found"));
+
+        return category.getSubcategories();
+    }
+    
     }
 
    
