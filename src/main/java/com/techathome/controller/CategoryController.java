@@ -32,7 +32,7 @@ public class CategoryController {
         return modelAndView;
     }
 
-    @GetMapping("/categories")
+    @GetMapping(value = "/categories", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Category>> getAllCategories() {
         List<Category> categories = categoryService.getAllCategories();
         return ResponseEntity.ok().body(categories);
