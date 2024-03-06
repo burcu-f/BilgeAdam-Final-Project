@@ -44,7 +44,7 @@ public class SubcategoryController {
     	return ResponseEntity.ok().body(savedSubcategory);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{subcategoryId}")
     public ResponseEntity<Subcategory> getSubcategoryById(@PathVariable Long subcategoryId) {
         Subcategory subcategory = subcategoryService.getSubcategoryById(subcategoryId);
         if (subcategory != null) {
@@ -55,7 +55,7 @@ public class SubcategoryController {
     }
     
  // PUT mapping for updating a subcategory
-    @PutMapping("update/{id}")
+    @PutMapping("update/{subcategoryId}")
     public ResponseEntity<Subcategory> updateSubcategory(@PathVariable Long id, @RequestBody Subcategory updatedSubcategory) {
         Subcategory subcategory = subcategoryService.updateSubcategory(id, updatedSubcategory);
         if (subcategory != null) {

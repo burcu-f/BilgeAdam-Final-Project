@@ -5,10 +5,15 @@ $(document).ready(function() {
 
 function fetchCategories() {
     $.ajax({
-        url: '/category-management',
+        url: '/category-management/categories',
         type: 'GET',
+        headers: {          
+                Accept: "application/json",         
+            },
         success: function(response) {
-            renderCategories(response);
+    console.log(typeof response); // Log the type of response
+    console.log(response); // Log the entire response object
+    renderCategories(response);
         },
         error: function(xhr, status, error) {
             console.error('Failed to fetch categories:', error);
@@ -20,25 +25,36 @@ function renderCategories(categories) {
     var container = $('#category-container');
     container.empty(); // Clear previous content
 
-    categories.forEach(function(category) {
-        var categoryHTML = '<div class="row">' +
-                               '<div class="col-sm-12">' +
-                                   '<h3>' + category.categoryName + '</h3>' +
-                                   '<div id="subcategory-container-' + category.categoryId + '">' +
-                                       // Subcategories will be dynamically rendered here
-                                   '</div>' +
-                               '</div>' +
-                           '</div>';
-        container.append(categoryHTML);
+    var categoriesRow = $('<div class="row" id="categories-row"></div>'); // Create a new row for categories
 
-        fetchSubcategories(category.categoryId); // Fetch subcategories for this category
+    categories.forEach(function(category) {
+        var categoryColumn = $('<div class="col-sm-4"></div>'); // Create a column for each category
+        var categoryBox = $('<div class="category-box"></div>'); // Create a box for the category
+
+        var categoryLink = $('<a class="category-link"></a>'); // Create a link for the category
+        categoryLink.attr('href', '#'); // Set the href attribute for the link
+        categoryLink.text(category.categoryName); // Set the text of the link to the category name
+
+        var categoryDescription = $('<p></p>'); // Create a paragraph for the category description
+        categoryDescription.text(category.description); // Set the text of the paragraph to the category description
+
+        categoryBox.append(categoryLink); // Append the link to the category box
+        categoryBox.append(categoryDescription); // Append the description to the category box
+        categoryColumn.append(categoryBox); // Append the category box to the column
+        categoriesRow.append(categoryColumn); // Append the column to the row
     });
+
+    container.append(categoriesRow); // Append the row to the container
 }
+
 
 function fetchSubcategories(categoryId) {
     $.ajax({
-        url: '/category-management' + categoryId + '/subcategories',
+        url: '/category-management/' + categoryId + '/subcategories',
         type: 'GET',
+        headers: {          
+                Accept: "application/json",         
+            },
         success: function(response) {
             renderSubcategories(categoryId, response);
         },
@@ -56,8 +72,8 @@ function renderSubcategories(categoryId, subcategories) {
         var subcategoryHTML = '<p>' + subcategory.subcategoryName + '</p>';
         subcategoryContainer.append(subcategoryHTML);
     });
-    
+}
+
 function redirectToLogin() {
     window.location.href = "login.html";
-}
 }

@@ -1,0 +1,72 @@
+/* Styles for the navigation bar */
+.navbar {
+    margin-bottom: 0;
+    border-radius: 0;
+}
+
+.navbar-inverse {
+    background-color: #333; /* Dark background color */
+    border-color: #333; /* Dark border color */
+}
+
+.navbar-inverse .navbar-brand {
+    color: #fff; /* White text color for brand */
+}
+
+.navbar-inverse .navbar-brand:hover,
+.navbar-inverse .navbar-brand:focus {
+    color: #ddd; /* Lighter text color on hover/focus */
+}
+
+.navbar-inverse .navbar-nav > li > a {
+    color: #fff; /* White text color for links */
+}
+
+.navbar-inverse .navbar-nav > li > a:hover,
+.navbar-inverse .navbar-nav > li > a:focus {
+    color: #ddd; /* Lighter text color on hover/focus */
+}
+
+/* Styles for the jumbotron */
+.jumbotron {
+    background-color: #f8f8f8; /* Light background color */
+    padding: 50px 0; /* Adjust padding as needed */
+    margin-bottom: 0;
+}
+
+.jumbotron h1 {
+    font-size: 3em; /* Adjust the font size of the heading */
+    color: #333; /* Dark text color */
+}
+
+.jumbotron p {
+    font-size: 1.5em; /* Adjust the font size of the paragraph */
+    color: #666; /* Gray text color */
+}
+
+/* Styles for the categories */
+.col-sm-4 {
+    background-color: #fff; /* White background color */
+    border: 1px solid #ddd; /* Border color */
+    border-radius: 5px; /* Rounded corners */
+    padding: 20px; /* Padding around each category box */
+    margin-bottom: 20px; /* Margin between category boxes */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow effect */
+    transition: box-shadow 0.3s; /* Smooth transition for shadow effect */
+}
+
+.col-sm-4:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Increase shadow on hover */
+}
+
+.col-sm-4 h3 {
+    font-size: 1.5em; /* Font size of category name */
+    margin-bottom: 10px; /* Margin below category name */
+}
+
+.col-sm-4 p {
+    font-size: 1em; /* Font size of category description */
+    color: #666; /* Text color */
+}
+
+
