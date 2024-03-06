@@ -23,8 +23,11 @@ $(document).ready(function() {
     // Function to refresh the category list
     function refreshCategoryList() {
         Common.ajax({
-            url: "/category-management/categories",
+            url: "/category-management",
             type: "GET",
+            headers: {          
+                Accept: "application/json",         
+            },
             success: function(categories) {
                 populateCategoryTable(categories);
             }

@@ -135,7 +135,7 @@ $(document).ready(function() {
 
     function populateCategoryCombo() {
         Common.ajax({
-            url: "/category-management/categories",
+            url: "/category-management",
             type: "GET",
             success: function(categories) {
                 if (categories && categories.length > 0) {

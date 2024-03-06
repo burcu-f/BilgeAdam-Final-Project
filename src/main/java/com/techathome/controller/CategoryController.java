@@ -32,11 +32,12 @@ public class CategoryController {
         return modelAndView;
     }
 
-    @GetMapping(value = "/categories", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Category>> getAllCategories() {
         List<Category> categories = categoryService.getAllCategories();
         return ResponseEntity.ok().body(categories);
     }
+
 
     @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Category> createAccount(@RequestBody Category category) {
@@ -44,9 +45,9 @@ public class CategoryController {
     	return ResponseEntity.ok().body(savedCategory);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Category> getCategoryById(@PathVariable Long categoryId) {
-        Category category = categoryService.getCategoryById(categoryId);
+    @GetMapping("/{categoryId}")
+    public ResponseEntity<Category> getCategoryByCategoryId(@PathVariable Long categoryId) {
+        Category category = categoryService.getCategoryByCategoryId(categoryId);
         if (category != null) {
             return ResponseEntity.ok().body(category);
         } else {
@@ -55,7 +56,7 @@ public class CategoryController {
     }
     
  // Method to update an existing category
-    @PutMapping("/{id}")
+    @PutMapping("/{categoryId}")
     public ResponseEntity<Category> updateCategory(@PathVariable("id") Long categoryId, @RequestBody Category updatedCategory) {
         Category category = categoryService.updateCategory(categoryId, updatedCategory);
         return ResponseEntity.ok().body(category);

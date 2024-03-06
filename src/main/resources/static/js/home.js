@@ -5,7 +5,7 @@ $(document).ready(function() {
 
 function fetchCategories() {
     $.ajax({
-        url: '/category-management/categories',
+        url: '/category-management',
         type: 'GET',
         success: function(response) {
             renderCategories(response);
@@ -37,7 +37,7 @@ function renderCategories(categories) {
 
 function fetchSubcategories(categoryId) {
     $.ajax({
-        url: '/category-management/categories/' + categoryId + '/subcategories',
+        url: '/category-management' + categoryId + '/subcategories',
         type: 'GET',
         success: function(response) {
             renderSubcategories(categoryId, response);
