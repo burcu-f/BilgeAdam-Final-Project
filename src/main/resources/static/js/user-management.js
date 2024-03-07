@@ -82,14 +82,49 @@ $(document).ready(function() {
         });
     });
 
-    // Function to show user details
-    function showDetails(userId) {
-        // Implement functionality to show user details
-    }
+// Click event handler for the "Details" button
+$("#userTable").on("click", ".btn-info", function() {
+    // Get the account ID from the row
+    var accountId = $(this).closest("tr").attr("row-id");
+    
+    // Show user details
+    showDetails(accountId);
+});
+
+
+function showDetails(accountId) {
+    console.log("Showing details for accountId:", accountId);
+    
+    // AJAX request to fetch user details
+    $.ajax({
+        url: "/user-management/" + accountId,
+        type: "GET",
+        headers: {          
+            Accept: "application/json",         
+        },
+        success: function(user) {
+            console.log("Received user details:", user);
+            
+            // Populate modal with user details
+            $("#userDetailsName").text(user.name);
+            $("#userDetailsSurname").text(user.surname);
+            $("#userDetailsEmail").text(user.email);
+            $("#userDetailsAccountType").text(user.accountType);
+            $("#userDetailsAddress").text(user.address ? user.address.fullAddress : "N/A");
+            
+            // Show the details modal
+            $("#userDetailsModal").modal("show");
+        },
+        error: function(xhr, status, error) {
+            console.error("Error retrieving user details:", error);
+        }
+    });
+}
+
 
   // Click event handler for the "Update" button
 $("#userTable").on("click", ".btn-warning", function() {
-    // Get the user's ID from the row
+    // Get the account ID from the row
     var accountId = $(this).closest("tr").attr("row-id");
     
     // Retrieve user details via AJAX request
@@ -109,6 +144,42 @@ $("#userTable").on("click", ".btn-warning", function() {
             
             // Show the update modal
             $("#updateUserModal").modal("show");
+
+            // Click event handler for the "Update" button within the update modal
+            $("#btnUpdateUser").off("click").on("click", function() {
+                var userId = $("#updateUserId").val();
+                var name = $("#updateName").val();
+                var surname = $("#updateSurname").val();
+                var email = $("#updateEmail").val();
+                var accountType = $("#updateAccountType").val();
+
+                var updatedUser = {
+                    id: userId,
+                    name: name,
+                    surname: surname,
+                    email: email,
+                    accountType: accountType
+                };
+
+                // AJAX request to update the user's information
+                $.ajax({
+                    url: "/user-management/" + accountId, // Use accountId here
+                    type: "PUT",
+                    headers: {
+                        Accept: "application/json"
+                    },
+                    contentType: "application/json",
+                    data: JSON.stringify(updatedUser), // Use updatedUser here
+                    success: function(response) {
+                        alert("User information updated successfully!");
+                        $("#updateUserModal").modal("hide");
+                        refreshUserList(); // Refresh the user list after updating
+                    },
+                    error: function(xhr, status, error) {
+                        alert("Error updating user information: " + error);
+                    }
+                });
+            });
         },
         error: function(xhr, status, error) {
             console.error("Error retrieving user details: " + error);
@@ -116,41 +187,6 @@ $("#userTable").on("click", ".btn-warning", function() {
     });
 });
 
-// Click event handler for the "Update" button within the update modal
-$("#btnUpdateUser").click(function() {
-    var userId = $("#updateUserId").val();
-    var name = $("#updateName").val();
-    var surname = $("#updateSurname").val();
-    var email = $("#updateEmail").val();
-    var accountType = $("#updateAccountType").val();
-
-    var updatedUser = {
-        id: userId,
-        name: name,
-        surname: surname,
-        email: email,
-        accountType: accountType
-    };
-
-    // AJAX request to update the user's information
-    $.ajax({
-        url: "/user-management/" + accountId,
-        type: "PUT",
-        headers: {
-            Accept: "application/json"
-        },
-        contentType: "application/json",
-        data: JSON.stringify(updatedAccount),
-        success: function(response) {
-            alert("User information updated successfully!");
-            $("#updateUserModal").modal("hide");
-            refreshUserList(); // Refresh the user list after updating
-        },
-        error: function(xhr, status, error) {
-            alert("Error updating user information: " + error);
-        }
-    });
-});
 
     
     // Event delegation for the "Delete" button
@@ -167,6 +203,9 @@ $("#btnUpdateUser").click(function() {
             $.ajax({
                 url: "/user-management/" + accountId,
                 type: "DELETE",
+                headers: {          
+				Accept: "application/json",         
+			},
                 success: function(response) {
                     alert("User deleted successfully!");
                     $("#deleteUserModal").modal("hide");

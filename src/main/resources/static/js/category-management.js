@@ -1,41 +1,45 @@
 $(document).ready(function() {
     // Function to populate the category table
-    function populateCategoryTable(categories) {
-        $("#categoryTable tbody").empty();
-        let i = 1;
+function populateCategoryTable(categories) {
+    $("#categoryTable tbody").empty();
+    let i = 1;
+    if (Array.isArray(categories)) {
         categories.forEach(function(category) {
             let row = 
-    		  "<tr row-id=\"" + category.categoryId + "\">" +
-        		  "<td>" + i + "</td>" +
-        		  "<td>" + category.categoryName + "</td>" +
-        		  "<td>" + category.description + "</td>" +
-                  "<td>" +
-	                  "<button class='btn btn-info' onclick='showDetails(" + category.categoryId + ")'>Details</button>" +
-	                  "<button class='btn btn-warning' onclick='updateCategory(" + category.categoryId + ")'>Update</button>" +
-	                  "<button class='btn btn-danger' onclick='deleteCategory(" + category.categoryId + ")'>Delete</button>" + 
-                  "</td>" +
-              "</tr>";
+                "<tr row-id=\"" + category.categoryId + "\">" +
+                "<td>" + i + "</td>" +
+                "<td>" + category.categoryName + "</td>" +
+                "<td>" + category.description + "</td>" +
+                "<td>" +
+                    "<button class='btn btn-info' onclick='showDetails(" + category.categoryId + ")'>Details</button>" +
+                    "<button class='btn btn-warning' onclick='updateCategory(" + category.categoryId + ")'>Update</button>" +
+                    "<button class='btn btn-danger' onclick='deleteCategory(" + category.categoryId + ")'>Delete</button>" + 
+                "</td>" +
+                "</tr>";
             ++i;
             $("#categoryTable tbody").append(row);
         });
+    } else {
+        console.error("Categories is not an array:", categories);
     }
+}
 
-    // Function to refresh the category list
-    function refreshCategoryList() {
-        Common.ajax({
-            url: "/category-management",
-            type: "GET",
-            headers: {          
-                Accept: "application/json",         
-            },
-            success: function(categories) {
-                populateCategoryTable(categories);
-            }
-        });
-    }
+// Function to refresh the category list
+function refreshCategoryList() {
+    Common.ajax({
+        url: "/category-management/categories",
+        type: "GET",
+        headers: {          
+            Accept: "application/json",         
+        },
+        success: function(response) {
+            populateCategoryTable(response);
+        }
+    });
+}
 
-    // Populate the category table when the page is loaded
-    refreshCategoryList();
+// Populate the category table when the page is loaded
+refreshCategoryList();
 
     // Click event handler for the "Add Category" button
     $("#btnAddCategory").click(function() {
