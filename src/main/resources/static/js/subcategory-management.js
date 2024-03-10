@@ -57,6 +57,9 @@ $(document).ready(function() {
             success: function(subcategories) {
                 populateSubcategoryTable(subcategories);
             },
+            error: function(xhr, status, error) {
+                console.error("Error refreshing subcategory list: " + error);
+            }
         });
     }
 
@@ -85,6 +88,9 @@ $(document).ready(function() {
                 $("#subcategoryModal").modal("hide");
                 refreshSubcategoryList(); // Refresh the subcategory list after addition
             },
+            error: function(xhr, status, error) {
+                alert("Error adding subcategory: " + error);
+            }
         });
     });
 
@@ -94,7 +100,7 @@ $(document).ready(function() {
         if (confirm("Are you sure you want to delete this subcategory?")) {
             // Send AJAX request to delete the subcategory
             $.ajax({
-                url: "/subcategory-management/delete/" + subcategoryId,
+                url: "/subcategory-management/" + subcategoryId,
                 type: "DELETE",
                 headers: {
                     Accept: "application/json"
@@ -121,6 +127,7 @@ $(document).ready(function() {
             },
             success: function(subcategory) {
                 // Populate the modal with subcategory details
+                $("#updatedSubcategoryId").val(subcategory.subcategoryId);
                 $("#updatedSubcategoryName").val(subcategory.subcategoryName);
                 $("#updatedCategoryId").val(subcategory.category.categoryId);
 
@@ -133,6 +140,7 @@ $(document).ready(function() {
         });
     }
 
+    // Populate the category combo box
     function populateCategoryCombo() {
         Common.ajax({
             url: "/category-management",
@@ -147,6 +155,9 @@ $(document).ready(function() {
                         $('select#categoryId').append(option);
                     });
                 }
+            },
+            error: function(xhr, status, error) {
+                console.error("Error populating category combo box: " + error);
             }
         });
     }

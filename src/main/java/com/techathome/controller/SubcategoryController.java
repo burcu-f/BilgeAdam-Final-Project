@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,18 +33,23 @@ public class SubcategoryController {
         return modelAndView;
     }
 
+    //Method to GET ALL subcategories
     @GetMapping("/subcategories")
     public ResponseEntity<List<Subcategory>> getAllSubcategories() {
         List<Subcategory> subcategories = subcategoryService.getAllSubcategories();
         return new ResponseEntity<>(subcategories, HttpStatus.OK);
     }
     
+    
+    //Method to ADD a new subcategory
     @PostMapping(value = "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Subcategory> createSubcategory(@RequestBody Subcategory subcategory) {
     	Subcategory savedSubcategory = subcategoryService.saveSubcategory(subcategory);
     	return ResponseEntity.ok().body(savedSubcategory);
     }
 
+    
+    //Method to GET a subcategory by ID
     @GetMapping("/{subcategoryId}")
     public ResponseEntity<Subcategory> getSubcategoryById(@PathVariable Long subcategoryId) {
         Subcategory subcategory = subcategoryService.getSubcategoryById(subcategoryId);
@@ -56,12 +62,24 @@ public class SubcategoryController {
     
  // PUT mapping for updating a subcategory
     @PutMapping("update/{subcategoryId}")
-    public ResponseEntity<Subcategory> updateSubcategory(@PathVariable Long id, @RequestBody Subcategory updatedSubcategory) {
-        Subcategory subcategory = subcategoryService.updateSubcategory(id, updatedSubcategory);
+    public ResponseEntity<Subcategory> updateSubcategory(@PathVariable ("subcategoryId") Long subcategoryId, @RequestBody Subcategory updatedSubcategory) {
+        Subcategory subcategory = subcategoryService.updateSubcategory(subcategoryId, updatedSubcategory);
         if (subcategory != null) {
             return ResponseEntity.ok().body(subcategory);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
+    
+ // Method to delete a subcategory by ID
+    @DeleteMapping("/{subcategoryId}")
+    public ResponseEntity<Void> deleteSubcategory(@PathVariable Long subcategoryId) {
+        boolean deleted = subcategoryService.deleteSubcategory(subcategoryId);
+        if (deleted) {
+            return ResponseEntity.noContent().build(); // 204 No Content
+        } else {
+            return ResponseEntity.notFound().build(); // 404 Not Found
+        }
+    }
 }
+

@@ -1,8 +1,8 @@
 package com.techathome.controller;
 
-import com.techathome.dto.auth.LoginDTO;
-import com.techathome.dto.auth.SignInRequest;
-import com.techathome.dto.auth.SignUpRequest;
+import com.techathome.dto.LoginDTO;
+import com.techathome.dto.SignInRequest;
+import com.techathome.dto.SignUpRequest;
 import com.techathome.services.AuthenticationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

@@ -1,5 +1,6 @@
 package com.techathome.controller;
 
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+
 import com.techathome.entities.Category;
 import com.techathome.entities.Subcategory;
 import com.techathome.services.CategoryService;
@@ -58,7 +60,13 @@ public class CategoryController {
     
  // Method to update an existing category
     @PutMapping("/{categoryId}")
-    public ResponseEntity<Category> updateCategory(@PathVariable("id") Long categoryId, @RequestBody Category updatedCategory) {
+    public ResponseEntity<Category> updateCategory(@PathVariable("categoryId") Long categoryId, @RequestBody Category updatedCategory) {
+    	// Check if the category exists
+        Category existingCategory = categoryService.getCategoryByCategoryId(categoryId);
+        if (existingCategory == null) {
+            return ResponseEntity.notFound().build(); // Return 404 Not Found response
+        }
+     // Update the category
         Category category = categoryService.updateCategory(categoryId, updatedCategory);
         return ResponseEntity.ok().body(category);
     }
@@ -68,5 +76,7 @@ public class CategoryController {
         List<Subcategory> subcategories = categoryService.getSubcategoriesByCategory(categoryId);
         return ResponseEntity.ok().body(subcategories);
     }
+    
+   
 
 }

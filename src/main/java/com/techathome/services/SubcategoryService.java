@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SubcategoryService {
@@ -37,6 +38,16 @@ public class SubcategoryService {
         } else {
             // If the subcategory is not found, return null or throw an exception
             return null;
+        }
+    }
+	
+	public boolean deleteSubcategory(Long subcategoryId) {
+        Optional<Subcategory> optionalSubcategory = subcategoryRepository.findById(subcategoryId);
+        if (optionalSubcategory.isPresent()) {
+            subcategoryRepository.deleteById(subcategoryId);
+            return true; // Deletion successful
+        } else {
+            return false; // Subcategory not found
         }
     }
 }

@@ -1,8 +1,8 @@
 package com.techathome.services;
 
-import com.techathome.dto.auth.LoginDTO;
-import com.techathome.dto.auth.SignInRequest;
-import com.techathome.dto.auth.SignUpRequest;
+import com.techathome.dto.LoginDTO;
+import com.techathome.dto.SignInRequest;
+import com.techathome.dto.SignUpRequest;
 import com.techathome.entities.Account;
 import com.techathome.enums.AccountType;
 import com.techathome.repository.AccountRepository;

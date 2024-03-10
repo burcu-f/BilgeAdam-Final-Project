@@ -1,4 +1,4 @@
-package com.techathome.dto.auth;
+package com.techathome.dto;
 
 import lombok.Data;
 
