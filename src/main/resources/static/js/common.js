@@ -15,10 +15,16 @@ Common.ajax = ({url, type, success, error, data, options}) => {
 				success(response);
 			}
 		},
-	    error: error ? error(xhr, status, error) : function(xhr, status, error) {
+	    //error: error ? error(xhr, status, error) : function(xhr, status, error) {
+			
+		error: function(xhr, status, error) {  // Adjusted error handling function
+            if (error) {
+                error(xhr, status, error);  // Call the provided error function
+            } else {
 	        console.error("Error refreshing user list: " + error);
 	    }
 	}
+	};
 	if (data) {
 		params.data = data;
 	}

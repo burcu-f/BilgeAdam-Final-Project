@@ -68,6 +68,36 @@
   </div>
 </div>
 
+<!-- Modal for Update Category -->
+<div class="modal fade" id="updateCategoryModal" tabindex="-1" role="dialog" aria-labelledby="updateCategoryModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Update Category</h4>
+      </div>
+      <div class="modal-body">
+        <form id="updateCategoryForm">
+          <div class="form-group">
+            <label for="updateCategoryName">Name:</label>
+            <input type="text" class="form-control" id="updateCategoryName" required>
+          </div>
+          <div class="form-group">
+            <label for="updateDescription">Description:</label>
+            <input type="text" class="form-control" id="updateDescription" required>
+          </div>
+          <!-- Hidden input field for category ID -->
+          <input type="hidden" id="updateCategoryId">
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="btnUpdateCategory">Update Category</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <!-- jQuery -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <!-- Bootstrap JS -->

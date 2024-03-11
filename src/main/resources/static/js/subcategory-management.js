@@ -27,7 +27,8 @@ $(document).ready(function() {
                 class: "btn btn-warning",
                 text: "Update",
                 click: function() {
-                    updateSubcategory(subcategory.subcategoryId); // Call update function with subcategoryId
+        			var subcategoryId = $(this).closest("tr").attr("row-id");
+                    updateSubcategory(subcategoryId); // Call update function with subcategoryId
                 }
             });
             actionsTd.append(updateBtn);
@@ -115,52 +116,95 @@ $(document).ready(function() {
             });
         }
     }
+    
+   // Populate the category combo box
+populateCategoryCombo();
 
-    // Function to update a subcategory
-    function updateSubcategory(subcategoryId) {
-        // Retrieve subcategory details via AJAX request
-        $.ajax({
-            url: "/subcategory-management/" + subcategoryId,
-            type: "GET",
-            headers: {
-                Accept: "application/json",
-            },
-            success: function(subcategory) {
-                // Populate the modal with subcategory details
-                $("#updatedSubcategoryId").val(subcategory.subcategoryId);
-                $("#updatedSubcategoryName").val(subcategory.subcategoryName);
-                $("#updatedCategoryId").val(subcategory.category.categoryId);
+// Function to update a subcategory
+function updateSubcategory(subcategoryId) {
+    // Retrieve subcategory details via AJAX request
+    $.ajax({
+        url: "/subcategory-management/" + subcategoryId,
+        type: "GET",
+        headers: {
+            Accept: "application/json",
+        },
+        success: function(subcategory) {
+            // Populate the modal with subcategory details
+            $("#updateSubcategoryId").val(subcategory.subcategoryId);
+            $("#updatedSubcategoryName").val(subcategory.subcategoryName);
+            $("#updatedCategoryId").val(subcategory.category.categoryId);
+            
+            // Log the values before making the AJAX call
+            
+            console.log("updatedSubcategoryName:", $("#updatedSubcategoryName").val());
+            console.log("updatedCategoryId:", $("#updatedCategoryId").val());
 
-                // Show the update modal
-                $("#updateSubcategoryModal").modal("show");
+
+            // Show the update modal
+            $("#updateSubcategoryModal").modal("show");
+            
             },
             error: function(xhr, status, error) {
                 console.error("Error retrieving subcategory details: " + error);
             }
         });
-    }
+     }
+            
+            // Add event handler for update button click
+            $("#btnUpdateSubcategoryModal").click(function() {
+                var subcategoryId = $("#updatedSubcategoryId").val();
+                var subcategoryName = $("#updatedSubcategoryName").val();
+                var categoryId = $("#updatedCategoryId").val();
+                
+                var updatedSubcategory = {            
+            		subcategoryId: subcategoryId,
+            		subcategoryName: subcategoryName,
+            		categoryId: categoryId,
+        		};
+                
+                // Make AJAX request to update subcategory
+                $.ajax({
+                    url: "/subcategory-management/" + subcategoryId,
+                    type: "PUT", 
+                    headers: {
+                        Accept: "application/json",
+                    },
+                    data: JSON.stringify(updatedSubcategory),
+                    success: function(response) {
+						alert("Subcategory information updated successfully!");
+                        $("#updateSubcategoryModal").modal("hide");
+                        refreshSubcategoryList();
+                    },
+                    error: function(xhr, status, error) {
+                        alert("Error updating category information: " + error);
+                    },
+                    
+                });
+            });
+       
 
-    // Populate the category combo box
+    
     function populateCategoryCombo() {
         Common.ajax({
-            url: "/category-management",
+            url: "/category-management/categories",
             type: "GET",
             success: function(categories) {
-                if (categories && categories.length > 0) {
+                if (categories && categories.length > 0 && Array.isArray(categories)) {
                     categories.forEach(function(category) {
                         let option = $('<option>', {
                             value: category.categoryId,
                             text: category.categoryName
                         });
-                        $('select#categoryId').append(option);
+                        $('select#updatedCategoryId').append(option);
                     });
-                }
+                } else {
+					console.error("Invalid response format: ", categories);
+				}
             },
             error: function(xhr, status, error) {
                 console.error("Error populating category combo box: " + error);
             }
         });
     }
-
-    populateCategoryCombo();
 });

@@ -25,21 +25,21 @@ public class SubcategoryService {
 	
 	public Subcategory updateSubcategory(Long subcategoryId, Subcategory updatedSubcategory) {
         // Retrieve the existing subcategory from the database
-        Subcategory existingSubcategory = subcategoryRepository.findById(subcategoryId).orElse(null);
+        Subcategory existingSubcategory = subcategoryRepository.findById(subcategoryId).
+        		orElseThrow(() -> new IllegalArgumentException("Subcategory not found"));
+        		
 
-        // If the subcategory exists, update its fields with the provided details
-        if (existingSubcategory != null) {
+        	// Update the subcategory with the provided information
+     
             existingSubcategory.setSubcategoryName(updatedSubcategory.getSubcategoryName());
             existingSubcategory.setCategory(updatedSubcategory.getCategory());
-            // Add more fields to update as needed
+           
 
             // Save the updated subcategory to the database
             return subcategoryRepository.save(existingSubcategory);
-        } else {
-            // If the subcategory is not found, return null or throw an exception
-            return null;
-        }
-    }
+            
+	}
+       
 	
 	public boolean deleteSubcategory(Long subcategoryId) {
         Optional<Subcategory> optionalSubcategory = subcategoryRepository.findById(subcategoryId);

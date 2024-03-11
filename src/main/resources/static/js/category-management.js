@@ -121,7 +121,7 @@ refreshCategoryList();
                 refreshCategoryList(); // Refresh the category list after updating
             },
             error: function(xhr, status, error) {
-                alert("Error updating user information: " + error);
+                alert("Error updating category information: " + error);
             }
         });
     });

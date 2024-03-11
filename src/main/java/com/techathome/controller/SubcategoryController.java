@@ -30,6 +30,8 @@ public class SubcategoryController {
     public ModelAndView subcategoryManagementPage() {
         ModelAndView modelAndView = new ModelAndView("subcategory-management");
         modelAndView.addObject("pageTitle", "Subcategory Management");
+        List<Subcategory> subcategories = subcategoryService.getAllSubcategories();
+        modelAndView.addObject("subcategories", subcategories);
         return modelAndView;
     }
 
@@ -61,14 +63,14 @@ public class SubcategoryController {
     }
     
  // PUT mapping for updating a subcategory
-    @PutMapping("update/{subcategoryId}")
+    @PutMapping(value= "/{subcategoryId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Subcategory> updateSubcategory(@PathVariable ("subcategoryId") Long subcategoryId, @RequestBody Subcategory updatedSubcategory) {
-        Subcategory subcategory = subcategoryService.updateSubcategory(subcategoryId, updatedSubcategory);
-        if (subcategory != null) {
-            return ResponseEntity.ok().body(subcategory);
-        } else {
-            return ResponseEntity.notFound().build();
+        Subcategory existingSubcategory = subcategoryService.getSubcategoryById(subcategoryId);
+        if (existingSubcategory == null) {
+        	return ResponseEntity.notFound().build(); // Return 404 Not Found response
         }
+        Subcategory subcategory = subcategoryService.updateSubcategory(subcategoryId, updatedSubcategory);
+        return ResponseEntity.ok().body(subcategory);
     }
     
  // Method to delete a subcategory by ID
