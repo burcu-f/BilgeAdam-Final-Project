@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brand Management</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <!-- Font Awesome CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" type="text/css" href="css/category-management.css">
+</head>
+<body>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <h2>Brand Management</h2>
+      <div class="pull-right">
+        <!-- Add Brand Button -->
+        <button class="btn btn-success" id="btnAddBrand">Add Brand</button>
+        <!-- Back to Admin Panel Button -->
+        <a href="/admin" class="btn btn-primary">Back to Admin Panel</a>
+      </div>
+      <br><br>
+      <table id="brandTable" class="table table-bordered">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <!-- Add more columns here as needed -->
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Brand list will be populated here -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Modal for Add Brand -->
+<div class="modal fade" id="brandModal" tabindex="-1" role="dialog" aria-labelledby="brandModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Add Brand</h4>
+      </div>
+      <div class="modal-body">
+        <form id="brandForm">
+          <div class="form-group">
+            <label for="brandName">Name:</label>
+            <input type="text" class="form-control" id="brandName" required>
+          </div>
+          <!-- Add more input fields for other brand attributes here -->
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="btnAddBrandModal">Add Brand</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal for Update Brand -->
+<div class="modal fade" id="updateBrandModal" tabindex="-1" role="dialog" aria-labelledby="updateBrandModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Update Brand</h4>
+      </div>
+      <div class="modal-body">
+        <form id="updateBrandForm">
+          <div class="form-group">
+            <label for="updatedBrandName">Updated Name:</label>
+            <input type="text" class="form-control" id="updatedBrandName" required>
+          </div>
+          <!-- Add more input fields for other updated brand attributes here -->
+          <input type="hidden" id="updatedBrandId">
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-warning" id="btnUpdateBrandModal">Update Brand</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<!-- Bootstrap JS -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<!-- Custom JS -->
+<script src="js/brand-management.js"></script>
+<script src="js/common.js"></script>
+
+</body>
+</html>

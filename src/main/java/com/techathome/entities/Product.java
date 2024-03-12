@@ -17,11 +17,15 @@ public class Product {
     private Long productId;
     private String productName;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "category_id")
     private Category category;
+    
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "subcategory_id")
+    private Subcategory subcategory;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "brand_id")
     private Brand brand;
 
@@ -32,34 +36,6 @@ public class Product {
     private int stock;
 
     private String image;
-
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
-    public void setBrand(Brand brand) {
-        this.brand = brand;
-    }
-
-    public void setProductDescription(String productDescription) {
-        this.productDescription = productDescription;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public void setStock(int stock) {
-        this.stock = stock;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
 
 
 }

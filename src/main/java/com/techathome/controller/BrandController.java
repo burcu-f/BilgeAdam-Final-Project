@@ -4,19 +4,31 @@ import com.techathome.entities.Brand;
 import com.techathome.services.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/api/brands")
+@Controller
+@RequestMapping("/brand-management")
 public class BrandController {
 
     @Autowired
     private BrandService brandService;
+    
+    @GetMapping("")
+    public ModelAndView brandManagementPage() {
+        ModelAndView modelAndView = new ModelAndView("brand-management");
+        modelAndView.addObject("pageTitle", "Brand Management");
+        List<Brand> brands = brandService.getAllBrands();
+        modelAndView.addObject("brands", brands); // Add brands to the model
+        return modelAndView;
+    }
 
-    @GetMapping
+    @GetMapping(value = "/brands", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Brand>> getAllBrands() {
         List<Brand> brands = brandService.getAllBrands();
         return new ResponseEntity<>(brands, HttpStatus.OK);
@@ -34,7 +46,7 @@ public class BrandController {
     }
 
     // CREATE a new brand
-    @PostMapping
+    @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Brand> createBrand(@RequestBody Brand brand) {
         brandService.saveBrand(brand);
         return new ResponseEntity<>(brand, HttpStatus.CREATED);
