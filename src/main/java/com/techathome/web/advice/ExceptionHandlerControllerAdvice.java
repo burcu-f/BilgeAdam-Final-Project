@@ -28,7 +28,7 @@ public class ExceptionHandlerControllerAdvice {
 	public Object handleError404(HttpServletRequest request, HttpServletResponse response, Exception e) {
 		log.error("Request: {} raised {}", request.getRequestURL(), e.getMessage());
 		e.printStackTrace();
-		return response;
+		return !response.isCommitted() ? response : null;
 	}
 
 	@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Bozuk JSON nesnesi")

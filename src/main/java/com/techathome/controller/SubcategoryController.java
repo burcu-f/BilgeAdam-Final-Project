@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.techathome.config.IMapperImpl;
 import com.techathome.entities.Subcategory;
+import com.techathome.entities.SubcategoryForm;
 import com.techathome.services.SubcategoryService;
 
 @Controller
@@ -25,38 +27,43 @@ public class SubcategoryController {
 
 	@Autowired
     private SubcategoryService subcategoryService;
+	
+	@Autowired
+	private IMapperImpl mapper;
 
     @GetMapping("")
     public ModelAndView subcategoryManagementPage() {
         ModelAndView modelAndView = new ModelAndView("subcategory-management");
         modelAndView.addObject("pageTitle", "Subcategory Management");
         List<Subcategory> subcategories = subcategoryService.getAllSubcategories();
-        modelAndView.addObject("subcategories", subcategories);
+        List<SubcategoryForm> list = subcategories.stream().map(s -> mapper.fromSubcategoryEntity(s)).toList();
+        modelAndView.addObject("subcategories", list);
         return modelAndView;
     }
 
     //Method to GET ALL subcategories
     @GetMapping("/subcategories")
-    public ResponseEntity<List<Subcategory>> getAllSubcategories() {
+    public ResponseEntity<List<SubcategoryForm>> getAllSubcategories() {
         List<Subcategory> subcategories = subcategoryService.getAllSubcategories();
-        return new ResponseEntity<>(subcategories, HttpStatus.OK);
+        List<SubcategoryForm> list = subcategories.stream().map(s -> mapper.fromSubcategoryEntity(s)).toList();
+        return new ResponseEntity<>(list, HttpStatus.OK);
     }
     
     
     //Method to ADD a new subcategory
     @PostMapping(value = "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Subcategory> createSubcategory(@RequestBody Subcategory subcategory) {
+    public ResponseEntity<SubcategoryForm> createSubcategory(@RequestBody Subcategory subcategory) {
     	Subcategory savedSubcategory = subcategoryService.saveSubcategory(subcategory);
-    	return ResponseEntity.ok().body(savedSubcategory);
+    	return ResponseEntity.ok().body(mapper.fromSubcategoryEntity(savedSubcategory));
     }
 
     
     //Method to GET a subcategory by ID
     @GetMapping("/{subcategoryId}")
-    public ResponseEntity<Subcategory> getSubcategoryById(@PathVariable Long subcategoryId) {
+    public ResponseEntity<SubcategoryForm> getSubcategoryById(@PathVariable Long subcategoryId) {
         Subcategory subcategory = subcategoryService.getSubcategoryById(subcategoryId);
         if (subcategory != null) {
-            return ResponseEntity.ok().body(subcategory);
+            return ResponseEntity.ok().body(mapper.fromSubcategoryEntity(subcategory));
         } else {
             return ResponseEntity.notFound().build();
         }
@@ -64,24 +71,20 @@ public class SubcategoryController {
     
  // PUT mapping for updating a subcategory
     @PutMapping(value= "/{subcategoryId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Subcategory> updateSubcategory(@PathVariable ("subcategoryId") Long subcategoryId, @RequestBody Subcategory updatedSubcategory) {
+    public ResponseEntity<SubcategoryForm> updateSubcategory(@PathVariable ("subcategoryId") Long subcategoryId, @RequestBody Subcategory updatedSubcategory) {
         Subcategory existingSubcategory = subcategoryService.getSubcategoryById(subcategoryId);
         if (existingSubcategory == null) {
         	return ResponseEntity.notFound().build(); // Return 404 Not Found response
         }
         Subcategory subcategory = subcategoryService.updateSubcategory(subcategoryId, updatedSubcategory);
-        return ResponseEntity.ok().body(subcategory);
+        return ResponseEntity.ok().body(mapper.fromSubcategoryEntity(subcategory));
     }
     
  // Method to delete a subcategory by ID
     @DeleteMapping("/{subcategoryId}")
     public ResponseEntity<Void> deleteSubcategory(@PathVariable Long subcategoryId) {
-        boolean deleted = subcategoryService.deleteSubcategory(subcategoryId);
-        if (deleted) {
-            return ResponseEntity.noContent().build(); // 204 No Content
-        } else {
-            return ResponseEntity.notFound().build(); // 404 Not Found
-        }
+        subcategoryService.deleteSubcategory(subcategoryId);
+        return ResponseEntity.noContent().build(); // 204 No Content
     }
 }
 

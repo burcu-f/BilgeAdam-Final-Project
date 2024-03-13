@@ -41,13 +41,10 @@ public class SubcategoryService {
 	}
        
 	
-	public boolean deleteSubcategory(Long subcategoryId) {
-        Optional<Subcategory> optionalSubcategory = subcategoryRepository.findById(subcategoryId);
-        if (optionalSubcategory.isPresent()) {
-            subcategoryRepository.deleteById(subcategoryId);
-            return true; // Deletion successful
-        } else {
-            return false; // Subcategory not found
-        }
+	public void deleteSubcategory(Long subcategoryId) {
+		Subcategory subcategory = subcategoryRepository.findById(subcategoryId).orElseThrow();
+		subcategoryRepository.delete(subcategory);
+		
+		subcategoryRepository.deleteById(subcategoryId);
     }
 }

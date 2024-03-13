@@ -1,8 +1,5 @@
 package com.techathome.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -26,9 +23,8 @@ public class Subcategory {
     private Long subcategoryId;
     private String subcategoryName;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "category_id")
-    @JsonIgnoreProperties("subcategories")
     private Category category;
 
 }

@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.techathome.config.IMapper;
 import com.techathome.entities.Category;
+import com.techathome.entities.CategoryForm;
 import com.techathome.entities.Subcategory;
 import com.techathome.services.CategoryService;
 
@@ -25,6 +27,9 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
+    @Autowired
+    private IMapper mapper;
+    
     @GetMapping("")
     public ModelAndView categoryManagementPage() {
         ModelAndView modelAndView = new ModelAndView("category-management");
@@ -36,15 +41,10 @@ public class CategoryController {
 
 
     @GetMapping(value = "/categories", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Category>> getAllCategories() {
-    	try {
-    		List<Category> categories = categoryService.getAllCategories();
-    		return ResponseEntity.ok().body(categories);
-		} catch (Exception e) {
-			e.printStackTrace();
-			// TODO: handle exception
-		}
-    	return null;
+    public ResponseEntity<List<CategoryForm>> getAllCategories() {
+		List<Category> categories = categoryService.getAllCategories();
+		List<CategoryForm> formList = categories.stream().map(c -> mapper.fromCategoryEntity(c)).toList();
+		return ResponseEntity.ok().body(formList);
     }
 
 
@@ -55,10 +55,10 @@ public class CategoryController {
     }
 
     @GetMapping("/{categoryId}")
-    public ResponseEntity<Category> getCategoryByCategoryId(@PathVariable Long categoryId) {
+    public ResponseEntity<CategoryForm> getCategoryByCategoryId(@PathVariable Long categoryId) {
         Category category = categoryService.getCategoryByCategoryId(categoryId);
         if (category != null) {
-            return ResponseEntity.ok().body(category);
+            return ResponseEntity.ok().body(mapper.fromCategoryEntity(category));
         } else {
             return ResponseEntity.notFound().build();
         }
