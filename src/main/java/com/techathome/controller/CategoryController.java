@@ -37,8 +37,14 @@ public class CategoryController {
 
     @GetMapping(value = "/categories", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Category>> getAllCategories() {
-        List<Category> categories = categoryService.getAllCategories();
-        return ResponseEntity.ok().body(categories);
+    	try {
+    		List<Category> categories = categoryService.getAllCategories();
+    		return ResponseEntity.ok().body(categories);
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
+		}
+    	return null;
     }
 
 
