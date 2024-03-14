@@ -1,72 +1,170 @@
 /* Styles for the navigation bar */
-.navbar {
-    margin-bottom: 0;
-    border-radius: 0;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;900&display=swap');
+
+/* Resetting */
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
 }
 
-.navbar-inverse {
-    background-color: #333; /* Dark background color */
-    border-color: #333; /* Dark border color */
+nav {
+    min-height: 70px;
 }
 
-.navbar-inverse .navbar-brand {
-    color: #fff; /* White text color for brand */
+nav .navbar-brand .logo {
+    padding: 10px 15px;
+    border-radius: 8px;
 }
 
-.navbar-inverse .navbar-brand:hover,
-.navbar-inverse .navbar-brand:focus {
-    color: #ddd; /* Lighter text color on hover/focus */
+nav .navbar-brand .logo .h2 {
+    margin: 0;
 }
 
-.navbar-inverse .navbar-nav > li > a {
-    color: #fff; /* White text color for links */
+nav .navbar-brand .h4 {
+    margin-bottom: 0px;
+    font-weight: 900;
 }
 
-.navbar-inverse .navbar-nav > li > a:hover,
-.navbar-inverse .navbar-nav > li > a:focus {
-    color: #ddd; /* Lighter text color on hover/focus */
+nav .navbar-brand .fs-6 {
+    font-size: 0.88rem !important;
 }
 
-/* Styles for the jumbotron */
-.jumbotron {
-    background-color: #f8f8f8; /* Light background color */
-    padding: 50px 0; /* Adjust padding as needed */
-    margin-bottom: 0;
+nav ul li {
+    padding: 0 20px;
 }
 
-.jumbotron h1 {
-    font-size: 3em; /* Adjust the font size of the heading */
-    color: #333; /* Dark text color */
+.navbar-light .navbar-nav .nav-link {
+    color: #333;
 }
 
-.jumbotron p {
-    font-size: 1.5em; /* Adjust the font size of the paragraph */
-    color: #666; /* Gray text color */
+.navbar-light .navbar-nav .nav-link:hover {
+    color: #4e2296;
 }
 
-/* Styles for the categories */
-.col-sm-4 {
-    background-color: #fff; /* White background color */
-    border: 1px solid #ddd; /* Border color */
-    border-radius: 5px; /* Rounded corners */
-    padding: 20px; /* Padding around each category box */
-    margin-bottom: 20px; /* Margin between category boxes */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow effect */
-    transition: box-shadow 0.3s; /* Smooth transition for shadow effect */
+.navbar-light .navbar-nav .nav-link.active {
+    color: #451296;
 }
 
-.col-sm-4:hover {
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Increase shadow on hover */
+nav ul li a .cart {
+    padding: 4px 6px;
+    border-radius: 6px;
+    position: relative;
+    display: inline;
 }
 
-.col-sm-4 h3 {
-    font-size: 1.5em; /* Font size of category name */
-    margin-bottom: 10px; /* Margin below category name */
+nav ul li a .cart::after {
+    position: absolute;
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #ff5252;
+    top: -1px;
 }
 
-.col-sm-4 p {
-    font-size: 1em; /* Font size of category description */
-    color: #666; /* Text color */
+.navbar-toggler:focus {
+    box-shadow: none;
+}
+
+/* Backgrounds */
+.bg-purple {
+    background-color: #55009b;
+}
+
+.bg-light {
+    background-color: #f0ecec !important;
+}
+
+.green {
+    color: #007965 !important;
 }
 
 
+/* Styles for the product containers */
+.container {
+    margin-top: 50px
+}
+
+.item {
+    background: #fff;
+    -webkit-box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    position: relative;
+    height: 300px
+}
+
+.item h4 {
+    font-size: 1rem
+}
+
+.text-primary {
+    color: #ff6b6b !important
+}
+
+.item img {
+    margin: 0 auto;
+    display: inherit;
+    width: 230px;
+    height: 164px
+}
+
+.overlay {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.92);
+    opacity: 0;
+    -webkit-transition: all 0.3s;
+    transition: all 0.3s
+}
+
+.overlay a {
+    -webkit-transform: translateY(20px);
+    transform: translateY(20px);
+    -webkit-transition: all 0.5s;
+    transition: all 0.5s
+}
+
+.btn {
+    font-weight: 400;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    -webkit-transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, -webkit-box-shadow 0.15s ease-in-out
+}
+
+.btn-dark {
+    border-radius: 50px !important;
+    padding-left: 30px !important;
+    padding-right: 30px !important;
+    margin-bottom: 10px
+}
+
+.btn-unique {
+    color: #212529;
+    background-color: #ff6b6b;
+    border-color: #ff6b6b;
+    color: #fff
+}
+
+.item:hover .overlay {
+    opacity: 1
+}
+
+.item:hover .overlay a {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+    color: #fff
+}

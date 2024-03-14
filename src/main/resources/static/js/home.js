@@ -8,12 +8,13 @@ function fetchCategories() {
         url: '/category-management/categories',
         type: 'GET',
         headers: {          
-                Accept: "application/json",         
-            },
+            Accept: "application/json",         
+        },
         success: function(response) {
-    console.log(typeof response); // Log the type of response
-    console.log(response); // Log the entire response object
-    renderCategories(response);
+            console.log(typeof response); // Log the type of response
+            console.log(response); // Log the entire response object
+            fillDropdownMenu(response); // Fill the dropdown menu with categories
+            renderCategoryLinks(response); // Render category links for subcategory listing
         },
         error: function(xhr, status, error) {
             console.error('Failed to fetch categories:', error);
@@ -21,42 +22,46 @@ function fetchCategories() {
     });
 }
 
-function renderCategories(categories) {
-    var container = $('#category-container');
-    container.empty(); // Clear previous content
-
-    var categoriesRow = $('<div class="row" id="categories-row"></div>'); // Create a new row for categories
+function fillDropdownMenu(categories) {
+    var dropdownMenu = $('#categoriesDropdown'); // Get the dropdown menu element
 
     categories.forEach(function(category) {
-        var categoryColumn = $('<div class="col-sm-4"></div>'); // Create a column for each category
-        var categoryBox = $('<div class="category-box"></div>'); // Create a box for the category
+        var option = $('<option></option>'); // Create an option element
+        option.text(category.categoryName); // Set the text of the option to the category name
+        option.attr('value', category.categoryId); // Set the value attribute to the category ID
+        dropdownMenu.append(option); // Append the option to the dropdown menu
+    });
+}
+
+function renderCategoryLinks(categories) {
+    var categoriesDropdown = $('#categoriesDropdown');
+
+    categories.forEach(function(category) {
+        var option = $('<option></option>'); // Create an option element
+        option.text(category.categoryName); // Set the text of the option to the category name
+        option.attr('value', category.categoryId); // Set the value attribute to the category ID
+        categoriesDropdown.append(option); // Append the option to the dropdown menu
 
         var categoryLink = $('<a class="category-link"></a>'); // Create a link for the category
         categoryLink.attr('href', '#'); // Set the href attribute for the link
         categoryLink.text(category.categoryName); // Set the text of the link to the category name
+        categoryLink.click(function() {
+            fetchSubcategories(category.categoryId); // Fetch subcategories when category link is clicked
+        });
 
-        var categoryDescription = $('<p></p>'); // Create a paragraph for the category description
-        categoryDescription.text(category.description); // Set the text of the paragraph to the category description
-
-        categoryBox.append(categoryLink); // Append the link to the category box
-        categoryBox.append(categoryDescription); // Append the description to the category box
-        categoryColumn.append(categoryBox); // Append the category box to the column
-        categoriesRow.append(categoryColumn); // Append the column to the row
+        categoriesDropdown.after(categoryLink); // Append the category link after the dropdown menu
     });
-
-    container.append(categoriesRow); // Append the row to the container
 }
-
 
 function fetchSubcategories(categoryId) {
     $.ajax({
         url: '/category-management/' + categoryId + '/subcategories',
         type: 'GET',
         headers: {          
-                Accept: "application/json",         
-            },
+            Accept: "application/json",         
+        },
         success: function(response) {
-            renderSubcategories(categoryId, response);
+            renderSubcategories(response);
         },
         error: function(xhr, status, error) {
             console.error('Failed to fetch subcategories:', error);
@@ -64,16 +69,14 @@ function fetchSubcategories(categoryId) {
     });
 }
 
-function renderSubcategories(categoryId, subcategories) {
-    var subcategoryContainer = $('#subcategory-container-' + categoryId);
+function renderSubcategories(subcategories) {
+    var subcategoryContainer = $('#subcategoriesDropdown');
     subcategoryContainer.empty(); // Clear previous content
 
     subcategories.forEach(function(subcategory) {
-        var subcategoryHTML = '<p>' + subcategory.subcategoryName + '</p>';
-        subcategoryContainer.append(subcategoryHTML);
+        var option = $('<option></option>'); // Create an option element for subcategory
+        option.text(subcategory.subcategoryName); // Set the text of the option to the subcategory name
+        option.attr('value', subcategory.subcategoryId); // Set the value attribute to the subcategory ID
+        subcategoryContainer.append(option); // Append the option to the subcategory dropdown menu
     });
-}
-
-function redirectToLogin() {
-    window.location.href = "login.html";
 }

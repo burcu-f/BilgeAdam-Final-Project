@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.techathome.config.IMapperImpl;
+import com.techathome.config.IMapper;
 import com.techathome.entities.Subcategory;
 import com.techathome.entities.SubcategoryForm;
 import com.techathome.services.SubcategoryService;
@@ -29,7 +29,7 @@ public class SubcategoryController {
     private SubcategoryService subcategoryService;
 	
 	@Autowired
-	private IMapperImpl mapper;
+	private IMapper mapper;
 
     @GetMapping("")
     public ModelAndView subcategoryManagementPage() {
