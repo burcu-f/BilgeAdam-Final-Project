@@ -14,7 +14,7 @@ function fetchCategories() {
             console.log(typeof response); // Log the type of response
             console.log(response); // Log the entire response object
             fillDropdownMenu(response); // Fill the dropdown menu with categories
-            renderCategoryLinks(response); // Render category links for subcategory listing
+            
         },
         error: function(xhr, status, error) {
             console.error('Failed to fetch categories:', error);
@@ -26,32 +26,17 @@ function fillDropdownMenu(categories) {
     var dropdownMenu = $('#categoriesDropdown'); // Get the dropdown menu element
 
     categories.forEach(function(category) {
-        var option = $('<option></option>'); // Create an option element
-        option.text(category.categoryName); // Set the text of the option to the category name
-        option.attr('value', category.categoryId); // Set the value attribute to the category ID
-        dropdownMenu.append(option); // Append the option to the dropdown menu
-    });
-}
-
-function renderCategoryLinks(categories) {
-    var categoriesDropdown = $('#categoriesDropdown');
-
-    categories.forEach(function(category) {
-        var option = $('<option></option>'); // Create an option element
-        option.text(category.categoryName); // Set the text of the option to the category name
-        option.attr('value', category.categoryId); // Set the value attribute to the category ID
-        categoriesDropdown.append(option); // Append the option to the dropdown menu
-
-        var categoryLink = $('<a class="category-link"></a>'); // Create a link for the category
-        categoryLink.attr('href', '#'); // Set the href attribute for the link
-        categoryLink.text(category.categoryName); // Set the text of the link to the category name
+       var li = $('<li class="dropdown-submenu"></li>'); // Create a list item for the category
+        var categoryLink = $('<a class="dropdown-item" href="#">' + category.categoryName + '</a>'); // Create a link for the category
+        li.append(categoryLink); // Append the category link to the list item
+        dropdownMenu.append(li); // Append the list item to the dropdown menu
+        
         categoryLink.click(function() {
             fetchSubcategories(category.categoryId); // Fetch subcategories when category link is clicked
         });
-
-        categoriesDropdown.after(categoryLink); // Append the category link after the dropdown menu
     });
 }
+
 
 function fetchSubcategories(categoryId) {
     $.ajax({
@@ -80,3 +65,47 @@ function renderSubcategories(subcategories) {
         subcategoryContainer.append(option); // Append the option to the subcategory dropdown menu
     });
 }
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    fetchProducts();
+});
+
+function fetchProducts() {
+    fetch("/product-management/products")
+        .then(response => response.json())
+        .then(products => {
+            displayProducts(products);
+        })
+        .catch(error => {
+            console.error('Error fetching products:', error);
+        });
+}
+
+function displayProducts(products) {
+    const productsContainer = document.querySelector('productsContainer');
+    products.forEach(product => {
+        const productCard = createProductCard(product);
+        productsContainer.appendChild(productCard);
+    });
+}
+
+function createProductCard(product) {
+    const colDiv = $('<div></div>').addClass('col-md-4');
+    const itemDiv = $('<div></div>').addClass('item');
+    
+    const title = $('<h4></h4>').text(product.productName);
+    const price = $('<p></p>').addClass('text-primary').text(`$${product.price}`);
+    const image = $('<img>').addClass('img-fluid').attr('src', product.image).attr('alt', 'Product Image');
+    const overlay = $('<div></div>').addClass('overlay d-flex align-items-center justify-content-center');
+    const viewDetailsBtn = $('<a></a>').addClass('btn btn-unique').attr({'href': `detail.html?id=${product.productId}`, 'data-abc': 'true'}).text('View Details');
+    
+    overlay.append(viewDetailsBtn);
+    itemDiv.append(title, price, image, overlay);
+    colDiv.append(itemDiv);
+    
+    return colDiv;
+}
+
+
+

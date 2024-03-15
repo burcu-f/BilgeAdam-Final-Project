@@ -4,30 +4,29 @@ $(document).ready(function() {
         $("#productTable tbody").empty();
         let i = 1;
         products.forEach(function(product) {
-            let row = $('<tr>');
+            let row = $('<tr>', {
+				"row-id": product.productId
+			});
             row.append(Common.createTd(i));
             row.append(Common.createTd(product.name));
-            row.append(Common.createTd(product.subcategory));
-            row.append(Common.createTd(product.category));
-            row.append(Common.createTd(product.description));
+            row.append(Common.createTd(product.brand ? product.brand.brandName : 'N/A')); // Add null check for brand
+        	row.append(Common.createTd(product.subcategory ? product.subcategory.subcategoryName : 'N/A')); // Add null check for subcategory
+        	row.append(Common.createTd(product.category ? product.category.categoryName : 'N/A')); // Add null check for category
+            row.append(Common.createTd(product.productDescription));
             row.append(Common.createTd(product.price));
             row.append(Common.createTd(product.stock));
+            row.append(Common.createTd(product.image));
+            
+            // Actions column containing update and delete buttons
             let actionsTd = Common.createTd();
-            let showDetailsBtn = $('<button>', {
-                class: 'btn btn-info',
-                text: 'Details',
-                click: function() {
-                    showDetails(product.id);
-                }
-            });
-            actionsTd.append(showDetailsBtn);
-
+           
             // Update button
             let updateBtn = $('<button>', {
                 class: 'btn btn-warning',
                 text: 'Update',
                 click: function() {
-                    updateProduct(product.id);
+					var productId = $(this).closest("tr").attr("row-id");
+                    updateProduct(product.productId);
                 }
             });
             actionsTd.append(updateBtn);
@@ -37,11 +36,12 @@ $(document).ready(function() {
                 class: 'btn btn-danger',
                 text: 'Delete',
                 click: function() {
-                    deleteProduct(product.id);
+                    deleteProduct(product.productId);
                 }
             });
             actionsTd.append(deleteBtn);
-
+            
+			// Add actions column to the row
             row.append(actionsTd);
             ++i;
             $("#productTable tbody").append(row);
@@ -56,25 +56,42 @@ $(document).ready(function() {
             success: function(products) {
                 populateProductTable(products);
             },
+            error: function(xhr, status, error) {
+				console.error("Error refreshing product list: " + error);
+			}
         });
     }
+    
+    // Populate the product table when the page is loaded
+	refreshProductList();
+	
+	$("#btnAddProduct").click(function() {
+		$("#productModal").modal('show');
+	});
 
     // Function to handle addition of a new product
     $("#btnAddProductModal").click(function() {
         let productName = $("#productName").val();
+        let brand = $("#brand").val();
         let categoryId = $("#categoryId").val();
+        let subcategoryId = $("#subcategoryId").val();
         let description = $("#description").val();
         let price = $("#price").val();
         let stock = $("#stock").val();
+        let image = $("#image").val();
 
         let newProduct = {
             name: productName,
+            brand: brand,
             category: categoryId,
+            subcategory: subcategoryId,
             description: description,
             price: price,
-            stock: stock
+            stock: stock,
+            image: image
         };
 
+        // AJAX request to add the new product
         Common.ajax({
             url: "/product-management/create",
             type: "POST",
@@ -84,40 +101,24 @@ $(document).ready(function() {
                 $("#productModal").modal("hide");
                 refreshProductList(); // Refresh the product list after addition
             },
+            error: function(xhr, status, error) {
+				alert("Error adding product: " + error);
+			}
         });
     });
-
-    // Function to update a product
-    function updateProduct(productId) {
-        // Retrieve product details via AJAX request
-        Common.ajax({
-            url: "/product-management/" + productId,
-            type: "GET",
-            success: function(product) {
-                // Populate the modal with product details
-                $("#updatedProductName").val(product.name);
-                $("#updatedCategoryId").val(product.category);
-                $("#updatedDescription").val(product.description);
-                $("#updatedPrice").val(product.price);
-                $("#updatedStock").val(product.stock);
-                
-                // Show the update modal
-                $("#updateProductModal").modal("show");
-            },
-            error: function(xhr, status, error) {
-                console.error("Error retrieving product details: " + error);
-            }
-        });
-    }
-
-    // Function to delete a product
+    
+    
+     // Function to delete a product
     function deleteProduct(productId) {
         // Confirm with the user before proceeding with the deletion
         if (confirm("Are you sure you want to delete this product?")) {
             // Send AJAX request to delete the product
-            Common.ajax({
-                url: "/product-management/delete/" + productId,
+            $.ajax({
+                url: "/product-management/" + productId,
                 type: "DELETE",
+                headers: {
+					Accept: "application/json"
+				},
                 success: function(response) {
                     alert("Product deleted successfully!");
                     refreshProductList(); // Refresh the product list after deletion
@@ -129,29 +130,107 @@ $(document).ready(function() {
         }
     }
 
-    // Function to show details
-    function showDetails(productId) {
-        alert('Details for product with ID ' + productId);
-        // Implement details display functionality here
-    }
-    
-    function populateCategoryCombo() {
-        Common.ajax({
-            url: "/category-management",
+
+    // Function to update a product
+    function updateProduct(productId) {
+        // Retrieve product details via AJAX request
+        $.ajax({
+            url: "/product-management/" + productId,
             type: "GET",
-            success: function(categories) {
-                if (categories && categories.length > 0) {
-                    categories.forEach(function(category) {
-                        let option = $('<option>', {
-                            value: category.categoryId,
-                            text: category.categoryName
-                        });
-                        $('select#categoryId').append(option);
-                    });
-                }
+            headers: {
+				Accept: "application/json",
+			},
+            success: function(product) {
+                // Populate the modal with product details
+                $("#updatedProductId").val(product.productId);
+                $("#updatedProductName").val(product.productName);
+                $("#updatedBrand").val(product.brand);
+                $("#updatedCategoryId").val(product.category);
+                $("#updatedProductName").val(product.subcategory);
+                $("#updatedDescription").val(product.description);
+                $("#updatedPrice").val(product.price);
+                $("#updatedStock").val(product.stock);
+                $("#updatedImage").val(product.image);
+                
+                
+                
+                // Show the update modal
+                $("#updateProductModal").modal("show");
+            },
+            error: function(xhr, status, error) {
+                console.error("Error retrieving product details: " + error);
             }
         });
     }
+    
+    // Add event handler for update button click
+	$("#btnUpdateProductModal").click(function() {
+		var productId = $("#updatedProductId").val();
+		var productName = $("#updatedProductName").val();
+		var brand = $("#updatedBrand").val();
+		var categoryId = $("#updatedCategoryId").val();
+		var subcategoryId = $("#updatedSubategoryId").val();
+		var description = $("#updatedDescription").val();
+		var price = $("#updatedPrice").val();
+		var stock = $("#updatedStock").val();
+		var image = $("#updatedImage").val();
+
+		var updatedSubcategory = {
+			productId: productId,
+			productName: productName,
+			brand: brand,
+			categoryId: categoryId,
+			subcategoryId: subcategoryId,
+			description: description,
+			price: price,
+			stock: stock,
+			image: image
+			
+		};
+		
+		// Make AJAX request to update subcategory
+		$.ajax({
+			url: "/product-management/" + productId,
+			type: "PUT",
+			headers: {
+				Accept: "application/json",
+			},
+			data: JSON.stringify(updatedProduct),
+			success: function(response) {
+				alert("Product information updated successfully!");
+				$("#updateProductModal").modal("hide");
+				refreshProductList();
+			},
+			error: function(xhr, status, error) {
+				alert("Error updating product information: " + error);
+			},
+
+		});
+	});
+   
+    
+    function populateCategoryCombo() {
+		Common.ajax({
+			url: "/category-management/categories",
+			type: "GET",
+			success: function(categories) {
+				if (categories && categories.length > 0 && Array.isArray(categories)) {
+					categories.forEach(function(category) {
+						let option = $('<option>', {
+							value: category.categoryId,
+							text: category.categoryName
+						});
+						$('select#updatedCategoryId, select#category').append(option);
+					});
+				} else {
+					console.error("Invalid response format: ", categories);
+				}
+			},
+			error: function(xhr, status, error) {
+				console.error("Error populating category combo box: " + error);
+			}
+		});
+	}
     
     function populateSubcategoryCombo() {
     Common.ajax({
@@ -164,7 +243,7 @@ $(document).ready(function() {
                         value: subcategory.subcategoryId,
                         text: subcategory.subcategoryName
                     });
-                    $('select#subcategoryId').append(option);
+                    $('select#subcategory').append(option);
                 });
             }
         }

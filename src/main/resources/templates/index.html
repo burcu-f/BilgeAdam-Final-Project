@@ -38,11 +38,11 @@
             </a>
             <div class="collapse navbar-collapse" id="mynav">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <li class="nav-item dropdown"> <!-- Değişiklik: dropdown sınıfı eklendi -->
+                    <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                             aria-expanded="false">Kategoriler <span class="fas fa-th-large px-1"></span></a>
-                        <ul class="dropdown-menu" aria-labelledby="categoriesDropdown">
-                            <!-- Kategorilerin dinamik olarak ekleneceği alan -->
+                        <ul class="dropdown-menu" aria-labelledby="categoriesDropdown" id="categoriesDropdownMenu">
+                            <!-- Categories will be dynamically filled here -->
                         </ul>
                     </li>
                     <li class="nav-item">
@@ -59,14 +59,19 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#"> <span class="fas fa-user pe-2"></span> Giriş Yap</a>
-                    </li>
+   						 <a class="nav-link" href="/login"> <span class="fas fa-user pe-2"></span> Giriş Yap</a>
+					</li>
+
                 </ul>
             </div>
         </div>
     </nav>
+    
+    <div class="container" id="productsContainer">
+        <!-- Products will be dynamically filled here -->
+    </div>
 
-    <div class="container">
+    <!-- <div class="container">
         <div class="row">
             <div class="col-md-4">
                 <div class="item">
@@ -130,8 +135,8 @@
             </div>
         </div>
     </div>
-    
-    <!-- Dropdown menus for categories and subcategories -->
+     -->
+    <!-- Dropdown menus for categories and subcategories 
     <div class="container mt-3">
         <div class="row">
             <div class="col-md-6">
@@ -145,7 +150,9 @@
                 </select>
             </div>
         </div>
-    </div>
+    </div>-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    
     <script src="js/home.js"></script>
 </body>
 

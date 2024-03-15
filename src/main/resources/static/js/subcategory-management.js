@@ -177,11 +177,34 @@ $(document).ready(function() {
 				refreshSubcategoryList();
 			},
 			error: function(xhr, status, error) {
-				alert("Error updating category information: " + error);
+				alert("Error updating subcategory information: " + error);
 			},
 
 		});
 	});
+	
+	function populateBrandCombo() {
+		Common.ajax({
+			url: "/brand-management/brands",
+			type: "GET",
+			success: function(brands) {
+				if (brands && brands.length > 0 && Array.isArray(brands)) {
+					brands.forEach(function(brand) {
+						let option = $('<option>', {
+							value: brand.brandId,
+							text: brand.brandName
+						});
+						$('select#updatedBrand, select#brand').append(option);
+					});
+				} else {
+					console.error("Invalid response format: ", brands);
+				}
+			},
+			error: function(xhr, status, error) {
+				console.error("Error populating brand combo box: " + error);
+			}
+		});
+	}
 
 	function populateCategoryCombo() {
 		Common.ajax({
