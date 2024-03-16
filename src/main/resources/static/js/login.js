@@ -12,6 +12,7 @@ function submitForm() {
       }),
       headers: {
         "Content-type": "application/json; charset=UTF-8",
+        "Accept": "application/json"
       },
     })
       .then((response) => {
@@ -26,11 +27,12 @@ function submitForm() {
         console.log("login istek başarılı: ", data);
         localStorage.setItem("jwtToken", data.token);
         const role = parseJwt(data.token);
-        if ("ROLE_USER" === role) {
-          window.location.href = "index.html";
-        } else if ("ROLE_ADMIN" === role) {
-          window.location.href = "admin.html";
-        }
+        document.getElementById("token").value = data.token; // Tokeni hidden input içerisine yerleştir
+        document.getElementById("loginForm").submit(); // Formu submit et
+      })
+      .catch((error) => {
+        console.error("Login hatası:", error);
+        // Hata mesajını kullanıcıya gösterme işlemi eklenebilir
       });
   }
   
@@ -43,7 +45,3 @@ function submitForm() {
     console.log(userRole);
     return userRole;
   }
-  
-  function goToHomePage() {
-            window.location.href = "index.html";
-        }

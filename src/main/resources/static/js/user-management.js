@@ -106,7 +106,7 @@ function updateUser(accountId) {
 	});
 }
 
-function showDetails(accountId) {
+/*function showDetails(accountId) {
 	console.log("Showing details for accountId:", accountId);
 
 	// AJAX request to fetch user details
@@ -134,6 +134,7 @@ function showDetails(accountId) {
 		}
 	});
 }
+*/
 
 function deleteUser(accountId) {
 		// Show the delete confirmation modal
@@ -173,7 +174,7 @@ function populateUserTable(users) {
 			"<td>" + user.email + "</td>" +
 			"<td>" + user.accountType + "</td>" +
 			"<td>" +
-			"<button class='btn btn-info' onclick='showDetails(" + user.accountId + ")'>Details</button>" +
+			//"<button class='btn btn-info' onclick='showDetails(" + user.accountId + ")'>Details</button>" +
 			"<button class='btn btn-warning' onclick='updateUser(" + user.accountId + ")'>Update</button>" +
 			"<button class='btn btn-danger' onclick='deleteUser(" + user.accountId + ")'>Delete</button>" +
 			"</td>" +

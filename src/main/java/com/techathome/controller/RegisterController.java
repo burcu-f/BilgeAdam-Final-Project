@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 @RestController
-@RequestMapping("/register")
+@RequestMapping
 public class RegisterController {
 
-    @GetMapping
+    @GetMapping("/register")
     public ModelAndView showRegisterPage() {
     	ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("register");

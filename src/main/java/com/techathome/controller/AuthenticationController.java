@@ -24,7 +24,7 @@ public class AuthenticationController {
         return ResponseEntity.ok(authenticationService.signup(request));
     }
 
-    @PostMapping("/signin")
+    @PostMapping(path = "/signin", produces = "application/json")
     public ResponseEntity<LoginDTO> signin(@RequestBody SignInRequest request) {
         return ResponseEntity.ok(authenticationService.signIn(request));
     }
