@@ -1,6 +1,7 @@
 package com.techathome.services;
 
 import com.techathome.entities.Brand;
+
 import com.techathome.repository.BrandRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,7 @@ public class BrandService {
         return brandRepository.findAll();
     }
 
-    public Brand getBrandById(Integer brandId) {
+    public Brand getBrandById(Long brandId) {
         return brandRepository.findById(brandId).orElse(null);
     }
 
@@ -25,9 +26,22 @@ public class BrandService {
         brandRepository.save(brand);
     }
 
-    public void deleteBrand(Integer brandId) {
+    public void deleteBrand(Long brandId) {
         brandRepository.deleteById(brandId);
     }
+    
+    public Brand updateBrand(Long brandId, Brand updatedBrand) {
+        // Find the brand in the database by brandId
+    	Brand brandToUpdate = brandRepository.findById(brandId)
+        		.orElseThrow(() -> new IllegalArgumentException("Brand not found"));
+        
+   
+            // Update the brand with the provided information
+    	brandToUpdate.setBrandName(updatedBrand.getBrandName());
+            
+            // Return the updated brand
+            return brandRepository.save(brandToUpdate);
+        }
 
 
 
