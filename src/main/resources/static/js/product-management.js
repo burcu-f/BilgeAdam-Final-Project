@@ -5,13 +5,13 @@ $(document).ready(function() {
         let i = 1;
         products.forEach(function(product) {
             let row = $('<tr>', {
-				"row-id": product.productId
-			});
+                "row-id": product.productId
+            });
             row.append(Common.createTd(i));
-            row.append(Common.createTd(product.name));
+            row.append(Common.createTd(product.productName));
             row.append(Common.createTd(product.brand ? product.brand.brandName : 'N/A')); // Add null check for brand
-        	row.append(Common.createTd(product.subcategory ? product.subcategory.subcategoryName : 'N/A')); // Add null check for subcategory
-        	row.append(Common.createTd(product.category ? product.category.categoryName : 'N/A')); // Add null check for category
+            row.append(Common.createTd(product.subcategory ? product.subcategory.subcategoryName : 'N/A')); // Add null check for subcategory
+            row.append(Common.createTd(product.category ? product.category.categoryName : 'N/A')); // Add null check for category
             row.append(Common.createTd(product.productDescription));
             row.append(Common.createTd(product.price));
             row.append(Common.createTd(product.stock));
@@ -25,8 +25,8 @@ $(document).ready(function() {
                 class: 'btn btn-warning',
                 text: 'Update',
                 click: function() {
-					var productId = $(this).closest("tr").attr("row-id");
-                    updateProduct(product.productId);
+                    var productId = $(this).closest("tr").attr("row-id");
+                    updateProduct(productId);
                 }
             });
             actionsTd.append(updateBtn);
@@ -41,7 +41,7 @@ $(document).ready(function() {
             });
             actionsTd.append(deleteBtn);
             
-			// Add actions column to the row
+            // Add actions column to the row
             row.append(actionsTd);
             ++i;
             $("#productTable tbody").append(row);
@@ -57,17 +57,17 @@ $(document).ready(function() {
                 populateProductTable(products);
             },
             error: function(xhr, status, error) {
-				console.error("Error refreshing product list: " + error);
-			}
+                console.error("Error refreshing product list: " + error);
+            }
         });
     }
     
     // Populate the product table when the page is loaded
-	refreshProductList();
-	
-	$("#btnAddProduct").click(function() {
-		$("#productModal").modal('show');
-	});
+    refreshProductList();
+    
+    $("#btnAddProduct").click(function() {
+        $("#productModal").modal('show');
+    });
 
     // Function to handle addition of a new product
     $("#btnAddProductModal").click(function() {
@@ -102,8 +102,8 @@ $(document).ready(function() {
                 refreshProductList(); // Refresh the product list after addition
             },
             error: function(xhr, status, error) {
-				alert("Error adding product: " + error);
-			}
+                alert("Error adding product: " + error);
+            }
         });
     });
     
@@ -117,8 +117,8 @@ $(document).ready(function() {
                 url: "/product-management/" + productId,
                 type: "DELETE",
                 headers: {
-					Accept: "application/json"
-				},
+                    Accept: "application/json"
+                },
                 success: function(response) {
                     alert("Product deleted successfully!");
                     refreshProductList(); // Refresh the product list after deletion
@@ -138,8 +138,8 @@ $(document).ready(function() {
             url: "/product-management/" + productId,
             type: "GET",
             headers: {
-				Accept: "application/json",
-			},
+                Accept: "application/json",
+            },
             success: function(product) {
                 // Populate the modal with product details
                 $("#updatedProductId").val(product.productId);
@@ -164,91 +164,91 @@ $(document).ready(function() {
     }
     
     // Add event handler for update button click
-	$("#btnUpdateProductModal").click(function() {
-		var productId = $("#updatedProductId").val();
-		var productName = $("#updatedProductName").val();
-		var brand = $("#updatedBrand").val();
-		var categoryId = $("#updatedCategoryId").val();
-		var subcategoryId = $("#updatedSubategoryId").val();
-		var description = $("#updatedDescription").val();
-		var price = $("#updatedPrice").val();
-		var stock = $("#updatedStock").val();
-		var image = $("#updatedImage").val();
+    $("#btnUpdateProductModal").click(function() {
+        var productId = $("#updatedProductId").val();
+        var productName = $("#updatedProductName").val();
+        var brand = $("#updatedBrand").val();
+        var categoryId = $("#updatedCategoryId").val();
+        var subcategoryId = $("#updatedSubcategoryId").val();
+        var description = $("#updatedDescription").val();
+        var price = $("#updatedPrice").val();
+        var stock = $("#updatedStock").val();
+        var image = $("#updatedImage").val();
 
-		var updatedSubcategory = {
-			productId: productId,
-			productName: productName,
-			brand: brand,
-			categoryId: categoryId,
-			subcategoryId: subcategoryId,
-			description: description,
-			price: price,
-			stock: stock,
-			image: image
-			
-		};
-		
-		// Make AJAX request to update subcategory
-		$.ajax({
-			url: "/product-management/" + productId,
-			type: "PUT",
-			headers: {
-				Accept: "application/json",
-			},
-			data: JSON.stringify(updatedProduct),
-			success: function(response) {
-				alert("Product information updated successfully!");
-				$("#updateProductModal").modal("hide");
-				refreshProductList();
-			},
-			error: function(xhr, status, error) {
-				alert("Error updating product information: " + error);
-			},
+        var updatedProduct = {
+            productId: productId,
+            productName: productName,
+            brand: brand,
+            categoryId: categoryId,
+            subcategoryId: subcategoryId,
+            description: description,
+            price: price,
+            stock: stock,
+            image: image
+            
+        };
+        
+        // Make AJAX request to update subcategory
+        $.ajax({
+            url: "/product-management/" + productId,
+            type: "PUT",
+            headers: {
+                Accept: "application/json",
+            },
+            data: JSON.stringify(updatedProduct),
+            success: function(response) {
+                alert("Product information updated successfully!");
+                $("#updateProductModal").modal("hide");
+                refreshProductList();
+            },
+            error: function(xhr, status, error) {
+                alert("Error updating product information: " + error);
+            },
 
-		});
-	});
+        });
+    });
    
     
     function populateCategoryCombo() {
-		Common.ajax({
-			url: "/category-management/categories",
-			type: "GET",
-			success: function(categories) {
-				if (categories && categories.length > 0 && Array.isArray(categories)) {
-					categories.forEach(function(category) {
-						let option = $('<option>', {
-							value: category.categoryId,
-							text: category.categoryName
-						});
-						$('select#updatedCategoryId, select#category').append(option);
-					});
-				} else {
-					console.error("Invalid response format: ", categories);
-				}
-			},
-			error: function(xhr, status, error) {
-				console.error("Error populating category combo box: " + error);
-			}
-		});
-	}
+        Common.ajax({
+            url: "/category-management/categories",
+            type: "GET",
+            success: function(categories) {
+                if (categories && categories.length > 0 && Array.isArray(categories)) {
+                    categories.forEach(function(category) {
+                        let option = $('<option>', {
+                            value: category.categoryId,
+                            text: category.categoryName
+                        });
+                        $('select#updatedCategoryId, select#categoryId').append(option);
+                    });
+                } else {
+                    console.error("Invalid response format: ", categories);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("Error populating category combo box: " + error);
+            }
+        });
+    }
     
     function populateSubcategoryCombo() {
-    Common.ajax({
-        url: "/subcategory-management/subcategories",
-        type: "GET",
-        success: function(subcategories) {
-            if (subcategories && subcategories.length > 0) {
-                subcategories.forEach(function(subcategory) {
-                    let option = $('<option>', {
-                        value: subcategory.subcategoryId,
-                        text: subcategory.subcategoryName
+        Common.ajax({
+            url: "/subcategory-management/subcategories",
+            type: "GET",
+            success: function(subcategories) {
+                if (subcategories && subcategories.length > 0) {
+                    subcategories.forEach(function(subcategory) {
+                        let option = $('<option>', {
+                            value: subcategory.subcategoryId,
+                            text: subcategory.subcategoryName
+                        });
+                        $('select#subcategoryId').append(option);
                     });
-                    $('select#subcategory').append(option);
-                });
+                }
             }
-        }
-    });
-}
+        });
+    }
 
     populateCategoryCombo();
     populateSubcategoryCombo();
