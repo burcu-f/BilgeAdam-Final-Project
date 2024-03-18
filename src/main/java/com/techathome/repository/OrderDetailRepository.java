@@ -1,9 +1,9 @@
 package com.techathome.repository;
 
-import com.techathome.entities.Sale;
+import com.techathome.entities.OrderDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface SaleRepository extends JpaRepository <Sale, Integer> {
+public interface OrderDetailRepository extends JpaRepository <OrderDetail, Long> {
 }

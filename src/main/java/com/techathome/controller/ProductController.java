@@ -33,10 +33,14 @@ public class ProductController {
         return modelAndView;
     }
 
-    @GetMapping("/products")
+    @GetMapping(value = "/products", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Product>> getAllProducts() {
         List<Product> products = productService.getAllProducts();
-        return new ResponseEntity<>(products, HttpStatus.OK);
+        if (!products.isEmpty()) {
+        	return ResponseEntity.ok().body(products);
+        } else {
+        return ResponseEntity.noContent().build();
+    }
     }
     
     @PostMapping(value = "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

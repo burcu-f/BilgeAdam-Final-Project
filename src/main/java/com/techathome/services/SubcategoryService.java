@@ -15,9 +15,13 @@ public class SubcategoryService {
 	@Autowired
     private SubcategoryRepository subcategoryRepository;
 
-    public List<Subcategory> getAllSubcategories() {return subcategoryRepository.findAll();}
+    public List<Subcategory> getAllSubcategories() {
+    	return subcategoryRepository.findAll();
+    	}
 
-    public Subcategory getSubcategoryById(Long subcategoryId) {return subcategoryRepository.findById(subcategoryId).orElse(null);}
+    public Subcategory getSubcategoryById(Long subcategoryId) {
+    	return subcategoryRepository.findById(subcategoryId).orElse(null);
+    	}
 
 	public Subcategory saveSubcategory(Subcategory subcategory) {
 		return subcategoryRepository.save(subcategory);

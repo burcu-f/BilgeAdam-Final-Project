@@ -1,6 +1,7 @@
 $(document).ready(function() {
     // Fetch categories and render on page load
     fetchCategories();
+    fetchProducts();
 });
 
 function fetchCategories() {
@@ -73,7 +74,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function fetchProducts() {
     fetch("/product-management/products")
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch products');
+            }
+            return response.json();
+        })
         .then(products => {
             displayProducts(products);
         })
@@ -82,11 +88,14 @@ function fetchProducts() {
         });
 }
 
+
 function displayProducts(products) {
-    const productsContainer = document.querySelector('productsContainer');
+    const productsContainer = $('#productsContainer');
+
     products.forEach(product => {
         const productCard = createProductCard(product);
-        productsContainer.appendChild(productCard);
+        productsContainer.append(productCard);
+
     });
 }
 
