@@ -25,6 +25,10 @@ public class Brand {
 	    private Long brandId;
 
 	    private String brandName;
+	    
+	    public Brand(String brandName) {
+	        this.brandName = brandName;
+	    }
 
 	    @OneToMany(mappedBy = "brand", cascade = CascadeType.ALL)
 	    private List<Product> products;

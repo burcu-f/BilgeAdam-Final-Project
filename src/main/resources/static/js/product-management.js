@@ -65,6 +65,8 @@ $(document).ready(function() {
     // Populate the product table when the page is loaded
     refreshProductList();
     
+    populateBrandCombo();
+    
     $("#btnAddProduct").click(function() {
         $("#productModal").modal('show');
     });
@@ -146,13 +148,11 @@ $(document).ready(function() {
                 $("#updatedProductName").val(product.productName);
                 $("#updatedBrand").val(product.brand);
                 $("#updatedCategoryId").val(product.category);
-                $("#updatedProductName").val(product.subcategory);
+                $("#updatedSubcategoryId").val(product.subcategory); // Fixed id here
                 $("#updatedDescription").val(product.description);
                 $("#updatedPrice").val(product.price);
                 $("#updatedStock").val(product.stock);
                 $("#updatedImage").val(product.image);
-                
-                
                 
                 // Show the update modal
                 $("#updateProductModal").modal("show");
@@ -203,11 +203,31 @@ $(document).ready(function() {
             },
             error: function(xhr, status, error) {
                 alert("Error updating product information: " + error);
-            },
-
+            }
         });
     });
    
+   function populateBrandCombo() {
+    Common.ajax({
+        url: "/brand-management/brands",
+        type: "GET",
+        success: function(brands) {
+            if (brands && brands.length > 0) {
+                brands.forEach(function(brand) {
+                    let option = $('<option>', {
+                        value: brand.brandId,
+                        text: brand.brandName
+                    });
+                    $('select#brand').append(option);
+                });
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error("Error populating brand combo box: " + error);
+        }
+    });
+}
+
     
     function populateCategoryCombo() {
         Common.ajax({
@@ -232,9 +252,11 @@ $(document).ready(function() {
         });
     }
     
-    function populateSubcategoryCombo() {
+    function populateSubcategoryCombo(categoryId) {
+    $('select#subcategoryId').empty(); // Önce alt kategori select box'ını temizleyin
+    if (categoryId) { // Kategori kimliği varsa alt kategorileri doldur
         Common.ajax({
-            url: "/subcategory-management/subcategories",
+            url: "/subcategory-management/subcategories?categoryId=" + categoryId,
             type: "GET",
             success: function(subcategories) {
                 if (subcategories && subcategories.length > 0) {
@@ -246,10 +268,22 @@ $(document).ready(function() {
                         $('select#subcategoryId').append(option);
                     });
                 }
+            },
+            error: function(xhr, status, error) {
+                console.error("Error populating subcategory combo box: " + error);
             }
         });
     }
+}
+
+// Kategori seçimi değiştiğinde alt kategorileri yükle
+$('select#categoryId').change(function() {
+    let selectedCategoryId = $(this).val();
+    populateSubcategoryCombo(selectedCategoryId);
+});
+
 
     populateCategoryCombo();
     populateSubcategoryCombo();
 });
+

@@ -116,5 +116,46 @@ function createProductCard(product) {
     return colDiv;
 }
 
+// Fetch brands and render dropdown menu on page load
+$(document).ready(function () {
+    fetchBrands();
+});
+
+// Fetch brands from the server
+function fetchBrands() {
+    $.ajax({
+        url: '/brand-management/brands',
+        type: 'GET',
+        success: function (response) {
+            fillBrandDropdown(response);
+        },
+        error: function (xhr, status, error) {
+            console.error('Failed to fetch brands:', error);
+        }
+    });
+}
+
+// Fill the brand dropdown menu with fetched brands
+function fillBrandDropdown(brands) {
+    var dropdownMenu = $('#brandDropdownMenu');
+
+    brands.forEach(function (brand) {
+        var li = $('<li></li>');
+        var brandLink = $('<a class="dropdown-item" href="#">' + brand.brandName + '</a>');
+
+        li.append(brandLink);
+        dropdownMenu.append(li);
+
+        brandLink.click(function () {
+            showProductsByBrand(brand.brandId);
+        });
+    });
+}
+
+// Show products for the selected brand
+function showProductsByBrand(brandId) {
+    window.location.href = '/products.html?brand=' + brandId; // Redirect to products page with selected brand ID
+}
+
 
 
