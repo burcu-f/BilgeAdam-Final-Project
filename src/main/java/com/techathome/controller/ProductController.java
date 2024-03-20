@@ -1,12 +1,14 @@
 package com.techathome.controller;
 
 
+import com.techathome.config.IMapper;
 import com.techathome.entities.Product;
-
+import com.techathome.entities.ProductForm;
 import com.techathome.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,16 +16,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/product-management")
 public class ProductController {
     @Autowired
     private ProductService productService;
+    
+    @Autowired
+    private IMapper mapper;
     
     @GetMapping("")
     public ModelAndView productManagementPage() {
@@ -43,9 +47,15 @@ public class ProductController {
     }
     
     @PostMapping(value = "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
-    	Product savedProduct = productService.saveProduct(product);
-    	return ResponseEntity.ok().body(savedProduct);
+    public ResponseEntity<ProductForm> createProduct(@RequestBody ProductForm productDTO) {
+        // Convert ProductDTO to Product entity using Mapper
+        Product product = mapper.toProductEntity(productDTO);
+        // Save the product and get the saved entity
+        Product savedProduct = productService.saveProduct(product);
+        // Convert the saved entity back to DTO using Mapper
+        ProductForm savedProductDTO = mapper.fromProductEntity(savedProduct);
+        // Return the saved DTO
+        return ResponseEntity.ok().body(savedProductDTO);
     }
 
     @GetMapping("/{id}")

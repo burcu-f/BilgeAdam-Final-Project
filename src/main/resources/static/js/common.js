@@ -21,7 +21,7 @@ Common.ajax = ({url, type, success, error, data, options}) => {
             if (error) {
                 error(xhr, status, error);  // Call the provided error function
             } else {
-	        console.error("Error refreshing user list: " + error);
+	        console.error("Error refreshing list: " + error);
 	    }
 	}
 	};
