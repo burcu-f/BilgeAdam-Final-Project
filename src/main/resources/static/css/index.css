@@ -81,6 +81,38 @@ nav ul li a .cart::after {
     color: #007965 !important;
 }
 
+/* Adjust positioning for dropdown menu */
+.navbar-nav .nav-item {
+    position: relative;
+}
+
+.navbar-nav .nav-item .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000; /* Ensure the dropdown is above other elements */
+    display: none;  /* Hide the dropdown by default */
+	float: left;
+    min-width: 10rem;
+    padding: .5rem 0;
+    margin: .125rem 0 0;
+    font-size: 1rem;
+    color: #212529;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: .25rem;
+}
+
+.dropdown-toggle:focus + .dropdown-menu {
+    display: block;
+}
+
+.dropdown-toggle:focus {
+    outline: none;
+}
 
 /* Styles for the product containers */
 .container {
