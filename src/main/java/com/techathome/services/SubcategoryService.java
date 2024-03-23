@@ -1,13 +1,12 @@
 package com.techathome.services;
 
-import com.techathome.entities.Subcategory;
-import com.techathome.repository.SubcategoryRepository;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import com.techathome.entities.Subcategory;
+import com.techathome.repository.SubcategoryRepository;
 
 @Service
 public class SubcategoryService {
@@ -17,7 +16,11 @@ public class SubcategoryService {
 
     public List<Subcategory> getAllSubcategories() {
     	return subcategoryRepository.findAll();
-    	}
+	}
+
+    public List<Subcategory> getSubcategoriesByCategoryId(Long categoryId) {
+    	return subcategoryRepository.findByCategoryCategoryId(categoryId);
+    }
 
     public Subcategory getSubcategoryById(Long subcategoryId) {
     	return subcategoryRepository.findById(subcategoryId).orElse(null);

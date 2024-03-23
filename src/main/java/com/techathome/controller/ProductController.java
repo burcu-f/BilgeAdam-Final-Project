@@ -37,13 +37,14 @@ public class ProductController {
     }
 
     @GetMapping(value = "/products", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Product>> getAllProducts() {
+    public ResponseEntity<List<ProductForm>> getAllProducts() {
         List<Product> products = productService.getAllProducts();
-        if (!products.isEmpty()) {
-        	return ResponseEntity.ok().body(products);
+        List<ProductForm> list = products.stream().map(product -> mapper.fromProductEntity(product)).toList();
+        if (!list.isEmpty()) {
+        	return ResponseEntity.ok().body(list);
         } else {
-        return ResponseEntity.noContent().build();
-    }
+	        return ResponseEntity.noContent().build();
+	    }
     }
     
     @PostMapping(value = "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -74,7 +75,7 @@ public class ProductController {
             @RequestBody Product updatedProduct) {
     	Product product = productService.updateProduct(productId, updatedProduct);
     	return ResponseEntity.ok().body(product);
-}
+    }
     
  // Method to delete a product by ID
     @DeleteMapping("/{productId}")

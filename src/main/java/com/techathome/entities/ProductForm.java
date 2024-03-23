@@ -12,10 +12,9 @@ public class ProductForm {
     private String productName;
     private CategoryForm category;
     private SubcategoryForm subcategory;
-    private Long brandId;
+    private BrandForm brand;
     private String productDescription;
-    private double price;
-    private int stock;
+    private Double price;
+    private Integer stock;
     private String image;
-
 }

@@ -2,6 +2,10 @@ $(document).ready(function() {
     // Function to populate the product table
     function populateProductTable(products) {
         $("#productTable tbody").empty();
+        debugger;
+        if (!products || products.length == 0) {
+			return;
+		}
         let i = 1;
         products.forEach(function(product) {
             let row = $('<tr>', {
@@ -82,30 +86,25 @@ $(document).ready(function() {
         let stock = $("#stock").val();
         let image = $("#image").val();
         
-        // Fetch category details based on categoryId
-    Common.ajax({
-        url: "/category-management/" + categoryId,
-        type: "GET",
-        headers: {
-                Accept: "application/json",
+		let newProduct = {
+            productName: productName,
+            brand: {
+                brandId: brand
             },
-        success: function(category) {
-            let newProduct = {
-                name: productName,
-                brand: brand,
-                category: category,
-                subcategory: {
-                    subcategoryId: subcategoryId
-                },
-                productDescription: productDescription,
-                price: price,
-                stock: stock,
-                image: image
-            };
-
-
+            category: {
+                categoryId: categoryId
+            },
+            subcategory: {
+                subcategoryId: subcategoryId
+            },
+            productDescription: productDescription,
+            price: price,
+            stock: stock,
+            image: image
+        };
+	
         // AJAX request to add the new product
-        $.ajax({
+        Common.ajax({
             url: "/product-management/create",
             type: "POST",
             contentType: "application/json",
@@ -119,22 +118,11 @@ $(document).ready(function() {
                 alert("Error adding product: " + error);
             }
         });
-    },
-    
-    error: function(xhr, status, error) {
-            alert("Error fetching category: " + error);
-        }
-    });
 });
     
-// Kategori seçimi değiştiğinde alt kategorileri yükle
-$('select#categoryId').change(function() {
-    let selectedCategoryId = $(this).val();
-    populateSubcategoryCombo(selectedCategoryId);
-});   
-
 // Function to populate the subcategory select box based on the selected category
 function populateSubcategoryCombo(categoryId) {
+	debugger;
     $('select#subcategoryId').empty(); // Clear the subcategory select box first
     if (categoryId) { // If categoryId exists, populate subcategories
         Common.ajax({
@@ -260,6 +248,7 @@ function populateSubcategoryCombo(categoryId) {
         url: "/brand-management/brands",
         type: "GET",
         success: function(brands) {
+			debugger;
             if (brands && brands.length > 0) {
                 brands.forEach(function(brand) {
                     let option = $('<option>', {
@@ -302,6 +291,16 @@ function populateSubcategoryCombo(categoryId) {
     
 
     populateCategoryCombo();
-    populateSubcategoryCombo();
+//    $('select#updatedCategoryId, select#categoryId').change(function(event) {
+//		let categoryId = $(event.currentTarget).val();
+//	    populateSubcategoryCombo(categoryId);
+//	});
+	
+	// Kategori seçimi değiştiğinde alt kategorileri yükle
+	$('select#updatedCategoryId, select#categoryId').change(function() {
+		debugger;
+	    let selectedCategoryId = $(this).val();
+	    populateSubcategoryCombo(selectedCategoryId);
+	});
 });
 

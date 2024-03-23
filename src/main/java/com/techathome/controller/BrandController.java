@@ -1,6 +1,8 @@
 package com.techathome.controller;
 
+import com.techathome.config.IMapper;
 import com.techathome.entities.Brand;
+import com.techathome.entities.BrandForm;
 import com.techathome.services.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,9 @@ public class BrandController {
     @Autowired
     private BrandService brandService;
     
+    @Autowired
+    private IMapper mapper;
+    
     @GetMapping("")
     public ModelAndView brandManagementPage() {
         ModelAndView modelAndView = new ModelAndView("brand-management");
@@ -29,9 +34,10 @@ public class BrandController {
     }
 
     @GetMapping(value = "/brands", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Brand>> getAllBrands() {
+    public ResponseEntity<List<BrandForm>> getAllBrands() {
         List<Brand> brands = brandService.getAllBrands();
-        return new ResponseEntity<>(brands, HttpStatus.OK);
+        List<BrandForm> list = brands.stream().map(brand -> mapper.fromBrandEntity(brand)).toList();
+        return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
     // GET a single brand by ID

@@ -17,11 +17,11 @@ public class Product {
     private Long productId;
     private String productName;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
     
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "subcategory_id")
     private Subcategory subcategory;
 
@@ -31,9 +31,9 @@ public class Product {
 
     private String productDescription;
 
-    private double price;
+    private Double price;
 
-    private int stock;
+    private Integer stock;
 
     private String image;
 

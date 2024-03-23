@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.techathome.config.IMapper;
@@ -43,8 +44,13 @@ public class SubcategoryController {
 
     //Method to GET ALL subcategories
     @GetMapping("/subcategories")
-    public ResponseEntity<List<SubcategoryForm>> getAllSubcategories() {
-        List<Subcategory> subcategories = subcategoryService.getAllSubcategories();
+    public ResponseEntity<List<SubcategoryForm>> getAllSubcategories(@RequestParam(required = false) Long categoryId) {
+        List<Subcategory> subcategories = null;
+        if (categoryId != null) {
+        	subcategories = subcategoryService.getSubcategoriesByCategoryId(categoryId);
+        } else {
+        	subcategories = subcategoryService.getAllSubcategories();
+        }
         List<SubcategoryForm> list = subcategories.stream().map(s -> mapper.fromSubcategoryEntity(s)).toList();
         return new ResponseEntity<>(list, HttpStatus.OK);
     }

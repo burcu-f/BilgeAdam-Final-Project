@@ -2,13 +2,16 @@ package com.techathome.entities;
 
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
 @Getter
@@ -26,13 +29,11 @@ public class Brand {
 
 	    private String brandName;
 	    
+	    @OneToMany(mappedBy = "brand")
+	    private List<Product> products;
+
 	    public Brand(String brandName) {
 	        this.brandName = brandName;
 	    }
-
-	    @OneToMany(mappedBy = "brand", cascade = CascadeType.ALL)
-	    private List<Product> products;
-
-
     
 }

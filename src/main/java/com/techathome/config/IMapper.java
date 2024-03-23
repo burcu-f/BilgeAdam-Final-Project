@@ -3,6 +3,8 @@ package com.techathome.config;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
+import com.techathome.entities.Brand;
+import com.techathome.entities.BrandForm;
 import com.techathome.entities.Category;
 import com.techathome.entities.CategoryForm;
 import com.techathome.entities.Product;
@@ -15,19 +17,28 @@ public interface IMapper {
 	
 	@Mapping(target = "subcategories.category", ignore = true)
 	CategoryForm fromCategoryEntity(Category source);
+	@Mapping(target = "subcategories.category", ignore = true)
 	Category toCategoryEntity(CategoryForm source);
 
 	@Mapping(target = "category.subcategories", ignore = true)
 	SubcategoryForm fromSubcategoryEntity(Subcategory source);
+	@Mapping(target = "category.subcategories", ignore = true)
 	Subcategory toSubcategoryEntity(SubcategoryForm source);
 	
 	// Method to convert from ProductForm to Product
-    @Mapping(target = "category", ignore = true)
-    @Mapping(target = "subcategory", ignore = true)
+//    @Mapping(target = "category.subcategories", ignore = true)
+//    @Mapping(target = "subcategories.category", ignore = true)
+	@Mapping(target = "brand.products", ignore = true)
     Product toProductEntity(ProductForm source);
 
     // Method to convert from Product to ProductDTO
-    @Mapping(target = "categoryId", expression = "java(source.getCategory().getCategoryId())")
-    @Mapping(target = "subcategoryId", expression = "java(source.getSubcategory().getSubcategoryId())")
+//    @Mapping(target = "categoryId", expression = "java(source.getSubcategory() != null ? source.getCategory().getCategoryId() : null)")
+//    @Mapping(target = "subcategoryId", expression = "java(source.getSubcategory() != null ? source.getSubcategory().getSubcategoryId() : null)")
+    @Mapping(target = "brand.products", ignore = true)
     ProductForm fromProductEntity(Product source);
+    
+    @Mapping(target = "products.brand", ignore = true)
+    Brand toBrandEntity(BrandForm source);
+    @Mapping(target = "products.brand", ignore = true)
+    BrandForm fromBrandEntity(Brand source);
 }

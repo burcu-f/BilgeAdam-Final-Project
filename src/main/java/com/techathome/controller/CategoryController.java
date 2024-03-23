@@ -39,14 +39,12 @@ public class CategoryController {
         return modelAndView;
     }
 
-
     @GetMapping(value = "/categories", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<CategoryForm>> getAllCategories() {
 		List<Category> categories = categoryService.getAllCategories();
 		List<CategoryForm> formList = categories.stream().map(c -> mapper.fromCategoryEntity(c)).toList();
 		return ResponseEntity.ok().body(formList);
     }
-
 
     @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Category> createAccount(@RequestBody Category category) {
