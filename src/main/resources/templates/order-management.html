@@ -21,7 +21,7 @@
         <!-- Add Order Button -->
         <button class="btn btn-success" id="btnAddOrder">Add Order</button>
         <!-- Back to Admin Panel Button -->
-        <a href="/admin" class="btn btn-primary">Back to Admin Panel</a>
+        <a href="/admin" class="btn btn-primary">Home</a>
       </div>
       <br><br>
       <table id="orderTable" class="table table-bordered">
@@ -73,7 +73,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" id="btnRegister">Register</button>
+        <button type="button" class="btn btn-primary" id="btnSaveOrder">Save</button>
       </div>
     </div>
   </div>
@@ -114,16 +114,16 @@
 
  -->
 
-<!-- Modal for Update User -->
-<div class="modal fade" id="updateUserModal" tabindex="-1" role="dialog" aria-labelledby="updateUserModalLabel">
+<!-- Modal for Update Order -->
+<div class="modal fade" id="updateOrderModal" tabindex="-1" role="dialog" aria-labelledby="updateOrderModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">Update User</h4>
+        <h4 class="modal-title">Edit Order</h4>
       </div>
       <div class="modal-body">
-        <form id="updateUserForm">
-          <input type="hidden" id="updateUserId">
+        <form id="updateOrderForm">
+          <input type="hidden" id="updateOrderId">
           <div class="form-group">
             <label for="updateName">Name:</label>
             <input type="text" class="form-control" id="updateName" required>
