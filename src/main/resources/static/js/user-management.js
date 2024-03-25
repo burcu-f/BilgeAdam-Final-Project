@@ -55,7 +55,7 @@ function updateUser(accountId) {
 		},
 		success: function(user) {
 			// Populate the modal with user details
-			$("#updateUserId").val(user.id);
+			$("#updateUserId").val(user.accountId);
 			$("#updateName").val(user.name);
 			$("#updateSurname").val(user.surname);
 			$("#updateEmail").val(user.email);
@@ -66,14 +66,14 @@ function updateUser(accountId) {
 
 			// Click event handler for the "Update" button within the update modal
 			$("#btnUpdateUser").off("click").on("click", function() {
-				var userId = $("#updateUserId").val();
+				var accountId = $("#updateUserId").val();
 				var name = $("#updateName").val();
 				var surname = $("#updateSurname").val();
 				var email = $("#updateEmail").val();
 				var accountType = $("#updateAccountType").val();
 
 				var updatedUser = {
-					id: userId,
+					accountId: accountId,
 					name: name,
 					surname: surname,
 					email: email,
@@ -106,35 +106,7 @@ function updateUser(accountId) {
 	});
 }
 
-/*function showDetails(accountId) {
-	console.log("Showing details for accountId:", accountId);
 
-	// AJAX request to fetch user details
-	$.ajax({
-		url: "/user-management/" + accountId,
-		type: "GET",
-		headers: {
-			Accept: "application/json",
-		},
-		success: function(user) {
-			console.log("Received user details:", user);
-
-			// Populate modal with user details
-			$("#userDetailsName").text(user.name);
-			$("#userDetailsSurname").text(user.surname);
-			$("#userDetailsEmail").text(user.email);
-			$("#userDetailsAccountType").text(user.accountType);
-			$("#userDetailsAddress").text(user.address ? user.address.fullAddress : "N/A");
-
-			// Show the details modal
-			$("#userDetailsModal").modal("show");
-		},
-		error: function(xhr, status, error) {
-			console.error("Error retrieving user details:", error);
-		}
-	});
-}
-*/
 
 function deleteUser(accountId) {
 		// Show the delete confirmation modal

@@ -48,8 +48,8 @@ public class AccountController {
     }
 
     // Method to retrieve a specific account by its ID
-    @GetMapping("/{id}")
-    public ResponseEntity<Account> getAccountById(@PathVariable("id") Long accountId) {
+    @GetMapping("/{accountId}")
+    public ResponseEntity<Account> getAccountById(@PathVariable("accountId") Long accountId) {
         Account account = accountService.getAccountById(accountId);
         if (account != null) {
             return ResponseEntity.ok().body(account);
@@ -59,9 +59,9 @@ public class AccountController {
     }
 
     // Method to retrieve accounts by their type (e.g., CUSTOMER or ADMIN)
-    @GetMapping("/type/{type}")
-    public ResponseEntity<List<Account>> getAccountsByType(@PathVariable("type") AccountType type) {
-        List<Account> accounts = accountService.getAccountsByType(type);
+    @GetMapping("/type/{accountType}")
+    public ResponseEntity<List<Account>> getAccountsByType(@PathVariable("accountType") AccountType accountType) {
+        List<Account> accounts = accountService.getAccountsByType(accountType);
         if (!accounts.isEmpty()) {
             return ResponseEntity.ok().body(accounts);
         } else {
@@ -90,17 +90,17 @@ public class AccountController {
 
 
     // Method to update an existing account
-    @PutMapping("/{id}")
-    public ResponseEntity<Account> updateAccount(@PathVariable("id") Long accountId,
+    @PutMapping("/{accountId}")
+    public ResponseEntity<Account> updateAccount(@PathVariable("accountId") Long accountId,
                                                  @RequestBody Account updatedAccount) {
         Account account = accountService.updateAccount(accountId, updatedAccount);
         return ResponseEntity.ok().body(account);
     }
 
     // Method to delete an existing account
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{accountId}")
     @Transactional
-    public ResponseEntity<Void> deleteAccount(@PathVariable("id") Long accountId) {
+    public ResponseEntity<Void> deleteAccount(@PathVariable("accountId") Long accountId) {
         accountService.deleteAccount(accountId);
         return ResponseEntity.noContent().build();
     }

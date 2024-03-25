@@ -43,6 +43,7 @@ public class AccountService {
 
         // Update the existing account with new values
         existingAccount.setName(updatedAccount.getName());
+        existingAccount.setSurname(updatedAccount.getSurname());
         existingAccount.setEmail(updatedAccount.getEmail());
         existingAccount.setAccountType(updatedAccount.getAccountType());
 

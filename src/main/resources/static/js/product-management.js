@@ -2,7 +2,7 @@ $(document).ready(function() {
     // Function to populate the product table
     function populateProductTable(products) {
         $("#productTable tbody").empty();
-        debugger;
+        
         if (!products || products.length == 0) {
 			return;
 		}
@@ -122,7 +122,7 @@ $(document).ready(function() {
     
 // Function to populate the subcategory select box based on the selected category
 function populateSubcategoryCombo(categoryId) {
-	debugger;
+	
     $('select#subcategoryId').empty(); // Clear the subcategory select box first
     if (categoryId) { // If categoryId exists, populate subcategories
         Common.ajax({
@@ -248,7 +248,7 @@ function populateSubcategoryCombo(categoryId) {
         url: "/brand-management/brands",
         type: "GET",
         success: function(brands) {
-			debugger;
+			
             if (brands && brands.length > 0) {
                 brands.forEach(function(brand) {
                     let option = $('<option>', {
@@ -298,7 +298,7 @@ function populateSubcategoryCombo(categoryId) {
 	
 	// Kategori seçimi değiştiğinde alt kategorileri yükle
 	$('select#updatedCategoryId, select#categoryId').change(function() {
-		debugger;
+		
 	    let selectedCategoryId = $(this).val();
 	    populateSubcategoryCombo(selectedCategoryId);
 	});

@@ -14,13 +14,13 @@ $(document).ready(function() {
 			// Actions column containing update and delete buttons
 			let actionsTd = Common.createTd();
 
-			// Details button
+			/* Details button
 			let showDetailsBtn = $('<button>', {
 				class: 'btn btn-info',
 				onclick: 'showDetails(' + subcategory.subcategoryId + ')',
 				text: 'Details'
 			});
-			actionsTd.append(showDetailsBtn);
+			actionsTd.append(showDetailsBtn);*/
 
 			// Update button
 			let updateBtn = $("<button>", {
@@ -100,9 +100,11 @@ $(document).ready(function() {
 
 	// Function to delete a subcategory
 	function deleteSubcategory(subcategoryId) {
-		// Confirm with the user before proceeding with the deletion
-		if (confirm("Are you sure you want to delete this subcategory?")) {
-			// Send AJAX request to delete the subcategory
+		// Show the delete confirmation modal
+		$("#deleteSubcategoryModal").modal("show");
+		// Set up the delete confirmation button click event
+		$("#btnConfirmDelete").off("click").on("click", function() {
+		// Send AJAX request to delete the subcategory
 			$.ajax({
 				url: "/subcategory-management/" + subcategoryId,
 				type: "DELETE",
@@ -111,101 +113,74 @@ $(document).ready(function() {
 				},
 				success: function(response) {
 					alert("Subcategory deleted successfully!");
+					$("#deleteSubcategoryModal").modal("hide");
 					refreshSubcategoryList(); // Refresh the subcategory list after deletion
 				},
 				error: function(xhr, status, error) {
 					alert("Error deleting subcategory: " + error);
 				}
 			});
-		}
-	}
-
-	// Function to update a subcategory
-	function updateSubcategory(subcategoryId) {
-		// Retrieve subcategory details via AJAX request
-		$.ajax({
-			url: "/subcategory-management/" + subcategoryId,
-			type: "GET",
-			headers: {
-				Accept: "application/json",
-			},
-			success: function(subcategory) {
-				// Populate the modal with subcategory details
-				$("#updateSubcategoryId").val(subcategory.subcategoryId);
-				$("#updatedSubcategoryName").val(subcategory.subcategoryName);
-				$("#updatedCategoryId").val(subcategory.category.categoryId);
-
-				// Log the values before making the AJAX call
-
-				console.log("updatedSubcategoryName:", $("#updatedSubcategoryName").val());
-				console.log("updatedCategoryId:", $("#updatedCategoryId").val());
-
-
-				// Show the update modal
-				$("#updateSubcategoryModal").modal("show");
-
-			},
-			error: function(xhr, status, error) {
-				console.error("Error retrieving subcategory details: " + error);
-			}
 		});
 	}
 
-	// Add event handler for update button click
-	$("#btnUpdateSubcategoryModal").click(function() {
-		var subcategoryId = $("#updatedSubcategoryId").val();
-		var subcategoryName = $("#updatedSubcategoryName").val();
-		var categoryId = $("#updatedCategoryId").val();
+function updateSubcategory(subcategoryId) {
+        // Retrieve subcategory details via AJAX request
+        $.ajax({
+            url: "/subcategory-management/" + subcategoryId,
+            type: "GET",
+            headers: {
+                Accept: "application/json",
+            },
+            success: function(subcategory) {
+                // Populate the modal with subcategory details
+                $("#updatedSubcategoryId").val(subcategory.subcategoryId);
+                $("#updatedSubcategoryName").val(subcategory.subcategoryName);
+                $("#updatedCategoryId").val(subcategory.category.categoryId);
 
-		var updatedSubcategory = {
-			subcategoryId: subcategoryId,
-			subcategoryName: subcategoryName,
-			categoryId: categoryId,
-		};
+                // Show the update modal
+                $("#updateSubcategoryModal").modal("show");
+            },
+            error: function(xhr, status, error) {
+                console.error("Error retrieving subcategory details: " + error);
+            }
+        });
 
-		// Make AJAX request to update subcategory
-		$.ajax({
-			url: "/subcategory-management/" + subcategoryId,
-			type: "PUT",
-			headers: {
-				Accept: "application/json",
-			},
-			data: JSON.stringify(updatedSubcategory),
-			success: function(response) {
-				alert("Subcategory information updated successfully!");
-				$("#updateSubcategoryModal").modal("hide");
-				refreshSubcategoryList();
-			},
-			error: function(xhr, status, error) {
-				alert("Error updating subcategory information: " + error);
-			},
+        // Add event handler for update button click
+        $("#btnUpdateSubcategory").off("click").on("click", function() {
+            var subcategoryId = $("#updatedSubcategoryId").val();
+            var subcategoryName = $("#updatedSubcategoryName").val();
+            var categoryId = $("#updatedCategoryId").val();
 
-		});
-	});
-	
-	function populateBrandCombo() {
-		Common.ajax({
-			url: "/brand-management/brands",
-			type: "GET",
-			success: function(brands) {
-				if (brands && brands.length > 0 && Array.isArray(brands)) {
-					brands.forEach(function(brand) {
-						let option = $('<option>', {
-							value: brand.brandId,
-							text: brand.brandName
-						});
-						$('select#updatedBrand, select#brand').append(option);
-					});
-				} else {
-					console.error("Invalid response format: ", brands);
-				}
-			},
-			error: function(xhr, status, error) {
-				console.error("Error populating brand combo box: " + error);
-			}
-		});
-	}
+            var updatedSubcategory = {
+                subcategoryId: subcategoryId,
+                subcategoryName: subcategoryName,
+                category: {
+                    categoryId: categoryId
+                }
+            };
 
+            // Make AJAX request to update subcategory
+            $.ajax({
+                url: "/subcategory-management/" + subcategoryId,
+                type: "PUT",
+                headers: {
+                    Accept: "application/json",
+                },
+                contentType: "application/json",
+                data: JSON.stringify(updatedSubcategory),
+                success: function(response) {
+                    alert("Subcategory information updated successfully!");
+                    $("#updateSubcategoryModal").modal("hide");
+                    refreshSubcategoryList();
+                },
+                error: function(xhr, status, error) {
+                    alert("Error updating subcategory information: " + error);
+                }
+            });
+        });
+    }
+    
+    
 	function populateCategoryCombo() {
 		Common.ajax({
 			url: "/category-management/categories",
