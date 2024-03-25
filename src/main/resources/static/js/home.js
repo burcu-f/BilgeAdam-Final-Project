@@ -20,6 +20,27 @@ $(document).ready(function() {
         });
     }
     
+    // Function to fetch subcategories via Ajax
+    function fetchSubcategories() {
+        $.ajax({
+            url: '/subcategory-management/subcategories', // Endpoint to fetch subcategories
+            type: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                // Clear existing subcategories
+                $('#subcategoriesList').empty();
+
+                // Append fetched subcategories
+                response.forEach(function(subcategory) {
+                    $('#subcategoriesList').append('<li class="list-group-item">' + subcategory.subcategoryName + '</li>');
+                });
+            },
+            error: function(xhr, status, error) {
+                console.error('Error fetching subcategories:', error);
+            }
+        });
+    }
+    
     // Function to fetch products
     function fetchProducts() {
         $.ajax({
@@ -81,6 +102,8 @@ $(document).ready(function() {
 
     // Fetch categories when the page loads
     fetchCategories();
+    // Fetch subcategories when the page loads
+    fetchSubcategories();
     // Fetch products when the page is loaded
     fetchProducts();
 

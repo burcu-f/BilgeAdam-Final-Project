@@ -33,6 +33,7 @@ public class ProductService {
             // Update existing product fields with fields from updatedProduct
             existingProduct.setProductName(updatedProduct.getProductName());
             existingProduct.setCategory(updatedProduct.getCategory());
+            existingProduct.setSubcategory(updatedProduct.getSubcategory());
             existingProduct.setBrand(updatedProduct.getBrand());
             existingProduct.setProductDescription(updatedProduct.getProductDescription());
             existingProduct.setPrice(updatedProduct.getPrice());
