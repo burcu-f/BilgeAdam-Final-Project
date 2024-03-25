@@ -55,3 +55,59 @@ body {
     font-size: 20px;
     padding: 4px;
 }
+
+/* Adjusted CSS for sidebar */
+#sidebar {
+    background-color: #000; /* Change background color */
+    color: #fff; /* Text color */
+    padding: 20px; /* Add padding */
+    border-radius: 10px; /* Add border radius */
+}
+
+#sidebar ul {
+    list-style-type: none; /* Remove bullet points */
+    padding: 0;
+}
+
+#sidebar ul li {
+    margin-bottom: 10px; /* Add margin between list items */
+}
+
+#sidebar ul li a {
+    color: #eaeaea; /* Text color for links */
+    text-decoration: none; /* Remove underline */
+}
+
+#sidebar ul li a:hover {
+    color: #8cb4fa; /* Change color on hover */
+}
+
+.link {
+    font-weight: bold; /* Make links bold */
+}
+
+.link-desc {
+    font-size: 14px; /* Adjust font size for description */
+    opacity: 0.8; /* Adjust opacity for description */
+}
+
+.management-box {
+    display: inline-block; 
+    width: 250px; /* Set a fixed width for all management boxes */
+    margin: 10px; 
+    background-color: #f8f9fa;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    padding: 20px;
+    text-align: center;
+    color: #212529;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+
+.management-box:hover {
+    background-color: #007bff;
+    color: #fff;
+}
+
