@@ -40,3 +40,23 @@ Common.createElement = (element, content) => {
 Common.createTd = (content) => {
 	return Common.createElement('<td>', content);
 }
+
+Common.handleAjaxError = (event, jqxhr, settings, thrownError) => {
+	console.error('E:' + event + ' response: ' + jqxhr.responseText + ' thrownError:' + thrownError);
+	if (jqxhr.status == 302) {
+		// TODO çözülecek!!!
+		let redirectUrl = jqxhr.getResponseHeader('redirect_url');
+		window.location = redirectUrl ? redirectUrl : '/login';
+		return;
+	}
+	if (jqxhr.responseJSON && jqxhr.responseJSON.message) {
+		console.error(jqxhr.responseJSON.message);
+	} else {
+		console.error('Unexpected error! URL:' + settings.url + ' Cause:' + thrownError);
+	}
+}
+
+// Sistem genelinde document ready'de çalışacak fonksiyonlar burada 
+$(document).ready(function() {
+	$(document).ajaxError(Common.handleAjaxError);
+});

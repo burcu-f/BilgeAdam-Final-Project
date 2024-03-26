@@ -1,5 +1,6 @@
 package com.techathome.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -10,6 +11,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
 import org.springframework.security.config.annotation.web.configurers.FormLoginConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
@@ -52,18 +54,30 @@ public class SecurityConfig {
             "/registration/**",
             "/login/**"
     };
+    protected static final String[] AUTH_URLS = {
+    		"/admin/**",
+    };
+
+    @Autowired
+    private AuthenticationSuccessHandler authenticationSuccessHandler;
+
+    @Autowired
+    private AuthenticationFailureHandler authenticationFailureHandler;
+    
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-//    	.authorizeHttpRequests(new Customizer<AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry>() {
-//			@Override
-//			public void customize(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry t) {
-//				t.requestMatchers(ANON_URLS)
-//					.permitAll()
-//					.anyRequest()
-//					.fullyAuthenticated();
-//			}
-//		})
+				.authorizeHttpRequests(new Customizer<AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry>() {
+					@Override
+					public void customize(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry t) {
+//						t.requestMatchers(ANON_URLS)
+//							.permitAll()
+//							.anyRequest()
+//							.fullyAuthenticated();
+						t.requestMatchers(AUTH_URLS).fullyAuthenticated()
+							.anyRequest().permitAll();
+					}
+				})
         		.csrf(new Customizer<CsrfConfigurer<HttpSecurity>>() {
 					@Override
 					public void customize(CsrfConfigurer<HttpSecurity> t) {
@@ -75,10 +89,11 @@ public class SecurityConfig {
                     public void customize(FormLoginConfigurer<HttpSecurity> t) {
                         t.loginPage("/login")
                                 .usernameParameter("username")
-                                .passwordParameter("password");
+                                .passwordParameter("password")
+                        .successHandler(authenticationSuccessHandler)
+                        .failureHandler(authenticationFailureHandler);
                         // TODO ilerde login olunca başka sayfalara yönlendirmek için buraya
                         // SimpleUrlAuthenticationSuccessHandler sınıfını extend eden bir sınıf verilebilir
-//                .successHandler()
 //                .failureHandler()
 //                .permitAll();
                     }
@@ -111,6 +126,11 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+    public static void main(String[] args) {
+    	String encode = new BCryptPasswordEncoder().encode("admin");
+    	System.out.println("--------");
+    	System.out.println(encode);
+	}
 
     @Bean
     AuthenticationProvider authenticationProvider() {

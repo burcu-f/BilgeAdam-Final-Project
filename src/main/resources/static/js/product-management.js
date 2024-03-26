@@ -55,7 +55,7 @@ $(document).ready(function() {
     // Function to refresh the product list
     function refreshProductList() {
         Common.ajax({
-            url: "/product-management/products",
+            url: "/product/list",
             type: "GET",
             success: function(products) {
                 populateProductTable(products);
@@ -70,10 +70,6 @@ $(document).ready(function() {
     refreshProductList();
     
     populateBrandCombo();
-    
-    populateCategoryCombo();
-    
-    populateSubcategoryCombo();
     
     $("#btnAddProduct").click(function() {
         $("#productModal").modal('show');
@@ -92,24 +88,36 @@ $(document).ready(function() {
         
 		let newProduct = {
             productName: productName,
-            brand: {
-                brandId: brand
-            },
+//            brand: {
+//                brandId: brand
+//            },
             category: {
                 categoryId: categoryId
             },
-            subcategory: {
-                subcategoryId: subcategoryId
-            },
+//            subcategory: {
+//                subcategoryId: subcategoryId
+//            },
             productDescription: productDescription,
             price: price,
             stock: stock,
             image: image
         };
+        
+        if (brand) {
+			newProduct.brand = {
+                brandId: brand
+            }
+		}
+        if (subcategoryId) {
+			newProduct.subcategory = {
+                subcategoryId: subcategoryId
+            }
+		}
+		
 	
         // AJAX request to add the new product
         Common.ajax({
-            url: "/product-management/create",
+            url: "/admin/product-management/create",
             type: "POST",
             contentType: "application/json",
             data: JSON.stringify(newProduct),
@@ -134,7 +142,7 @@ $(document).ready(function() {
 		$("#btnConfirmDelete").off("click").on("click", function() {
         // Send AJAX request to delete the product
             Common.ajax({
-                url: "/product-management/" + productId,
+                url: "/admin/product-management/" + productId,
                 type: "DELETE",
                 headers: {
                     Accept: "application/json"
@@ -155,8 +163,8 @@ $(document).ready(function() {
  // Function to update a product
 function updateProduct(productId) {
     // Retrieve product details via AJAX request
-    $.ajax({
-        url: "/product-management/" + productId,
+    Common.ajax({
+        url: "/product/" + productId,
         type: "GET",
         headers: {
             Accept: "application/json",
@@ -166,9 +174,9 @@ function updateProduct(productId) {
             // Populate the modal with product details
             $("#updatedProductId").val(product.productId);
             $("#updatedProductName").val(product.productName);
-            $("#updatedBrand").val(product.brand.brandId); // Use brandId for selection
+            $("#updatedBrand").val(product?.brand?.brandId); // Use brandId for selection
             $("#updatedCategoryId").val(product.category.categoryId);
-            $("#updatedSubcategoryId").val(product.subcategory.subcategoryId);
+            populateSubcategoryCombo(product?.category?.categoryId, product?.subcategory?.subcategoryId);
             $("#updatedProductDescription").val(product.productDescription);
             $("#updatedPrice").val(product.price);
             $("#updatedStock").val(product.stock);
@@ -188,7 +196,7 @@ $("#btnUpdateProductModal").click(function() {
     var productId = $("#updatedProductId").val();
     var productName = $("#updatedProductName").val();
     var brand = $("#updatedBrand").val();
-    var categoryId = $("#updatedCategoryId").val();
+    var categoryId = $("#updatedCategoryId").val()
     var subcategoryId = $("#updatedSubcategoryId").val();
     var productDescription = $("#updatedProductDescription").val();
     var price = $("#updatedPrice").val();
@@ -214,8 +222,8 @@ $("#btnUpdateProductModal").click(function() {
     };
     
     // Make AJAX request to update product
-    $.ajax({
-        url: "/product-management/" + productId,
+    Common.ajax({
+        url: "/admin/product-management/" + productId,
         type: "PUT",
         contentType: "application/json",
         data: JSON.stringify(updatedProduct),
@@ -234,7 +242,7 @@ $("#btnUpdateProductModal").click(function() {
 
    function populateBrandCombo() {
     Common.ajax({
-        url: "/brand-management/brands",
+        url: "/brand/list",
         type: "GET",
         success: function(brands) {
 			
@@ -244,7 +252,7 @@ $("#btnUpdateProductModal").click(function() {
                         value: brand.brandId,
                         text: brand.brandName
                     });
-                    $('select#brand').append(option);
+                    $('select#brand, select#updatedBrand').append(option);
                 });
             }
         },
@@ -256,8 +264,9 @@ $("#btnUpdateProductModal").click(function() {
 
     
     function populateCategoryCombo() {
+		$('select#updatedCategoryId, select#categoryId').empty();
         Common.ajax({
-            url: "/category-management/categories",
+            url: "/category/list",
             type: "GET",
             success: function(categories) {
                 if (categories && categories.length > 0 && Array.isArray(categories)) {
@@ -268,6 +277,9 @@ $("#btnUpdateProductModal").click(function() {
                         });
                         $('select#updatedCategoryId, select#categoryId').append(option);
                     });
+                    if (categories.length == 1) {
+						populateSubcategoryCombo(categories[0].categoryId);
+					}
                 } else {
                     console.error("Invalid response format: ", categories);
                 }
@@ -279,41 +291,39 @@ $("#btnUpdateProductModal").click(function() {
     }
     
     // Function to populate the subcategory select box based on the selected category
-function populateSubcategoryCombo(categoryId) {
-	
-    $('select#subcategoryId').empty(); // Clear the subcategory select box first
-    if (categoryId) { // If categoryId exists, populate subcategories
-        Common.ajax({
-            url: "/subcategory-management/subcategories?categoryId=" + categoryId,
-            type: "GET",
-            success: function(subcategories) {
-                if (subcategories && subcategories.length > 0) {
-                    subcategories.forEach(function(subcategory) {
-                        let option = $('<option>', {
-                            value: subcategory.subcategoryId,
-                            text: subcategory.subcategoryName
-                        });
-                        $('select#subcategoryId').append(option);
-                    });
-                }
-            },
-            error: function(xhr, status, error) {
-                console.error("Error populating subcategory combo box: " + error);
-            }
-        });
-    }
-}   
-    
-
+	function populateSubcategoryCombo(categoryId, selectedValue) {
+		
+	    $('select#subcategoryId, select#updatedSubcategoryId').empty(); // Clear the subcategory select box first
+	    if (categoryId) { // If categoryId exists, populate subcategories
+	        Common.ajax({
+	            url: "/subcategory/list?categoryId=" + categoryId,
+	            type: "GET",
+	            success: function(subcategories) {
+					debugger;
+	                if (subcategories && subcategories.length > 0) {
+	                    subcategories.forEach(function(subcategory) {
+	                        let option = $('<option>', {
+	                            value: subcategory.subcategoryId,
+	                            text: subcategory.subcategoryName
+	                        });
+	                        $('select#subcategoryId, select#updatedSubcategoryId').append(option);
+	                    });
+	                    if (selectedValue) {
+							$('select#subcategoryId, select#updatedSubcategoryId').val(selectedValue);
+						}
+	                }
+	            },
+	            error: function(xhr, status, error) {
+	                console.error("Error populating subcategory combo box: " + error);
+	            }
+	        });
+	    }
+	}   
     populateCategoryCombo();
-//    $('select#updatedCategoryId, select#categoryId').change(function(event) {
-//		let categoryId = $(event.currentTarget).val();
-//	    populateSubcategoryCombo(categoryId);
-//	});
 	
 	// Kategori seçimi değiştiğinde alt kategorileri yükle
 	$('select#updatedCategoryId, select#categoryId').change(function() {
-		
+		debugger;
 	    let selectedCategoryId = $(this).val();
 	    populateSubcategoryCombo(selectedCategoryId);
 	});

@@ -2,7 +2,7 @@
 function updateBrand(brandId) {
     // Retrieve brand details via AJAX request
     $.ajax({
-        url: "/brand-management/" + brandId,
+        url: "/brand/" + brandId,
         type: "GET",
         headers: {
             Accept: "application/json",
@@ -40,7 +40,7 @@ $(document).ready(function() {
 
         // AJAX request to add the new brand
         Common.ajax({
-            url: "/brand-management/create",
+            url: "/admin/brand-management/create",
             type: "POST",
             data: JSON.stringify(newBrand),
             success: function(response) {
@@ -66,7 +66,7 @@ $(document).ready(function() {
 
         // AJAX request to update the brand's information
         $.ajax({
-            url: "/brand-management/" + brandId,
+            url: "/admin/brand-management/" + brandId,
             type: "PUT",
             headers: {
                 Accept: "application/json"
@@ -91,7 +91,7 @@ function deleteBrand(brandId) {
     if (confirm("Are you sure you want to delete this brand?")) {
         // Send AJAX request to delete the brand
         $.ajax({
-            url: "/brand-management/" + brandId,
+            url: "/admin/brand-management/" + brandId,
             type: "DELETE",
             headers: {
                 Accept: "application/json"
@@ -110,7 +110,7 @@ function deleteBrand(brandId) {
 // Function to refresh the brand list
 function refreshBrandList() {
     Common.ajax({
-        url: "/brand-management/brands",
+        url: "/brand/list",
         type: "GET",
         headers: {
             Accept: "application/json",

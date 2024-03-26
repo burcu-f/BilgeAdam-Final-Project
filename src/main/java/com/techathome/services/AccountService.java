@@ -4,6 +4,7 @@ import com.techathome.entities.Account;
 import com.techathome.enums.AccountType;
 import com.techathome.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,6 +28,8 @@ public class AccountService {
     }
 
     public Account saveAccount(Account account) {
+    	String encode = new BCryptPasswordEncoder().encode(account.getPassword());
+    	account.setPassword(encode);
         return accountRepository.save(account);
     }
     public List<Account> getAccountsByType(AccountType accountType) {

@@ -2,7 +2,7 @@ $(document).ready(function() {
     // Function to fetch product details
     function fetchProductDetails(productId) {
         $.ajax({
-            url: '/product-management/' + productId,
+            url: '/product/' + productId,
             type: 'GET',
             contentType: "application/json",
             headers: {

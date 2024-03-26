@@ -1,145 +1,51 @@
-/*$(document).ready(function() {
-    // Function to fetch categories via Ajax
-    function fetchCategories() {
-        $.ajax({
-            url: '/category-management/categories', // Endpoint to fetch categories
-            type: 'GET',
-            dataType: 'json',
-            success: function(response) {
-                // Clear existing categories
-                //$('#categoriesList').empty();
-
-                // Append fetched categories
-                response.forEach(function(category) {
-                    $('#categoriesList').append('<li class="list-group-item">' + category.categoryName + '</li>');
-            	});
-            },
-            error: function(xhr, status, error) {
-                console.error('Error fetching categories:', error);
-            }
-        });
-    }
-    
-    // Function to fetch subcategories via Ajax
-    function fetchSubcategories() {
-        $.ajax({
-            url: '/subcategory-management/subcategories', // Endpoint to fetch subcategories
-            type: 'GET',
-            dataType: 'json',
-            success: function(response) {
-                // Clear existing subcategories
-                $('#subcategoriesList').empty();
-
-                // Append fetched subcategories
-                response.forEach(function(subcategory) {
-                    $('#subcategoriesList').append('<li class="list-group-item">' + subcategory.subcategoryName + '</li>');
-                });
-            },
-            error: function(xhr, status, error) {
-                console.error('Error fetching subcategories:', error);
-            }
-        });
-    }
-    
-    // Function to fetch products
-    function fetchProducts() {
-        $.ajax({
-            url: '/product-management/products',
-            type: 'GET',
-            contentType: "application/json",
-            headers: {
-				Accept: "application/json",
-			},
-            success: function(response) {
-				// Check if response is not empty
-            if (response && response.length > 0) {
-                // Clear existing products
-                $('#productsRow').empty();
-                
-                // Iterate over each product in the response
-                response.forEach(function(product) {
-                    // Create a card for each product
-                    var card = '<div class="col-md-4 mb-4">' +
-                        '<div class="card">' +
-                        '<img src="' + product.image + '" class="card-img-top" alt="' + product.productName + '">' +
-                        '<div class="card-body">' +
-                        '<h5 class="card-title">' + product.productName + '</h5>' +
-                        '<p class="card-text">Price: ' + product.price + '</p>' +
-                        '<a href="/product-details/' + product.productId + '" class="btn btn-primary">View Product</a>' +
-                        '</div>' +
-                        '</div>' +
-                        '</div>';
-                 
-                 // Append the card to the products row
-                    $('#productsRow').append(card);
-                });
-            } else {
-                console.log("No products found.");
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error("Error fetching products: " + error);
-        }
-    });
-}
-
-    /*Function to fetch products based on category via Ajax
-    function fetchProducts(categoryId) {
-        $.ajax({
-            url: '/product-management/products?category=' + categoryId, // Endpoint to fetch products based on category
-            type: 'GET',
-            success: function(response) {
-                // Clear existing products
-                $('#productsContainer').empty();
-
-                // Append fetched products
-                response.forEach(function(product) {
-                    $('#productsContainer').append('<div class="card" style="margin-top: 20px"><div class="row no-gutters"><div class="col-sm-5 d-flex justify-content-center"><img class="" height="150px" width="150px" src="' + product.image + '" alt="' + product.productName + '"></div><div class="col-sm-7 d-flex justify-content-center"><div class="card-body"><h5 class="card-title">' + product.productName + '</h5><h4>TL ' + product.price + '</h4><p>' + product.productDescription + '</p><a href="/shop/viewproduct/' + product.productId + '" class="btn btn-primary">View Product</a></div></div></div></div>');
-                });
-            },
-            error: function(xhr, status, error) {
-                console.error('Error fetching products:', error);
-            }
-        });
-    }*/
-
-/*    // Fetch categories when the page loads
-    fetchCategories();
-    // Fetch subcategories when the page loads
-    fetchSubcategories();
-    // Fetch products when the page is loaded
-    fetchProducts();
-
-    // Click event listener for categories
-    $(document).on('click', '#categoriesList a', function(e) {
-        e.preventDefault();
-        var categoryId = $(this).data('category');
-        fetchProducts(categoryId);
-    });
-});
-*/
-
-//OTHER TRIES START HERE
-
-
 $(document).ready(function() {
     // Function to fetch categories via Ajax
     function fetchCategories() {
         $.ajax({
-            url: '/category-management/categories', // Endpoint to fetch categories
+            url: '/category/list', // Endpoint to fetch categories
             type: 'GET',
             dataType: 'json',
             success: function(response) {
                 // Clear existing categories
                 $('#categoriesList').empty();
+//<div class="dropdown-menu">
+//  <a class="dropdown-item" href="#">Action</a>
+//  <a class="dropdown-item" href="#">Another action</a>
+//  <a class="dropdown-item" href="#">Something else here</a>
+//  <div class="dropdown-divider"></div>
+//  <a class="dropdown-item" href="#">Separated link</a>
+//</div>
+//				<div class="dropdown-divider"></div>
+//  <a class="dropdown-item" href="#">Separated link</a>
 
                 // Append fetched categories
                 response.forEach(function(category) {
-                    $('#categoriesList').append('<li class="list-group-item" data-category-id="' + category.categoryId + '">' + category.categoryName + '</li>');
+					debugger;
+					let cat = $("<a>", {
+		                class: "dropdown-item",
+		                text: category.categoryName,
+		                href: "/",
+		            });
+                    $('#categoriesList').append(cat);
+		            if (category.subcategories) {
+			            category.subcategories.forEach(function(subcategory) {
+							let subCat = $("<a>", {
+				                class: "dropdown-item",
+				                style: "padding-left: 50px;",
+				                text: subcategory.subcategoryName,
+				                href: "/",
+				            });
+		                    $('#categoriesList').append(subCat);
+						});
+					}
+					let divider = $("<div>", {
+		                class: "dropdown-divider"
+		            });
+					$('#categoriesList').append(divider);
                 });
             },
             error: function(xhr, status, error) {
-                console.error('Error fetching categories:', error);
+//                console.error('Error fetching categories:', error);
             }
         });
     }
@@ -147,7 +53,7 @@ $(document).ready(function() {
     // Function to fetch subcategories via Ajax
     function fetchSubcategories() {
         $.ajax({
-            url: '/subcategory-management/subcategories', // Endpoint to fetch subcategories
+            url: '/subcategory/list', // Endpoint to fetch subcategories
             type: 'GET',
             dataType: 'json',
             success: function(response) {
@@ -168,7 +74,7 @@ $(document).ready(function() {
     // Function to fetch products
     function fetchProducts() {
         $.ajax({
-            url: '/product-management/products',
+            url: '/product/list',
             type: 'GET',
             contentType: "application/json",
             headers: {
@@ -224,7 +130,7 @@ $(document).ready(function() {
     // Function to fetch subcategories by category ID
     function fetchSubcategoriesByCategory(categoryId) {
         $.ajax({
-            url: '/subcategory-management/subcategories?category=' + categoryId, // Endpoint to fetch subcategories by category
+            url: '/subcategory/list?category=' + categoryId, // Endpoint to fetch subcategories by category
             type: 'GET',
             dataType: 'json',
             success: function(response) {
@@ -245,7 +151,7 @@ $(document).ready(function() {
     // Function to fetch products by category ID
     function fetchProductsBySubcategory(subcategoryId) {
         $.ajax({
-            url: '/product-management/products?subcategory=' + subcategoryId, // Endpoint to fetch products by category
+            url: '/product/list?subcategory=' + subcategoryId, // Endpoint to fetch products by category
             type: 'GET',
             dataType: 'json',
             success: function(response) {

@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.techathome.enums.AccountType;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -37,6 +38,7 @@ public class Account implements UserDetails {
 
     private String name;
     private String surname;
+    @Column(unique = true)
     private String email;
     private String password;
 

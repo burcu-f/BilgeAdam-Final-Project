@@ -19,7 +19,7 @@ $(document).ready(function() {
 
 		// AJAX request to add the new category
 		Common.ajax({
-			url: "/category-management/create",
+			url: "/admin/category-management/create",
 			type: "POST",
 			headers: {
 				Accept: "application/json",
@@ -41,7 +41,7 @@ $(document).ready(function() {
 function updateCategory(categoryId) {
 	//Retrieve category details via AJAX request
 	$.ajax({
-		url:"/category-management/" + categoryId,
+		url:"/category/" + categoryId,
 		type: "GET",
 		headers: {
 			Accept: "application/json",
@@ -68,7 +68,7 @@ function updateCategory(categoryId) {
 					};
 				// AJAX request to update the category's information
 					$.ajax({
-						url: "/category-management/" + categoryId,
+						url: "/admin/category-management/" + categoryId,
 						type: "PUT",
 						headers: {
 							Accept: "application/json"
@@ -101,7 +101,7 @@ function deleteCategory(categoryId) {
 		$("#btnConfirmDelete").off("click").on("click", function() {
 		// Send AJAX request to delete the category
 		$.ajax({
-			url: "/category-management/" + categoryId,
+			url: "/admin/category-management/" + categoryId,
 			type: "DELETE",
 			headers: {
 				Accept: "application/json"
@@ -146,7 +146,7 @@ function populateCategoryTable(categories) {
 // Function to refresh the category list
 function refreshCategoryList() {
 	$.ajax({
-		url: "/category-management/categories",
+		url: "/category/list",
 		type: "GET",
 		headers: {
 			Accept: "application/json",

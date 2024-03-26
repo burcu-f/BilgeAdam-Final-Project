@@ -1,16 +1,16 @@
 package com.techathome.controller;
 
-import com.techathome.dto.LoginDTO;
-import com.techathome.dto.SignInRequest;
-import com.techathome.dto.SignUpRequest;
-import com.techathome.services.AuthenticationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+import com.techathome.dto.LoginDTO;
+import com.techathome.dto.SignInRequest;
+import com.techathome.dto.SignUpRequest;
+import com.techathome.services.AuthenticationService;
+
+//@RestController
 @RequestMapping("/api/auth")
 public class AuthenticationController {
     private final AuthenticationService authenticationService;

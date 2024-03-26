@@ -10,13 +10,13 @@ $(document).ready(function() {
 
 	// Function to handle registration of a new user
 	$("#btnRegister").click(function() {
-		var name = $("#name").val();
-		var surname = $("#surname").val();
-		var email = $("#email").val();
-		var password = $("#password").val();
-		var accountType = $("#accountType").val();
+		let name = $("#name").val();
+		let surname = $("#surname").val();
+		let email = $("#email").val();
+		let password = $("#password").val();
+		let accountType = $("#accountType").val();
 
-		var newUser = {
+		let newUser = {
 			name: name,
 			surname: surname,
 			email: email,
@@ -25,7 +25,7 @@ $(document).ready(function() {
 		};
 		// AJAX request to register the new user
 		$.ajax({
-			url: "/user-management/create",
+			url: "/admin/user-management/create",
 			type: "POST",
 			headers: {
 				Accept: "application/json",
@@ -47,13 +47,14 @@ $(document).ready(function() {
 
 function updateUser(accountId) {
 	// Retrieve user details via AJAX request
-	$.ajax({
-		url: "/user-management/" + accountId,
+	Common.ajax({
+		url: "/admin/user-management/" + accountId,
 		type: "GET",
 		headers: {
 			Accept: "application/json",
 		},
 		success: function(user) {
+			debugger;
 			// Populate the modal with user details
 			$("#updateUserId").val(user.accountId);
 			$("#updateName").val(user.name);
@@ -66,13 +67,13 @@ function updateUser(accountId) {
 
 			// Click event handler for the "Update" button within the update modal
 			$("#btnUpdateUser").off("click").on("click", function() {
-				var accountId = $("#updateUserId").val();
-				var name = $("#updateName").val();
-				var surname = $("#updateSurname").val();
-				var email = $("#updateEmail").val();
-				var accountType = $("#updateAccountType").val();
+				let accountId = $("#updateUserId").val();
+				let name = $("#updateName").val();
+				let surname = $("#updateSurname").val();
+				let email = $("#updateEmail").val();
+				let accountType = $("#updateAccountType").val();
 
-				var updatedUser = {
+				let updatedUser = {
 					accountId: accountId,
 					name: name,
 					surname: surname,
@@ -159,7 +160,7 @@ function populateUserTable(users) {
 // Function to refresh the user list
 function refreshUserList() {
 	$.ajax({
-		url: "/user-management/accounts",
+		url: "/admin/user-management/list",
 		headers: {
 			Accept: "application/json",
 		},

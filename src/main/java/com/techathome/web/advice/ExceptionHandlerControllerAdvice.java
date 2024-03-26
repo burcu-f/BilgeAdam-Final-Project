@@ -7,7 +7,9 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.NoHandlerFoundException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -24,12 +26,19 @@ public class ExceptionHandlerControllerAdvice {
 		return !response.isCommitted() ? response : null;
 	}
 
-	@ExceptionHandler(NoHandlerFoundException.class)
-	public Object handleError404(HttpServletRequest request, HttpServletResponse response, Exception e) {
+	@ExceptionHandler({NoHandlerFoundException.class, NoResourceFoundException.class})
+	public ModelAndView handleError404(HttpServletRequest request, HttpServletResponse response, Exception e) {
 		log.error("Request: {} raised {}", request.getRequestURL(), e.getMessage());
 		e.printStackTrace();
-		return !response.isCommitted() ? response : null;
+		return new ModelAndView("error/404");
 	}
+	
+//	@ExceptionHandler(NoResourceFoundException.class)
+//	public Object handleError404(HttpServletRequest request, HttpServletResponse response, Exception e) {
+//		log.error("Request: {} raised {}", request.getRequestURL(), e.getMessage());
+//		e.printStackTrace();
+//		return !response.isCommitted() ? response : null;
+//	}
 
 	@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Bozuk JSON nesnesi")
 	@ExceptionHandler(HttpMessageNotReadableException.class)

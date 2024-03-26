@@ -53,7 +53,7 @@ $(document).ready(function() {
 	// Function to refresh the subcategory list
 	function refreshSubcategoryList() {
 		Common.ajax({
-			url: "/subcategory-management/subcategories",
+			url: "/subcategory/list",
 			type: "GET",
 			success: function(subcategories) {
 				populateSubcategoryTable(subcategories);
@@ -71,7 +71,7 @@ $(document).ready(function() {
 		$("#subcategoryModal").modal('show');
 	});
 	// Function to handle addition of a new subcategory
-	$("#btnAddSubcategoryModal").click(function() {
+	$("#btnRegister").click(function() {
 		let subcategoryName = $("#subcategoryName").val();
 		let categoryId = $("#categoryId").val();
 
@@ -84,7 +84,7 @@ $(document).ready(function() {
 
 		// AJAX request to add the new subcategory
 		Common.ajax({
-			url: "/subcategory-management/create",
+			url: "/admin/subcategory-management/create",
 			type: "POST",
 			data: JSON.stringify(newSubcategory),
 			success: function(response) {
@@ -106,7 +106,7 @@ $(document).ready(function() {
 		$("#btnConfirmDelete").off("click").on("click", function() {
 		// Send AJAX request to delete the subcategory
 			$.ajax({
-				url: "/subcategory-management/" + subcategoryId,
+				url: "/admin/subcategory-management/" + subcategoryId,
 				type: "DELETE",
 				headers: {
 					Accept: "application/json"
@@ -126,7 +126,7 @@ $(document).ready(function() {
 function updateSubcategory(subcategoryId) {
         // Retrieve subcategory details via AJAX request
         $.ajax({
-            url: "/subcategory-management/" + subcategoryId,
+            url: "/subcategory/" + subcategoryId,
             type: "GET",
             headers: {
                 Accept: "application/json",
@@ -161,7 +161,7 @@ function updateSubcategory(subcategoryId) {
 
             // Make AJAX request to update subcategory
             $.ajax({
-                url: "/subcategory-management/" + subcategoryId,
+                url: "/admin/subcategory-management/" + subcategoryId,
                 type: "PUT",
                 headers: {
                     Accept: "application/json",
@@ -183,7 +183,7 @@ function updateSubcategory(subcategoryId) {
     
 	function populateCategoryCombo() {
 		Common.ajax({
-			url: "/category-management/categories",
+			url: "/category/list",
 			type: "GET",
 			success: function(categories) {
 				if (categories && categories.length > 0 && Array.isArray(categories)) {

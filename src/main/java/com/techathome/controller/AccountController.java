@@ -23,7 +23,8 @@ import com.techathome.enums.AccountType;
 import com.techathome.services.AccountService;
 
 @Controller
-@RequestMapping("/user-management")
+@RequestMapping("/admin/user-management")
+//@PreAuthorize("hasRole('ADMIN')")
 public class AccountController {
 
     @Autowired
@@ -37,7 +38,7 @@ public class AccountController {
     }
 
     // Method to retrieve all accounts
-    @GetMapping("/accounts")
+    @GetMapping("/list")
     public ResponseEntity<List<Account>> getAllAccounts() {
         List<Account> accounts = accountService.getAllAccounts();
         if (!accounts.isEmpty()) {
