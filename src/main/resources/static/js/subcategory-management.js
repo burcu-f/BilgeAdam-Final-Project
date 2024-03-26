@@ -25,7 +25,7 @@ $(document).ready(function() {
 			// Update button
 			let updateBtn = $("<button>", {
 				class: "btn btn-warning",
-				text: "Update",
+				text: "Edit",
 				click: function() {
 					var subcategoryId = $(this).closest("tr").attr("row-id");
 					updateSubcategory(subcategoryId); // Call update function with subcategoryId

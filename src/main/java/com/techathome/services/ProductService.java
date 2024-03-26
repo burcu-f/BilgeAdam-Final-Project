@@ -28,7 +28,8 @@ public class ProductService {
 
     public Product updateProduct(Long productId, Product updatedProduct) {
         Product existingProduct = productRepository.findById(productId)
-        		.orElseThrow(() -> new IllegalArgumentException("Product not found"));;
+                .orElseThrow(() -> new IllegalArgumentException("Product not found"));
+
         if (existingProduct != null) {
             // Update existing product fields with fields from updatedProduct
             existingProduct.setProductName(updatedProduct.getProductName());
@@ -40,11 +41,12 @@ public class ProductService {
             existingProduct.setStock(updatedProduct.getStock());
             existingProduct.setImage(updatedProduct.getImage());
 
-            // Save the updated product
-            productRepository.save(existingProduct);
+            // Save the updated product and return it
+            return productRepository.save(existingProduct);
         }
-		return existingProduct;
+        return null; // Return null if the product doesn't exist
     }
+
 
     public void deleteProduct(Long productId) {
         productRepository.deleteById(productId);

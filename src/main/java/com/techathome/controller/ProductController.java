@@ -59,8 +59,8 @@ public class ProductController {
         return ResponseEntity.ok().body(savedProductDTO);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
+    @GetMapping("/{productId}")
+    public ResponseEntity<Product> getProductById(@PathVariable("productId") Long id) {
         Product product = productService.getProductById(id);
         if (product != null) {
             return ResponseEntity.ok().body(product);
@@ -69,17 +69,23 @@ public class ProductController {
         }
     }
     
- // PUT mapping for updating a product
-    @PutMapping(value= "/{productId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Product> updateProduct(@PathVariable("productId") Long productId,
-            @RequestBody Product updatedProduct) {
-    	Product product = productService.updateProduct(productId, updatedProduct);
-    	return ResponseEntity.ok().body(product);
+    @PutMapping(value= "/{productId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ProductForm> updateProduct(@PathVariable("productId") Long productId,
+            @RequestBody ProductForm updatedProductDTO) {
+        // Convert ProductDTO to Product entity using Mapper
+        Product updatedProduct = mapper.toProductEntity(updatedProductDTO);
+        // Update the product in the database
+        Product product = productService.updateProduct(productId, updatedProduct);
+        // Convert the updated entity back to DTO using Mapper
+        ProductForm updatedProductForm = mapper.fromProductEntity(product);
+        // Return the updated DTO
+        return ResponseEntity.ok().body(updatedProductForm);
     }
+
     
  // Method to delete a product by ID
     @DeleteMapping("/{productId}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable Long productId) {
+    public ResponseEntity<Void> deleteProduct(@PathVariable("productId") Long productId) {
         productService.deleteProduct(productId);
         return ResponseEntity.noContent().build(); // 204 No Content
     }
