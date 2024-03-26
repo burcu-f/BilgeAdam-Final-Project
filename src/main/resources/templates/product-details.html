@@ -48,20 +48,44 @@
 </div>
 <!-- End of Navbar -->
 
-<div class="container">
+<div class="container my-5">
     <div class="row">
-        <div class="col-md-6">
-            <img id="image" class="img-fluid" src="" alt="Product Image">
+        <div class="col-md-5">
+            <div class="main-img">
+                <!-- Single product image -->
+                <img id="image" class="img-fluid" src="" alt="Product">
+            </div>
         </div>
-        <div class="col-md-6">
-            <h2 id="productName"></h2>
-            <p id="brand"></p>
-            <p id="productDescription"></p>
-            <p id="price"></p>
-            <button id="addToCartBtn" class="btn btn-primary">Add to Cart</button>
+        <div class="col-md-7">
+            <div class="main-description px-2">
+                <!-- Product title -->
+                <div id="productName" class="product-title text-bold my-3">
+                </div>
+
+                <!-- Brand name -->
+                <div id="brand" class="brand text-bold my-3">
+                </div>
+
+                <!-- Price -->
+                <div id="price" class="price-area my-4">
+                </div>
+
+                <!-- Add to cart button -->
+                <div class="buttons d-flex my-5">
+                    <div class="block">
+                        <button class="shadow btn custom-btn">Add to cart</button>
+                    </div>
+                </div>
+
+                <!-- Product details -->
+                <div id="productDescription" class="product-details my-4">
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>

@@ -17,7 +17,7 @@ $(document).ready(function() {
                     // Assuming brand is a string property, not an object with a brandName property
                     $('#brand').text(response.brand.brandName); 
                     $('#productDescription').text(response.productDescription);
-                    $('#price').text('Price: ' + response.price);
+                    $('#price').text('Price: ' + response.price + ' TL');
                 } else {
                     console.log("No product found.");
                 }
