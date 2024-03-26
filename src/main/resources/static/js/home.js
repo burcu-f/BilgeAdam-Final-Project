@@ -189,7 +189,7 @@ $(document).ready(function() {
                         '<div class="card-body">' +
                         '<h5 class="card-title">' + product.productName + '</h5>' +
                         '<p class="card-text">Price: ' + product.price + '</p>' +
-                        '<a href="/product-details/' + product.productId + '" class="btn btn-primary">View Product</a>' +
+                        '<a href="product-details.html?productId=' + product.productId + '" class="btn btn-primary">View Product</a>' +
                         '</div>' +
                         '</div>' +
                         '</div>';

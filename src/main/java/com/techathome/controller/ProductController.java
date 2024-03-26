@@ -60,14 +60,17 @@ public class ProductController {
     }
 
     @GetMapping("/{productId}")
-    public ResponseEntity<Product> getProductById(@PathVariable("productId") Long id) {
+    public ResponseEntity<ProductForm> getProductById(@PathVariable("productId") Long id) {
         Product product = productService.getProductById(id);
         if (product != null) {
-            return ResponseEntity.ok().body(product);
+            ProductForm productForm = mapper.fromProductEntity(product);
+            return ResponseEntity.ok().body(productForm);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
+
+
     
     @PutMapping(value= "/{productId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ProductForm> updateProduct(@PathVariable("productId") Long productId,
