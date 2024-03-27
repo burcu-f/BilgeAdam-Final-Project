@@ -1,9 +1,13 @@
 package com.techathome.entities;
 
+import java.util.Set;
+
 import jakarta.persistence.*;
+import lombok.Data;
 
-import java.time.LocalDateTime;
 
+
+@Data
 @Entity
 public class Cart {
 
@@ -15,6 +19,13 @@ public class Cart {
     @ManyToOne
     @JoinColumn(name = "accountId")
     private Account account;
+    
+    private Long productId;
+    
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<CartDetail> cartDetails;
+    
+    private double totalPrice; 
 
-    private LocalDateTime cartDate;
+    
 }

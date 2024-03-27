@@ -20,7 +20,7 @@ $(document).ready(function() {
 
                 // Append fetched categories
                 response.forEach(function(category) {
-					debugger;
+					
 					let cat = $("<a>", {
 		                class: "dropdown-item",
 		                text: category.categoryName,
@@ -95,7 +95,8 @@ $(document).ready(function() {
                         '<div class="card-body">' +
                         '<h5 class="card-title">' + product.productName + '</h5>' +
                         '<p class="card-text">Price: ' + product.price + '</p>' +
-                        '<a href="product-details.html?productId=' + product.productId + '" class="btn btn-primary">View Product</a>' +
+                        '<a href="/product-details.html?productId=' + product.productId + '" class="btn btn-primary">View Product</a>' +
+                        '<button class="btn btn-success addToCartBtn" data-productId="' + product.productId + '">Add to Cart</button>' +
                         '</div>' +
                         '</div>' +
                         '</div>';
@@ -103,12 +104,70 @@ $(document).ready(function() {
                  // Append the card to the products row
                     $('#productsRow').append(card);
                 });
+                // Attach event handler for Add to Cart buttons
+                $('.addToCartBtn').click(function() {
+                    var productId = $(this).data('productId');
+                    addToCart(productId);
+                });
             } else {
                 console.log("No products found.");
             }
         },
         error: function(xhr, status, error) {
             console.error("Error fetching products: " + error);
+        }
+    });
+}
+
+//Add to cart function
+
+function addToCart(productId, quantity = 1) {
+    var csrfToken = $("meta[name='_csrf']").attr("content");
+    var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+
+    var headers = {};
+    headers[csrfHeader] = csrfToken;
+
+    $.ajax({
+        url: '/carts/add',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ productId: productId, quantity: quantity }),
+        headers: headers,
+        success: function(response) {
+            alert('Product added to cart successfully!');
+            updateCartCount();
+        },
+        error: function(xhr, status, error) {
+            if (xhr.status === 401) { // Unauthorized status
+                window.location.href = '/login'; // Redirect to login page
+            } else {
+                console.error('Error adding product to cart:', error);
+                alert('Error adding product to cart. Please try again later.');
+            }
+        }
+    });
+}
+
+
+// Function to update the cart count on the navbar
+function updateCartCount() {
+    // Perform an AJAX request to fetch the current cart count
+    $.ajax({
+        url: '/carts/count',
+        type: 'GET',
+        success: function(response) {
+            // Update the cart count badge
+            $('.cart-count').text(response.count);
+            // Show the badge if the count is greater than zero
+            if (response.count > 0) {
+                $('.cart-count').show();
+            } else {
+                $('.cart-count').hide();
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching cart count:', error);
         }
     });
 }

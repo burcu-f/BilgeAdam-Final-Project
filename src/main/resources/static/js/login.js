@@ -45,3 +45,8 @@ function submitForm() {
     console.log(userRole);
     return userRole;
   }
+  
+  function goToHomePage() {
+    window.location.href = "/"; // Redirect to the home page
+}
+

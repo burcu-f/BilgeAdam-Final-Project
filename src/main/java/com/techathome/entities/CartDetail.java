@@ -1,7 +1,11 @@
 package com.techathome.entities;
 
-import jakarta.persistence.*;
 
+
+import jakarta.persistence.*;
+import lombok.Data;
+
+@Data
 @Entity
 public class CartDetail {
 
@@ -21,4 +25,6 @@ public class CartDetail {
     private int quantity;
     private double itemPrice;
     private double totalPrice;
+    
+    
 }

@@ -36,6 +36,13 @@ public class Product {
     private Integer stock;
 
     private String image;
+    
+ // Method to decrement stock by a specified quantity
+    public void decrementStock(int quantity) {
+        if (quantity > 0) {
+            this.stock -= quantity;
+        }
+    }
 
 
 }
