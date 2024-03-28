@@ -1,4 +1,13 @@
 $(document).ready(function() {
+	$("#image, #updatedImage").on('change',function(){
+		debugger;
+		var selectedFile = this.files[0];
+		selectedFile.convertToBase64(function(base64){
+			$('#imgBase64, #updatedImgBase64').attr('src', base64);
+			$('#imgBase64Data, #updatedImgBase64Data').val(base64);
+		}); 
+	});
+	
     // Function to populate the product table
     function populateProductTable(products) {
         $("#productTable tbody").empty();
@@ -19,7 +28,12 @@ $(document).ready(function() {
             row.append(Common.createTd(product.productDescription));
             row.append(Common.createTd(product.price));
             row.append(Common.createTd(product.stock));
-            row.append(Common.createTd(product.image));
+            let img = $('<img>', {
+				src: product.image,
+				style: 'width: 200px;'
+			});
+			let imgTd = $('<td>').append(img);
+            row.append(imgTd);
             
             // Actions column containing update and delete buttons
             let actionsTd = Common.createTd();
@@ -84,7 +98,7 @@ $(document).ready(function() {
         let productDescription = $("#productDescription").val();
         let price = $("#price").val();
         let stock = $("#stock").val();
-        let image = $("#image").val();
+        let image = $("#imgBase64Data").val();
         
 		let newProduct = {
             productName: productName,
@@ -180,7 +194,8 @@ function updateProduct(productId) {
             $("#updatedProductDescription").val(product.productDescription);
             $("#updatedPrice").val(product.price);
             $("#updatedStock").val(product.stock);
-            $("#updatedImage").val(product.image);
+            $("#updatedImgBase64Data").val(product.image);
+            $('#updatedImgBase64').attr('src', product.image);
             
             // Show the update modal
             $("#updateProductModal").modal("show");
@@ -201,7 +216,7 @@ $("#btnUpdateProductModal").click(function() {
     var productDescription = $("#updatedProductDescription").val();
     var price = $("#updatedPrice").val();
     var stock = $("#updatedStock").val();
-    var image = $("#updatedImage").val();
+    var image = $("#updatedImgBase64Data").val();
 
     var updatedProduct = {
         productId: productId,
@@ -328,4 +343,14 @@ $("#btnUpdateProductModal").click(function() {
 	    populateSubcategoryCombo(selectedCategoryId);
 	});
 });
+
+
+
+File.prototype.convertToBase64 = function(callback){
+	var reader = new FileReader();
+	reader.onloadend = function (e) {
+	    callback(e.target.result, e.target.error);
+	};   
+	reader.readAsDataURL(this);
+};
 

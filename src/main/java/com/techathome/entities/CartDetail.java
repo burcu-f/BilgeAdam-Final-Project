@@ -4,9 +4,11 @@ package com.techathome.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Entity
+@NoArgsConstructor
 public class CartDetail {
 
     @Id
@@ -15,11 +17,11 @@ public class CartDetail {
     private Long cartDetailId;
 
     @ManyToOne
-    @JoinColumn(name = "cartId")
+    @JoinColumn(name = "cart_id")
     private Cart cart;
 
     @ManyToOne
-    @JoinColumn(name = "productId")
+    @JoinColumn(name = "product_id")
     private Product product;
 
     private int quantity;

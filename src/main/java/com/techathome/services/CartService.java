@@ -1,5 +1,13 @@
 package com.techathome.services;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
+
 import com.techathome.entities.Account;
 import com.techathome.entities.Cart;
 import com.techathome.entities.CartDetail;
@@ -7,12 +15,6 @@ import com.techathome.entities.Product;
 import com.techathome.repository.AccountRepository;
 import com.techathome.repository.CartDetailRepository;
 import com.techathome.repository.CartRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class CartService {
@@ -28,7 +30,6 @@ public class CartService {
     @Autowired
     private CartDetailRepository cartDetailRepository;
     
-    
 
     public List<Cart> getAllCarts() {
         return cartRepository.findAll();
@@ -38,11 +39,11 @@ public class CartService {
         return cartRepository.findById(cartId).orElse(null);
     }
 
-    public void saveCart(Cart cart) {
-        cartRepository.save(cart);
+    public Cart saveCart(Cart cart) {
+        return cartRepository.save(cart);
     }
     
-    public void addToCart(Long productId, int quantity, String userEmail) {
+    public Cart addToCart(Long productId, int quantity, Account account) {
         // Fetch the product
         Product product = productService.getProductById(productId);
         
@@ -57,13 +58,15 @@ public class CartService {
                 productService.saveProduct(product);
                 
                 // Proceed with adding the product to the cart
-                Cart cart = getUserCart(userEmail);
-                if (cart != null) {
-                    // Add the product to the cart
-                    addToCart(cart, product, quantity);
-                } else {
-                    throw new RuntimeException("User cart not found"); // Handle this scenario based on your application logic
+                Cart cart = getUserCart(account.getAccountId()).orElse(null);
+                if (cart == null) {
+                	cart = new Cart();
+                	cart.setAccount(account);
+                	cart = saveCart(cart);  
                 }
+             // Add the product to the cart
+                addToCart(cart, product, quantity);
+                return cartRepository.findById(cart.getCartId()).orElseThrow();
             } else {
                 throw new IllegalArgumentException("Requested quantity exceeds available stock");
             }
@@ -72,32 +75,28 @@ public class CartService {
         }
     }
 
-    private Cart getUserCart(String userEmail) {
-        // Fetch the account from the database
-        Account account = accountRepository.findByEmail(userEmail).orElse(null);
-        
-        // Check if the account exists and if they have a cart
-        if (account != null) {
-            return account.getCart(); // method to retrieve the user's cart
-        } else {
-            throw new RuntimeException("Account not found"); // Handle this scenario based on your application logic
-        }
+    private Optional<Cart> getUserCart(Long accountId) {
+    	return cartRepository.findByAccountAccountId(accountId);
     }
 
-    private void addToCart(Cart cart, Product product, int quantity) {
-        // Create a new CartDetail instance
-        CartDetail cartDetail = new CartDetail();
-        cartDetail.setCart(cart);
-        cartDetail.setProduct(product);
-        cartDetail.setQuantity(quantity);
-        cartDetail.setItemPrice(product.getPrice()); // Assuming the item price is the same as the product price
-        cartDetail.setTotalPrice(product.getPrice() * quantity); // Total price is the item price multiplied by quantity
-
-        // Save the CartDetail directly
-        cartDetailRepository.save(cartDetail);
-
-     // Update the cart's total price and other properties
-        updateCart(cart);
+    private Cart addToCart(Cart cart, Product product, int quantity) {
+    	CartDetail cartDetail = 
+    			cartDetailRepository.findByCartCartIdAndProductProductId(cart.getCartId(), product.getProductId()).orElse(null);
+    	
+    	if (cartDetail == null) {
+    		// Create a new CartDetail instance
+    		cartDetail = new CartDetail();
+    		cartDetail.setCart(cart);
+    		cartDetail.setProduct(product);
+    		cartDetail.setQuantity(quantity);
+    		cartDetail.setItemPrice(product.getPrice()); // Assuming the item price is the same as the product price
+    		cartDetail.setTotalPrice(product.getPrice() * quantity); // Total price is the item price multiplied by quantity
+    	} else {
+    		cartDetail.setQuantity(cartDetail.getQuantity() + quantity);
+    	}
+    	cartDetailRepository.save(cartDetail);
+    	
+    	return cart;
     }
 
     private void updateCart(Cart cart) {
@@ -111,7 +110,7 @@ public class CartService {
                                     .sum();
             
             // Update the cart's total price
-            existingCart.setTotalPrice(totalPrice);
+//            existingCart.setTotalPrice(totalPrice);
 
             // Save the updated cart back to the database
             cartRepository.save(existingCart);
@@ -127,7 +126,7 @@ public class CartService {
         Account userAccount = accountRepository.findByEmail(userEmail)
                                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        Cart userCart = userAccount.getCart();
+        Cart userCart = null;
 
         // Calculate the total number of items in the cart
         int itemCount = 0;

@@ -16,9 +16,11 @@ public class UserInfoUserDetails implements UserDetails {
     private static final long serialVersionUID = -5020447346973384308L;
     private String name;
     private String password;
+    private Account account;
     private List<SimpleGrantedAuthority> authorities;
 
     public UserInfoUserDetails(Account userInfo) {
+    	this.account = userInfo;
         name = userInfo.getEmail();
         password = userInfo.getPassword();
         authorities = userInfo.getAuthorities().stream()
@@ -46,7 +48,11 @@ public class UserInfoUserDetails implements UserDetails {
         return true;
     }
 
-    @Override
+    public Account getAccount() {
+		return account;
+	}
+
+	@Override
     public boolean isAccountNonLocked() {
         return true;
     }

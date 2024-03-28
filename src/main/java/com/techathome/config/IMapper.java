@@ -5,6 +5,10 @@ import org.mapstruct.ReportingPolicy;
 
 import com.techathome.entities.Brand;
 import com.techathome.entities.BrandForm;
+import com.techathome.entities.Cart;
+import com.techathome.entities.CartDetail;
+import com.techathome.entities.CartDetailForm;
+import com.techathome.entities.CartForm;
 import com.techathome.entities.Category;
 import com.techathome.entities.CategoryForm;
 import com.techathome.entities.Product;
@@ -41,4 +45,14 @@ public interface IMapper {
     Brand toBrandEntity(BrandForm source);
     @Mapping(target = "products.brand", ignore = true)
     BrandForm fromBrandEntity(Brand source);
+
+    @Mapping(target = "cartDetails.cart", ignore = true)
+    Cart toCartEntity(CartForm source);
+    @Mapping(target = "cartDetails.cart", ignore = true)
+    CartForm fromCartEntity(Cart source);
+
+    @Mapping(target = "cart.cartDetails", ignore = true)
+    CartDetail toCartDetailEntity(CartDetailForm source);
+    @Mapping(target = "cart.cartDetails", ignore = true)
+    CartDetailForm fromCartDetailEntity(CartDetail source);
 }

@@ -106,7 +106,8 @@ $(document).ready(function() {
                 });
                 // Attach event handler for Add to Cart buttons
                 $('.addToCartBtn').click(function() {
-                    var productId = $(this).data('productId');
+                    var productId = $(this).data('productid');
+                    
                     addToCart(productId);
                 });
             } else {
@@ -120,23 +121,18 @@ $(document).ready(function() {
 }
 
 //Add to cart function
-
 function addToCart(productId, quantity = 1) {
-    var csrfToken = $("meta[name='_csrf']").attr("content");
-    var csrfHeader = $("meta[name='_csrf_header']").attr("content");
-
-    var headers = {};
-    headers[csrfHeader] = csrfToken;
-
-    $.ajax({
+    Common.ajax({
         url: '/carts/add',
         type: 'POST',
-        contentType: 'application/json',
         data: JSON.stringify({ productId: productId, quantity: quantity }),
-        headers: headers,
         success: function(response) {
-            alert('Product added to cart successfully!');
-            updateCartCount();
+			debugger;
+			let totalCartItems = 0;
+			response?.cartDetails.forEach(function(cartDetail) {
+                totalCartItems += cartDetail.quantity;
+            });
+            $('#cartCount').html(totalCartItems);
         },
         error: function(xhr, status, error) {
             if (xhr.status === 401) { // Unauthorized status

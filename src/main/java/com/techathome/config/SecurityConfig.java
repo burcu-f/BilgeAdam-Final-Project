@@ -56,6 +56,7 @@ public class SecurityConfig {
     };
     protected static final String[] AUTH_URLS = {
     		"/admin/**",
+    		"/carts/**"
     };
 
     @Autowired

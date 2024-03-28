@@ -1,14 +1,19 @@
 package com.techathome.entities;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 
 @Data
 @Entity
+@NoArgsConstructor
 public class Cart {
 
     @Id
@@ -20,12 +25,7 @@ public class Cart {
     @JoinColumn(name = "accountId")
     private Account account;
     
-    private Long productId;
-    
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<CartDetail> cartDetails;
-    
-    private double totalPrice; 
-
+    private List<CartDetail> cartDetails = new ArrayList<>();
     
 }

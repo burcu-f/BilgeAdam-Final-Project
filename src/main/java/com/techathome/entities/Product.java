@@ -1,5 +1,7 @@
 package com.techathome.entities;
 
+import org.hibernate.annotations.Type;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -34,7 +36,8 @@ public class Product {
     private Double price;
 
     private Integer stock;
-
+    
+    @Column(columnDefinition = "CLOB")
     private String image;
     
  // Method to decrement stock by a specified quantity
