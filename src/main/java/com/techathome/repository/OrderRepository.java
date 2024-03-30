@@ -2,14 +2,15 @@ package com.techathome.repository;
 
 import com.techathome.entities.TOrder;
 
-import java.util.Optional;
+import java.util.List;
+
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface OrderRepository extends JpaRepository <TOrder, Long> {
-	Optional<TOrder> findByAccountAccountId(Long accountId);
+	List<TOrder> findByAccountId(Long accountId);
 
 	
 	

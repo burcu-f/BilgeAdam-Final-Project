@@ -4,9 +4,9 @@
 	<object th:replace="fragments/header"></object>
 	<title>Order Management</title>
 	<!-- Custom CSS -->
-	<link rel="stylesheet" type="text/css" href="css/user-management.css">
+	<link rel="stylesheet" href="/css/user-management.css">
 	<!-- Custom JS -->
-	<script src="js/user-management.js"></script>
+	<script src="/js/order-management.js"></script>
 </head>
 <body>
 
@@ -26,7 +26,6 @@
           <tr>
             <th>#</th>
             <th>Account</th>
-            <th>Order Date</th>
             <th>Total Amount</th>
             <th>Address</th>
             <th>Actions</th>
@@ -52,10 +51,6 @@
           <div class="form-group">
             <label for="account">Account:</label>
             <input type="text" class="form-control" id="account" required>
-          </div>
-          <div class="form-group">
-            <label for="orderDate">Order Date:</label>
-            <input type="text" class="form-control" id="orderDate" required>
           </div>
           <div class="form-group">
             <label for="totalAmount">Total Amount:</label>
@@ -112,43 +107,7 @@
  -->
 
 <!-- Modal for Update Order -->
-<div class="modal fade" id="updateOrderModal" tabindex="-1" role="dialog" aria-labelledby="updateOrderModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Edit Order</h4>
-      </div>
-      <div class="modal-body">
-        <form id="updateOrderForm">
-          <input type="hidden" id="updateOrderId">
-          <div class="form-group">
-            <label for="updateName">Name:</label>
-            <input type="text" class="form-control" id="updateName" required>
-          </div>
-          <div class="form-group">
-            <label for="updateSurname">Surname:</label>
-            <input type="text" class="form-control" id="updateSurname" required>
-          </div>
-          <div class="form-group">
-            <label for="updateEmail">Email:</label>
-            <input type="email" class="form-control" id="updateEmail" required>
-          </div>
-          <div class="form-group">
-            <label for="updateAccountType">Account Type:</label>
-            <select class="form-control" id="updateAccountType" required>
-              <option value="ADMIN">Admin</option>
-              <option value="CUSTOMER">Customer</option>
-            </select>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" id="btnUpdateUser">Update</button>
-      </div>
-    </div>
-  </div>
-</div>
+
 
 
 <!-- Modal for Delete Order Confirmation -->

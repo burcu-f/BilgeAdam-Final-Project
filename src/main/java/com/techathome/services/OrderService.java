@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class OrderService {
@@ -22,8 +21,8 @@ public class OrderService {
         return orderRepository.findById(orderId).orElse(null);
     }
     
-    public Optional<TOrder> getOrderByAccountId(Long accountId) {
-        return orderRepository.findByAccountAccountId(accountId);
+    public List<TOrder> getOrdersByAccountId(Long accountId) {
+        return orderRepository.findByAccountId(accountId);
     }
 
     public TOrder saveOrder(TOrder order) {
@@ -40,7 +39,7 @@ public class OrderService {
     	
     	//Update existing order with new values
     	existingOrder.setAccount(updatedOrder.getAccount());
-    	existingOrder.setOrderDate(updatedOrder.getOrderDate());
+    	//existingOrder.setOrderDate(updatedOrder.getOrderDate());
     	existingOrder.setTotalAmount(updatedOrder.getTotalAmount());
     	existingOrder.setShippingAddress(updatedOrder.getShippingAddress());
     	

@@ -15,6 +15,10 @@ public class OrderDetailService {
     public List<OrderDetail> getAllOrderDetails() {
         return orderDetailRepository.findAll();
     }
+    
+    public List<OrderDetail> getOrderDetailsByOrderId(Long orderId) {
+        return orderDetailRepository.findByOrderOrderId(orderId);
+    }
 
     public OrderDetail getOrderDetailById(Long orderDetailId) {
         return orderDetailRepository.findById(orderDetailId).orElse(null);
@@ -35,7 +39,7 @@ public class OrderDetailService {
     	existingOrderDetail.setOrder(updatedOrderDetail.getOrder());
     	existingOrderDetail.setProduct(updatedOrderDetail.getProduct());
     	existingOrderDetail.setQuantity(updatedOrderDetail.getQuantity());
-    	existingOrderDetail.setItemPrice(updatedOrderDetail.getItemPrice());
+    	//existingOrderDetail.setItemPrice(updatedOrderDetail.getItemPrice());
     	existingOrderDetail.setTotalPrice(updatedOrderDetail.getTotalPrice());
            
 

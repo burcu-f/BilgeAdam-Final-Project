@@ -4,10 +4,12 @@
 <head>
 	<object th:replace="fragments/header"></object>
 	<title>Profile</title>
+	<!-- Your custom JavaScript file -->
+    <script src="js/profile.js"></script>
 	<!-- Custom CSS -->
     <link rel="stylesheet" href="css/index.css">
-    <!-- Your custom JavaScript file -->
-    <script src="js/profile.js"></script>
+    <link rel="stylesheet" href="css/profile.css">
+    
 </head>
 
 <body>
@@ -42,7 +44,7 @@
     </nav>
 </div>
 
-    <div class="container mt-4">
+<div class="container mt-4">
         <div class="row">
             <div class="col-lg-3 my-lg-0 my-md-1">
                 <div id="sidebar" class="bg-purple">
@@ -88,10 +90,20 @@
                 </div>
             </div>
             <div class="col-lg-9 my-lg-0 my-1" id="mainContent">
-                <!-- Orders will be listed here -->
+                <div id="ordersContainer">
+                    <!-- Orders will be listed here -->
+                </div>
+                <div id="addressesContainer">
+                    <!-- Addresses will be listed here -->
+                </div>
+                <div id="personalInfoContainer">
+                    <!-- Personal info will be listed here -->
+                </div>
             </div>
         </div>
     </div>
+
+</body>
 
 </body>
 

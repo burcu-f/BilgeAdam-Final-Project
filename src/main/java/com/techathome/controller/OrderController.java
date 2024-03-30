@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
-import java.util.Optional;
+
 
 @Controller
-@RequestMapping("/order-management")
+@RequestMapping("/admin/order-management")
 public class OrderController {
     @Autowired
     private OrderService orderService;
@@ -43,8 +43,8 @@ public class OrderController {
 
     
  // Method to retrieve a specific order by its ID
-    @GetMapping("/{id}")
-    public ResponseEntity<TOrder> getOrderById(@PathVariable("id") Long orderId) {
+    @GetMapping("/{orderId}")
+    public ResponseEntity<TOrder> getOrderById(@PathVariable("orderId") Long orderId) {
         TOrder order = orderService.getOrderById(orderId);
         if (order != null) {
             return ResponseEntity.ok().body(order);
@@ -54,16 +54,16 @@ public class OrderController {
     }
     
     // Method to retrieve orders by some other criteria (e.g., accountId)
-    @GetMapping("/search-order")
-    public ResponseEntity<Optional<TOrder>> searchOrders(@RequestParam("account") Long accountId) {
-        Optional<TOrder> order = orderService.getOrderByAccountId(accountId);
-        if (order.isPresent()) {
-            return ResponseEntity.ok().body(order);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-
-    }
+   
+	/*
+	 * @GetMapping("/search-order") public ResponseEntity<Optional<TOrder>>
+	 * searchOrders(@RequestParam("account") Long accountId) { Optional<TOrder>
+	 * order = orderService.getOrderByAccountId(accountId); if (order.isPresent()) {
+	 * return ResponseEntity.ok().body(order); } else { return
+	 * ResponseEntity.notFound().build(); }
+	 * 
+	 * }
+	 */
 
  // Method to create a new order
     @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -73,8 +73,8 @@ public class OrderController {
     }
     
  // Method to update an existing order
-    @PutMapping("/{id}")
-    public ResponseEntity<TOrder> updateOrder(@PathVariable("id") Long orderId,
+    @PutMapping("/{orderId}")
+    public ResponseEntity<TOrder> updateOrder(@PathVariable("orderId") Long orderId,
     											@RequestBody TOrder updatedOrder) {
     	TOrder order = orderService.updateOrder(orderId, updatedOrder);
     	return ResponseEntity.ok().body(order);
@@ -83,12 +83,21 @@ public class OrderController {
     
  // Method to delete an existing order
     
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{orderId}")
     @Transactional
-    public ResponseEntity<Void> deleteOrder(@PathVariable("id") Long orderId) {
+    public ResponseEntity<Void> deleteOrder(@PathVariable("orderId") Long orderId) {
     	orderService.deleteOrder(orderId);
     	return ResponseEntity.noContent().build();   	
     }
-    
+ // Method to retrieve orders by account ID
+    @GetMapping("/orders/{accountId}")
+    public ResponseEntity<List<TOrder>> getOrdersByAccountId(@PathVariable Long accountId) {
+        List<TOrder> orders = orderService.getOrdersByAccountId(accountId);
+        if (!orders.isEmpty()) {
+            return ResponseEntity.ok(orders);
+        } else {
+            return ResponseEntity.noContent().build();
+        }
+    }  
     
 }

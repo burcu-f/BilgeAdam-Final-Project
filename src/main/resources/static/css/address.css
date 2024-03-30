@@ -1,0 +1,52 @@
+/* Custom CSS for Address Form */
+
+.container {
+  margin-top: 50px;
+}
+
+.form-label {
+  font-weight: bold;
+}
+
+.form-control {
+  border-radius: 10px;
+}
+
+.btn-primary {
+  border-radius: 10px;
+}
+
+/* Adjust spacing */
+.mb-4 {
+  margin-bottom: 1.5rem;
+}
+
+/* Increase button padding */
+.btn-primary {
+  padding: 10px 20px;
+}
+
+/* Center align button */
+.text-end {
+  text-align: center;
+}
+
+/* Add some spacing between the button and attribution */
+.small {
+  margin-top: 20px;
+}
+
+/* Adjust overall form padding */
+.p-4 {
+  padding: 30px;
+}
+
+/* Add some space between form groups */
+.form-group {
+  margin-bottom: 20px;
+}
+
+/* Optional: Style textarea to match other inputs */
+textarea.form-control {
+  resize: vertical;
+}

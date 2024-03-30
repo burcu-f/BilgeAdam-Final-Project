@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+
 
 @Getter
 @Setter
@@ -20,8 +20,11 @@ public class TOrder {
     @ManyToOne
     @JoinColumn(name = "account_id")
     private Account account;
+    
+    @Column(name = "account_id", insertable = false, updatable = false)
+    private Long accountId;
 
-    private LocalDateTime orderDate;
+    //private LocalDateTime orderDate;
     private double totalAmount;
 
     @ManyToOne

@@ -23,10 +23,9 @@ public class OrderDetailController {
         return new ResponseEntity<>(orderDetails, HttpStatus.OK);
     }
 
-    @GetMapping("/{orderDetailId}")
-    public ResponseEntity<OrderDetail> getOrderDetailById(@PathVariable("id") Long orderDetailId) {
-        OrderDetail orderDetail = orderDetailService.getOrderDetailById(orderDetailId);
-        return new ResponseEntity<>(orderDetail, HttpStatus.OK);
+    @GetMapping("/{orderId}")
+    public List<OrderDetail> getOrderDetails(@RequestParam Long orderId) {
+        return orderDetailService.getOrderDetailsByOrderId(orderId);
     }
 
     @PostMapping(value = "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

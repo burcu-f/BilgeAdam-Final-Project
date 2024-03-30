@@ -20,7 +20,7 @@ public class OrderDetail {
     private Product product;
 
     private int quantity;
-    private double itemPrice;
+    //private double itemPrice;
     private double totalPrice;
 
 }
