@@ -56,23 +56,18 @@ Common.handleAjaxError = (event, jqxhr, settings, thrownError) => {
 	}
 }
 Common.handleAjaxSuccess = (event, jqxhr, settings, thrownError) => {
+	debugger;
 	let contentType = jqxhr.getResponseHeader('content-type');
 	if (contentType && contentType.includes('text/html') 
 		&& jqxhr.responseText && jqxhr.responseText.includes('id="loginForm"')) {
 		window.location = '/login';
 		return;
 	}
-	console.error('E:' + event + ' response: ' + jqxhr.responseText + ' thrownError:' + thrownError);
 	if (jqxhr.status == 302) {
 		// TODO çözülecek!!!
 		let redirectUrl = jqxhr.getResponseHeader('redirect_url');
 		window.location = redirectUrl ? redirectUrl : '/login';
 		return;
-	}
-	if (jqxhr.responseJSON && jqxhr.responseJSON.message) {
-		console.error(jqxhr.responseJSON.message);
-	} else {
-		console.error('Unexpected error! URL:' + settings.url + ' Cause:' + thrownError);
 	}
 }
 

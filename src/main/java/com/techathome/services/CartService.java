@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.techathome.entities.Account;
@@ -99,43 +97,16 @@ public class CartService {
     	return cart;
     }
 
-    private void updateCart(Cart cart) {
-        // Retrieve the cart from the database (if needed)
-        Cart existingCart = cartRepository.findById(cart.getCartId()).orElse(null);
-        if (existingCart != null) {
-            // Perform any necessary updates to the cart, such as recalculating the total price
-            // Here, we calculate the total price by summing the total prices of all cart items
-            double totalPrice = existingCart.getCartDetails().stream()
-                                    .mapToDouble(CartDetail::getTotalPrice)
-                                    .sum();
-            
-            // Update the cart's total price
-//            existingCart.setTotalPrice(totalPrice);
-
-            // Save the updated cart back to the database
-            cartRepository.save(existingCart);
-        }
-    }
-    
-    public int getCartItemCount() {
-        // Retrieve the currently authenticated user's email
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String userEmail = authentication.getName();
-
-        // Find the user's cart by their email
-        Account userAccount = accountRepository.findByEmail(userEmail)
-                                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        Cart userCart = null;
-
-        // Calculate the total number of items in the cart
-        int itemCount = 0;
-        if (userCart != null) {
-            for (CartDetail cartDetail : userCart.getCartDetails()) {
-                itemCount += cartDetail.getQuantity();
-            }
-        }
-
-        return itemCount;
-    }
+	public Cart getCartByAccount(Account account) {
+		Optional<Cart> optCart = cartRepository.findByAccountAccountId(account.getAccountId());
+		Cart cart = null;
+		if (optCart.isEmpty()) {
+			cart = new Cart();
+        	cart.setAccount(account);
+        	cart = saveCart(cart);
+		} else {
+			cart = optCart.get();
+		}
+		return cart;
+	}
 }

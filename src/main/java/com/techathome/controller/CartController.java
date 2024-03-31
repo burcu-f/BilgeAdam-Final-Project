@@ -1,7 +1,6 @@
 package com.techathome.controller;
 
 import java.util.List;
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,6 +49,20 @@ public class CartController {
         return new ResponseEntity<>(cartForm, HttpStatus.OK);
     }
 
+    @GetMapping("/getCartByAccount")
+    public ResponseEntity<CartForm> getCartByAccountId(Authentication authentication) {
+        try {
+            UserInfoUserDetails user = (UserInfoUserDetails) authentication.getPrincipal();
+            Account account = user.getAccount();
+            Cart cart = cartService.getCartByAccount(account);
+            CartForm cartForm = mapper.fromCartEntity(cart);
+            return ResponseEntity.status(HttpStatus.OK).body(cartForm);
+        } catch (Exception e) {
+            e.printStackTrace(); // Print stack trace for debugging
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
     @PostMapping
     public ResponseEntity<CartForm> createCart(@RequestBody Cart cart) {
         cartService.saveCart(cart);
@@ -71,10 +84,4 @@ public class CartController {
         }
     }
     
-    @GetMapping("/count")
-    public ResponseEntity<Map<String, Integer>> getCartCount() {
-        int count = cartService.getCartItemCount(); // Implement this method in your service
-        Map<String, Integer> response = Map.of("count", count);
-        return ResponseEntity.ok().body(response);
-    }
 }

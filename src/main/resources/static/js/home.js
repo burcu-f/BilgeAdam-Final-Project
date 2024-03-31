@@ -108,7 +108,7 @@ $(document).ready(function() {
                 $('.addToCartBtn').click(function() {
                     var productId = $(this).data('productid');
                     
-                    addToCart(productId);
+                    Cart.addToCart(productId);
                 });
             } else {
                 console.log("No products found.");
@@ -116,54 +116,6 @@ $(document).ready(function() {
         },
         error: function(xhr, status, error) {
             console.error("Error fetching products: " + error);
-        }
-    });
-}
-
-//Add to cart function
-function addToCart(productId, quantity = 1) {
-    Common.ajax({
-        url: '/carts/add',
-        type: 'POST',
-        data: JSON.stringify({ productId: productId, quantity: quantity }),
-        success: function(response) {
-			debugger;
-			let totalCartItems = 0;
-			response?.cartDetails.forEach(function(cartDetail) {
-                totalCartItems += cartDetail.quantity;
-            });
-            $('#cartCount').html(totalCartItems);
-        },
-        error: function(xhr, status, error) {
-            if (xhr.status === 401) { // Unauthorized status
-                window.location.href = '/login'; // Redirect to login page
-            } else {
-                console.error('Error adding product to cart:', error);
-                alert('Error adding product to cart. Please try again later.');
-            }
-        }
-    });
-}
-
-
-// Function to update the cart count on the navbar
-function updateCartCount() {
-    // Perform an AJAX request to fetch the current cart count
-    $.ajax({
-        url: '/carts/count',
-        type: 'GET',
-        success: function(response) {
-            // Update the cart count badge
-            $('.cart-count').text(response.count);
-            // Show the badge if the count is greater than zero
-            if (response.count > 0) {
-                $('.cart-count').show();
-            } else {
-                $('.cart-count').hide();
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error('Error fetching cart count:', error);
         }
     });
 }
