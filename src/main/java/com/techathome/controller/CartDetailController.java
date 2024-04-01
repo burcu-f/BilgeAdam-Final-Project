@@ -22,7 +22,7 @@ public class CartDetailController {
     }
 
     @GetMapping("/cart-details/{cartDetailId}")
-    public ResponseEntity<CartDetail> getCartDetailById(@PathVariable Integer cartDetailId) {
+    public ResponseEntity<CartDetail> getCartDetailById(@PathVariable Long cartDetailId) {
         CartDetail cartDetail = cartDetailService.getCartDetailById(cartDetailId);
         return new ResponseEntity<>(cartDetail, HttpStatus.OK);
     }

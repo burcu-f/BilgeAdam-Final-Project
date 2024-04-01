@@ -56,7 +56,7 @@ Common.handleAjaxError = (event, jqxhr, settings, thrownError) => {
 	}
 }
 Common.handleAjaxSuccess = (event, jqxhr, settings, thrownError) => {
-	debugger;
+	
 	let contentType = jqxhr.getResponseHeader('content-type');
 	if (contentType && contentType.includes('text/html') 
 		&& jqxhr.responseText && jqxhr.responseText.includes('id="loginForm"')) {

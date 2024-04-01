@@ -16,7 +16,7 @@ public class CartDetailService {
         return cartDetailRepository.findAll();
     }
 
-    public CartDetail getCartDetailById(Integer cartDetailId) {
+    public CartDetail getCartDetailById(Long cartDetailId) {
         return cartDetailRepository.findById(cartDetailId).orElse(null);
     }
 

@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,7 +25,7 @@ import com.techathome.entities.CartForm;
 import com.techathome.services.CartService;
 
 @Controller
-@RequestMapping("/carts")
+@RequestMapping("/cart")
 public class CartController {
 	
 	Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -78,6 +79,17 @@ public class CartController {
             Cart cart = cartService.addToCart(payload.getProductId(), payload.getQuantity(), account);
             CartForm cartForm = mapper.fromCartEntity(cart);
             return ResponseEntity.status(HttpStatus.OK).body(cartForm);
+        } catch (Exception e) {
+            e.printStackTrace(); // Print stack trace for debugging
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+    
+    @DeleteMapping("/remove/{cartDetailId}")
+    public ResponseEntity<Void> removeItemFromCart(@PathVariable Long cartDetailId) {
+        try {
+            cartService.removeItemFromCart(cartDetailId);
+            return ResponseEntity.ok().build();
         } catch (Exception e) {
             e.printStackTrace(); // Print stack trace for debugging
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

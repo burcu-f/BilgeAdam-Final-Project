@@ -3,11 +3,12 @@ window.Cart = Cart;
 
 Cart.addToCart = (productId, quantity = 1) => {
     Common.ajax({
-        url: '/carts/add',
+        url: '/cart/add',
         type: 'POST',
         data: JSON.stringify({ productId: productId, quantity: quantity }),
+        contentType: 'application/json',
         success: function(response) {
-			debugger;
+			
 			let totalCartItems = 0;
 			if (!response?.cartDetails) {
 				return;
@@ -28,76 +29,67 @@ Cart.addToCart = (productId, quantity = 1) => {
     });
 }
 
-$(document).ready(function() {
-    // Dummy data for cart items
-    var cartItemsData = [
-        { name: "BUZDOLABI", quantity: 1, price: "₺22000", total: "₺22000" }
-        // Add more items if needed
-    ];
+// Function to populate the cart table
+function populateCart(cartItems) {
+    let tbody = $('#cartTable tbody');
+    tbody.empty(); // Clear existing rows
 
-    // Function to fill cart items dynamically
-    function fillCartItems() {
-        var cartItemsHtml = "";
-        var orderTotal = 0;
-        cartItemsData.forEach(function(item, index) {
-            cartItemsHtml += `
-                <li class="cart_item clearfix">
-                    <div class="cart_item_info d-flex flex-md-row flex-column justify-content-between">
-                        <div class="cart_item_name cart_info_col">
-                            <div class="cart_item_title">Name</div>
-                            <div class="cart_item_text">${item.name}</div>
-                        </div>
-                        <div class="cart_item_quantity cart_info_col">
-                            <div class="cart_item_title">Quantity</div>
-                            <div class="cart_item_text">${item.quantity}</div>
-                        </div>
-                        <div class="cart_item_price cart_info_col">
-                            <div class="cart_item_title">Price</div>
-                            <div class="cart_item_text">${item.price}</div>
-                        </div>
-                        <div class="cart_item_total cart_info_col">
-                            <div class="cart_item_title">Total</div>
-                            <div class="cart_item_text">${item.total}</div>
-                        </div>
-                        <div class="cart_item_remove cart_info_col">
-                            <button class="btn btn-danger btn-sm remove-btn">Remove</button>
-                        </div>
-                    </div>
-                </li>
-            `;
-            orderTotal += parseInt(item.total.replace("₺", "").replace(",", ""));
-        });
+    // Loop through each cart item and append a row to the table
+    cartItems.forEach(function(cartItem, index) {
+        let row = $('<tr>').appendTo(tbody);
+        row.append('<td>' + (index + 1) + '</td>');
+        row.append('<td>' + cartItem.product.productName + '</td>');
+        row.append('<td>' + cartItem.quantity + '</td>');
+        row.append('<td>$' + cartItem.product.price.toFixed(2) + '</td>');
+        row.append('<td>$' + (cartItem.quantity * cartItem.product.price).toFixed(2) + '</td>');
 
-        // Update cart items count and order total
-        $("#cartItemCount").text(cartItemsData.length);
-        $(".order_total_amount").text("₺" + orderTotal.toLocaleString('tr-TR'));
+        // Add a data attribute to store the cart detail ID
+        row.attr('data-cart-detail-id', cartItem.cartDetailId);
 
-        // Append HTML to cart items list
-        $("#cartItems").html(cartItemsHtml);
-    }
-
-    // Call function to fill cart items
-    fillCartItems();
-
-    // Event listener for remove button click
-    $(document).on("click", ".remove-btn", function() {
-        var index = $(this).closest(".cart_item").index();
-        cartItemsData.splice(index, 1); // Remove item from cart items data
-        fillCartItems(); // Re-fill cart items
+        // Add a Remove button for each item
+        let actionsCell = $('<td>').appendTo(row);
+        actionsCell.append('<button class="btn btn-danger remove-item-btn">Remove</button>');
     });
+}
 
-    // Event listener for "Continue Shopping" button click
-    $(".cart_button_clear").click(function() {
-        // Retrieve the previous page URL from session storage
-        var previousPageUrl = sessionStorage.getItem('previousPageUrl');
-        if (previousPageUrl) {
-            window.location.href = previousPageUrl; // Redirect to the previous page
-        } else {
-            window.location.href = 'index.html'; // Redirect to a default page if previous page URL is not available
+// Function to fetch cart data from the server
+function fetchCartData() {
+    $.ajax({
+        url: '/cart/getCartByAccount', // Fetch cart data associated with the currently authenticated user
+        method: 'GET',
+        success: function(response) {
+            if (response && response.cartDetails) {
+                populateCart(response.cartDetails);
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Failed to fetch cart data:', error);
+            alert('Failed to fetch cart data. Please try again.');
         }
     });
+}
 
-    // Store the current page URL in session storage
-    var currentPageUrl = window.location.href;
-    sessionStorage.setItem('previousPageUrl', currentPageUrl);
+// Function to remove an item from the cart
+function removeItemFromCart(cartDetailId) {
+    $.ajax({
+        url: '/cart/remove/' + cartDetailId,
+        method: 'DELETE',
+        success: function(response) {
+            fetchCartData(); // Fetch updated cart data after removal
+        },
+        error: function(xhr, status, error) {
+            console.error('Failed to remove item from cart:', error);
+            alert('Failed to remove item from cart. Please try again.');
+        }
+    });
+}
+
+// Event listener for the Remove button
+$(document).ready(function() {
+    $('#cartTable').on('click', '.remove-item-btn', function() {
+        let cartDetailId = $(this).closest('tr').data('cart-detail-id');
+        removeItemFromCart(cartDetailId);
+    });
+
+    fetchCartData(); // Fetch cart data when the page is loaded
 });

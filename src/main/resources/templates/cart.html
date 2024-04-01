@@ -37,7 +37,7 @@
                     <a class="nav-link" href="/">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="profile.html">My Account</a>
+                    <a class="nav-link" href="profile">My Account</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="login">Login</a>
@@ -46,7 +46,7 @@
                     <a class="nav-link" href="#">Logout</a>
                 </li>
                 <li class="nav-item">
-    				<a class="nav-link" href="cart.html?url=previousPage">
+    				<a class="nav-link" href="cart">
         				<span class="fa fa-shopping-cart"></span>
         				<span class="text">Cart</span>
     				</a>
@@ -58,33 +58,38 @@
 </div>
 <!-- End of Navbar -->
 
-<div class="cart_section">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-10 offset-lg-1">
-                <div class="cart_container">
-                    <div class="cart_title">Shopping Cart<small> (<span id="cartItemCount">0</span> items in your cart) </small></div>
-                    <div class="cart_items">
-                        <ul class="cart_list" id="cartItems">
-                            <!-- Cart items will be dynamically filled here -->
-                        </ul>
-                    </div>
-                    <div class="order_total">
-                        <div class="order_total_content text-md-right">
-                            <div class="order_total_title">Order Total:</div>
-                            <div class="order_total_amount">₺0</div> <!-- Updated currency symbol -->
-                        </div>
-                    </div>
-                    <div class="cart_buttons">
-                        <button type="button" class="button cart_button_clear">Continue Shopping</button>
-                        <button type="button" class="button cart_button_checkout">Add to Cart</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <h2>My Cart</h2>
+      <div class="pull-right">
+        
+        <!-- Back to Admin Panel Button -->
+        <a href="/admin" class="btn btn-primary">Home</a>
+      </div>
+      <br><br>
+      <table id="cartTable" class="table table-bordered">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Quantity</th>
+            <th>Item Price</th>
+            <th>Total</th>
+        
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Cart will be populated here -->
+        </tbody>
+      </table>
     </div>
+  </div>
 </div>
 
+<a href="#" class="btn btn-primary">Back</a>
+<a href="#" class="btn btn-primary">Purchase</a>
 
 </body>
 </html>

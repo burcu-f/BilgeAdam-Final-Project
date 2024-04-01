@@ -109,4 +109,19 @@ public class CartService {
 		}
 		return cart;
 	}
+	
+	public void removeItemFromCart(Long cartDetailId) {
+        // Find the CartDetail entity by its ID
+        Optional<CartDetail> optionalCartDetail = cartDetailRepository.findById(cartDetailId);
+        
+        // Check if the CartDetail exists
+        if (optionalCartDetail.isPresent()) {
+            CartDetail cartDetail = optionalCartDetail.get();
+            
+            // Remove the CartDetail from the cart
+            cartDetailRepository.delete(cartDetail);
+        } else {
+            throw new IllegalArgumentException("CartDetail not found with ID: " + cartDetailId);
+        }
+    }
 }
