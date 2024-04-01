@@ -3,6 +3,7 @@ package com.techathome.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -10,11 +11,15 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/")
 public class HomeController {
     @GetMapping("")
-    public ModelAndView home() {
+    public ModelAndView home(
+    		@RequestParam(required = false) Long categoryId, 
+    		@RequestParam(required = false) Long subcategoryId ) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("index"); // index.html sayfa şablonu
         // Model nesnesine veri ekleme örneği
         modelAndView.addObject("pageTitle", "Home Page");
+        modelAndView.addObject("categoryId", categoryId);
+        modelAndView.addObject("subcategoryId", subcategoryId);
         return modelAndView;
     }
 }

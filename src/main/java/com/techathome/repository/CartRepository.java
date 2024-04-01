@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CartRepository extends JpaRepository <Cart, Long> {
-	public Optional<Cart> findByAccountAccountId(Long accountId);
+	public Optional<Cart> findByAccountAccountIdOrderByCartDetailsCartDetailIdAsc(Long accountId);
 }

@@ -54,7 +54,7 @@ function populateCart(cartItems) {
 
 // Function to fetch cart data from the server
 function fetchCartData() {
-    $.ajax({
+    Common.ajax({
         url: '/cart/getCartByAccount', // Fetch cart data associated with the currently authenticated user
         method: 'GET',
         success: function(response) {
@@ -71,9 +71,10 @@ function fetchCartData() {
 
 // Function to remove an item from the cart
 function removeItemFromCart(cartDetailId) {
-    $.ajax({
+	debugger;
+    Common.ajax({
         url: '/cart/remove/' + cartDetailId,
-        method: 'DELETE',
+        type: 'DELETE',
         success: function(response) {
             fetchCartData(); // Fetch updated cart data after removal
         },

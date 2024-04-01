@@ -1,24 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <object th:replace="fragments/header"></object>
     <title>Product Details</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome CSS -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
-    
      <!-- Custom CSS -->
   	<link rel="stylesheet" href="css/index.css">
   	<link rel="stylesheet" href="css/cart.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
-	
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
 	<script src="/js/cart.js"></script>
 </head>
 <body>
@@ -61,11 +48,11 @@
 <div class="container">
   <div class="row">
     <div class="col-md-12">
+    <br><br>
       <h2>My Cart</h2>
       <div class="pull-right">
         
-        <!-- Back to Admin Panel Button -->
-        <a href="/admin" class="btn btn-primary">Home</a>
+       
       </div>
       <br><br>
       <table id="cartTable" class="table table-bordered">
@@ -84,12 +71,16 @@
           <!-- Cart will be populated here -->
         </tbody>
       </table>
+      <div class="text-center">
+    <a href="#" class="btn btn-primary">Back</a>
+    <span style="margin: 0 20px;"></span>
+    <a href="#" class="btn btn-primary">Purchase</a>
+</div>
     </div>
   </div>
 </div>
 
-<a href="#" class="btn btn-primary">Back</a>
-<a href="#" class="btn btn-primary">Purchase</a>
+
 
 </body>
 </html>

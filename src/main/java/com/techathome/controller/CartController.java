@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.techathome.config.IMapper;
 import com.techathome.config.UserInfoUserDetails;
@@ -37,10 +38,8 @@ public class CartController {
     private IMapper mapper;
     
     @GetMapping("")
-    public ResponseEntity<List<CartForm>> getAllCarts() {
-        List<Cart> carts = cartService.getAllCarts();
-        List<CartForm> formList = carts.stream().map(c -> mapper.fromCartEntity(c)).toList();
-        return new ResponseEntity<>(formList, HttpStatus.OK);
+    public ModelAndView getAllCarts() {
+    	return new ModelAndView("cart");
     }
 
     @GetMapping("/{cartId}")

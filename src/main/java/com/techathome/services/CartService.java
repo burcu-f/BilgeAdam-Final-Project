@@ -74,7 +74,7 @@ public class CartService {
     }
 
     private Optional<Cart> getUserCart(Long accountId) {
-    	return cartRepository.findByAccountAccountId(accountId);
+    	return cartRepository.findByAccountAccountIdOrderByCartDetailsCartDetailIdAsc(accountId);
     }
 
     private Cart addToCart(Cart cart, Product product, int quantity) {
@@ -98,7 +98,7 @@ public class CartService {
     }
 
 	public Cart getCartByAccount(Account account) {
-		Optional<Cart> optCart = cartRepository.findByAccountAccountId(account.getAccountId());
+		Optional<Cart> optCart = cartRepository.findByAccountAccountIdOrderByCartDetailsCartDetailIdAsc(account.getAccountId());
 		Cart cart = null;
 		if (optCart.isEmpty()) {
 			cart = new Cart();
@@ -115,13 +115,14 @@ public class CartService {
         Optional<CartDetail> optionalCartDetail = cartDetailRepository.findById(cartDetailId);
         
         // Check if the CartDetail exists
-        if (optionalCartDetail.isPresent()) {
+       if (optionalCartDetail.isPresent()) {
             CartDetail cartDetail = optionalCartDetail.get();
             
             // Remove the CartDetail from the cart
             cartDetailRepository.delete(cartDetail);
-        } else {
-            throw new IllegalArgumentException("CartDetail not found with ID: " + cartDetailId);
-        }
+			
+			 } else { throw new IllegalArgumentException("CartDetail not found with ID: "
+			  + cartDetailId); }
+			 
     }
 }

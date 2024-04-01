@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.techathome.config.IMapper;
 import com.techathome.entities.Product;
@@ -27,8 +28,20 @@ public class ProductController {
     private IMapper mapper;
     
     @GetMapping(value = "/list", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<ProductForm>> getAllProducts() {
-        List<Product> products = productService.getAllProducts();
+    public ResponseEntity<List<ProductForm>> getAllProducts(
+    		@RequestParam(required = false) Long categoryId, 
+    		@RequestParam(required = false) Long subcategoryId) {
+    	List<Product> products = null;
+    	if (categoryId != null) {
+    		// TODO getProductsByCategoryId
+    		products = productService.getAllProducts();
+    	} else if (subcategoryId != null) {
+    		// TODO getProductsBySubcategoryId
+    		products = productService.getAllProducts();
+    	} else {
+    		products = productService.getAllProducts();
+    	}
+    	
         List<ProductForm> list = products.stream().map(product -> mapper.fromProductEntity(product)).toList();
         if (!list.isEmpty()) {
         	return ResponseEntity.ok().body(list);
