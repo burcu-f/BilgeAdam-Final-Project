@@ -41,7 +41,7 @@ public class OrderService {
     	existingOrder.setAccount(updatedOrder.getAccount());
     	//existingOrder.setOrderDate(updatedOrder.getOrderDate());
     	existingOrder.setTotalAmount(updatedOrder.getTotalAmount());
-    	existingOrder.setShippingAddress(updatedOrder.getShippingAddress());
+    	existingOrder.setAddress(updatedOrder.getAddress());
     	
     	return orderRepository.save(existingOrder);
     	

@@ -4,8 +4,10 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,7 +20,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.techathome.config.UserInfoUserDetails;
 import com.techathome.entities.Account;
+import com.techathome.entities.Address;
 import com.techathome.enums.AccountType;
 import com.techathome.services.AccountService;
 
@@ -104,5 +108,24 @@ public class AccountController {
     public ResponseEntity<Void> deleteAccount(@PathVariable("accountId") Long accountId) {
         accountService.deleteAccount(accountId);
         return ResponseEntity.noContent().build();
+    }
+    
+    @GetMapping(value = "/address", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Address> getUserAddress(Authentication authentication) {
+        try {
+            UserInfoUserDetails userDetails = (UserInfoUserDetails) authentication.getPrincipal();
+            Address address = userDetails.getAccount().getAddress(); // Assuming the address is associated with the account
+            return ResponseEntity.ok().body(address);
+        } catch (Exception e) {
+            e.printStackTrace(); // Print stack trace for debugging
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PostMapping("/{accountId}/address")
+    public ResponseEntity<Void> saveUserAddress(@PathVariable("accountId") Long accountId,
+                                                 @RequestBody Address address) {
+        accountService.saveUserAddress(accountId, address);
+        return ResponseEntity.ok().build();
     }
 }

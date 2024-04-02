@@ -1,5 +1,10 @@
 package com.techathome.entities;
 
+import java.time.LocalDateTime;
+
+import com.techathome.enums.AccountType;
+import com.techathome.enums.OrderStatus;
+
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -24,12 +29,15 @@ public class TOrder {
     @Column(name = "account_id", insertable = false, updatable = false)
     private Long accountId;
 
-    //private LocalDateTime orderDate;
+    private LocalDateTime orderDate;
     private double totalAmount;
 
     @ManyToOne
     @JoinColumn(name = "address_id")
-    private Address shippingAddress;
+    private Address address;
+    
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status;
 
 
 }

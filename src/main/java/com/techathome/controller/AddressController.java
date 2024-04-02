@@ -1,10 +1,14 @@
 package com.techathome.controller;
 
+import com.techathome.config.UserInfoUserDetails;
+import com.techathome.entities.Account;
 import com.techathome.entities.Address;
+import com.techathome.services.AccountService;
 import com.techathome.services.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -17,6 +21,9 @@ public class AddressController {
     @Autowired
     private AddressService addressService;
     
+    @Autowired
+    private AccountService accountService;
+    
     @GetMapping("")
     public ModelAndView showAddressPage() {
     	ModelAndView modelAndView = new ModelAndView();
@@ -24,21 +31,30 @@ public class AddressController {
         return modelAndView;
     }
 
-	/*
-	 * @GetMapping("") public ResponseEntity<List<Address>> getAllAddresses() {
-	 * List<Address> addresses = addressService.getAllAddresses(); return new
-	 * ResponseEntity<>(addresses, HttpStatus.OK); }
-	 */
-
-    @GetMapping("/addresses/{addressId}")
-    public ResponseEntity<Address> getAddressById(@PathVariable Integer addressId) {
-        Address address = addressService.getAddressById(addressId);
-        return new ResponseEntity<>(address, HttpStatus.OK);
+    @GetMapping("/user")
+    public ResponseEntity<Address> getUserAddress(Authentication authentication) {
+        try {
+            UserInfoUserDetails userDetails = (UserInfoUserDetails) authentication.getPrincipal();
+            Address address = userDetails.getAccount().getAddress(); // Assuming the address is associated with the account
+            return ResponseEntity.ok().body(address);
+        } catch (Exception e) {
+            e.printStackTrace(); // Print stack trace for debugging
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+    
+    @PostMapping("/saveAddress")
+    public ResponseEntity<Void> saveUserAddress(@RequestBody Address address, Authentication authentication) {
+        try {
+            UserInfoUserDetails userDetails = (UserInfoUserDetails) authentication.getPrincipal();
+            Long accountId = userDetails.getAccount().getAccountId();
+            accountService.saveUserAddress(accountId, address);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            e.printStackTrace(); // Print stack trace for debugging
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
-    @PostMapping("/addresses")
-    public ResponseEntity<Void> createAddress(@RequestBody Address address) {
-        addressService.saveAddress(address);
-        return new ResponseEntity<>(HttpStatus.CREATED);
-    }
+
 }

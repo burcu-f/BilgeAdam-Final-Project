@@ -1,6 +1,7 @@
 package com.techathome.services;
 
 import com.techathome.entities.Account;
+import com.techathome.entities.Address;
 import com.techathome.enums.AccountType;
 import com.techathome.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +52,21 @@ public class AccountService {
         existingAccount.setAccountType(updatedAccount.getAccountType());
 
         return accountRepository.save(existingAccount);
+    }
+    
+    public Address getUserAddress(Long accountId) {
+        // Assuming you have a method in your repository to fetch the user's address by accountId
+        Account account = accountRepository.findByAccountId(accountId)
+                .orElseThrow(() -> new IllegalArgumentException("Account not found"));
+        return account.getAddress();
+    }
+
+    public void saveUserAddress(Long accountId, Address address) {
+        // Assuming you have a method in your repository to save/update the user's address
+        Account account = accountRepository.findByAccountId(accountId)
+                .orElseThrow(() -> new IllegalArgumentException("Account not found"));
+        account.setAddress(address);
+        accountRepository.save(account);
     }
 
 

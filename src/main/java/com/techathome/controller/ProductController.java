@@ -33,11 +33,10 @@ public class ProductController {
     		@RequestParam(required = false) Long subcategoryId) {
     	List<Product> products = null;
     	if (categoryId != null) {
-    		// TODO getProductsByCategoryId
-    		products = productService.getAllProducts();
+    		    		products = productService.getProductsByCategoryId(categoryId);
     	} else if (subcategoryId != null) {
-    		// TODO getProductsBySubcategoryId
-    		products = productService.getAllProducts();
+    		
+    		products = productService.getProductsBySubcategoryId(subcategoryId);
     	} else {
     		products = productService.getAllProducts();
     	}

@@ -50,8 +50,8 @@ public class AuthenticationService {
         var address = Address.builder()
                 .addressLine(request.getAddress().getAddressLine())
                 .city(request.getAddress().getCity())
-                .country(request.getAddress().getCountry())
-                .postalCode(request.getAddress().getPostalCode())
+                .district(request.getAddress().getDistrict())
+                //.postalCode(request.getAddress().getPostalCode())
                 .build();
 
         address = addressRepository.save(address); // Save address and update reference

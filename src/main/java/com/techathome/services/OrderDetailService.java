@@ -39,8 +39,8 @@ public class OrderDetailService {
     	existingOrderDetail.setOrder(updatedOrderDetail.getOrder());
     	existingOrderDetail.setProduct(updatedOrderDetail.getProduct());
     	existingOrderDetail.setQuantity(updatedOrderDetail.getQuantity());
-    	//existingOrderDetail.setItemPrice(updatedOrderDetail.getItemPrice());
-    	existingOrderDetail.setTotalPrice(updatedOrderDetail.getTotalPrice());
+    	existingOrderDetail.setItemPrice(updatedOrderDetail.getItemPrice());
+    	//existingOrderDetail.setTotalPrice(updatedOrderDetail.getTotalPrice());
            
 
             // Save the updated order detail to the database

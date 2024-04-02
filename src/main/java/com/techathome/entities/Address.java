@@ -17,10 +17,11 @@ public class Address {
     @SequenceGenerator(name = "address_id_generator", sequenceName = "address_id_seq", allocationSize = 1)
     private Long addressId;
 
-    private String country;
+    
     private String city;
+    private String district;
     private String addressLine;
-    private String postalCode;
+    
 
     @OneToMany(mappedBy = "address", fetch = FetchType.LAZY)
     private List<Account> accounts;

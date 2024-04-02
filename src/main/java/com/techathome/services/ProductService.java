@@ -51,4 +51,16 @@ public class ProductService {
     public void deleteProduct(Long productId) {
         productRepository.deleteById(productId);
     }
+    
+ // Method to retrieve products by category ID
+    public List<Product> getProductsByCategoryId(Long categoryId) {
+        
+        return productRepository.findByCategoryCategoryId(categoryId);
+    }
+
+    // Method to retrieve products by subcategory ID
+    public List<Product> getProductsBySubcategoryId(Long subcategoryId) {
+        
+        return productRepository.findBySubcategorySubcategoryId(subcategoryId);
+    }
 }
