@@ -1,7 +1,43 @@
 $(document).ready(function() {
+	function populateOrderModal(order) {
+		$('#orderId').val(order.id);
+		$('#orderDate').val(order.orderDate);
+		let totalAmount = 0;
+		order.orderDetails.forEach(function(orderDetail) {
+			totalAmount += (orderDetail.quantity * orderDetail.itemPrice);
+		});
+		$('#orderAmount').val(totalAmount);
+		$('#city').val(order.address.city);
+		$('#district').val(order.address.district);
+		$('#addressLine').val(order.address.addressLine);
+	}
+	
+	let orderId = location.search.split('completedOrderId=')[1];
+	if (orderId) {
+		Common.ajax({
+			url: 'order/getOrderById/' + orderId,
+			type: 'GET',
+			contentType: "application/json",
+			headers: {
+				Accept: "application/json",
+			},
+			success: function(response) {
+				populateOrderModal(response);
+				$('#completedOrderModal').modal('show');
+			},
+			error: function(xhr, status, error) {
+				console.error("Error fetching products: " + error);
+			}
+		});
+	}
+	
+	if ($('#message').val()) {
+		alertify.succes($('#message').val());
+	}
+	
 	// Function to fetch categories via Ajax
 	function fetchCategories() {
-		$.ajax({
+		Common.ajax({
 			url: '/category/list', // Endpoint to fetch categories
 			type: 'GET',
 			dataType: 'json',
@@ -65,7 +101,6 @@ $(document).ready(function() {
 				Accept: "application/json",
 			},
 			success: function(response) {
-				debugger;
 				displayProducts(response);
 			},
 			error: function(xhr, status, error) {
@@ -79,30 +114,6 @@ $(document).ready(function() {
 
 	// Fetch all products and display them when the page loads
 	fetchAllProducts();
-
-	// Click event listener for categories and subcategories
-//	$(document).on('click', '#categoriesList a', function(e) {
-//		e.preventDefault();
-//		let categoryId = $(this).data('category-id');
-//		let subcategoryId = $(this).data('subcategory-id');
-//
-//		// Check if categoryId is a valid number
-//		if (!isNaN(categoryId)) {
-//			if (subcategoryId) {
-//				// Check if subcategoryId is a valid number
-//				if (!isNaN(subcategoryId)) {
-//					fetchProductsBySubcategory(subcategoryId);
-//				} else {
-//					console.error('Invalid subcategory ID:', subcategoryId);
-//				}
-//			} else {
-//				fetchProductsByCategory(categoryId);
-//			}
-//		} else {
-//			console.error('Invalid category ID:', categoryId);
-//		}
-//	});
-
 
 	// Function to fetch products by category ID
 	function fetchProductsByCategory(categoryId) {
@@ -145,9 +156,11 @@ $(document).ready(function() {
 					'<div class="card-body">' +
 					'<h5 class="card-title">' + product.productName + '</h5>' +
 					'<p class="card-text">Price: ' + product.price + '</p>' +
-					'<a href="/product-details.html?productId=' + product.productId + '" class="btn btn-primary">View Product</a>' +
-					'<button class="btn btn-success addToCartBtn" data-productId="' + product.productId + '">Add to Cart</button>' +
-					'</div>' +
+					'<a href="/product/product-details/' + product.productId + '" class="btn btn-primary">View Product</a>';
+				if (product.stock > 0) {
+					card += '<button class="btn btn-success addToCartBtn" data-productId="' + product.productId + '">Add to Cart</button>';
+				}	
+					card += '</div>' +
 					'</div>' +
 					'</div>';
 				$('#productsRow').append(card);
@@ -161,26 +174,4 @@ $(document).ready(function() {
 			console.log("No products found.");
 		}
 	}
-	
-	function fetchCartData() {
-	    Common.ajax({
-	        url: '/cart/getCartByAccount', // Fetch cart data associated with the currently authenticated user
-	        method: 'GET',
-	        success: function(response) {
-	            let totalCartItems = 0;
-				if (!response?.cartDetails) {
-					return;
-				}
-				response?.cartDetails.forEach(function(cartDetail) {
-	                totalCartItems += cartDetail.quantity;
-	            });
-	            $('#cartCount').html(totalCartItems);
-	        },
-	        error: function(xhr, status, error) {
-	            console.error('Failed to fetch cart data:', error);
-	            alert('Failed to fetch cart data. Please try again.');
-	        }
-	    });
-	}
-	fetchCartData();
 });

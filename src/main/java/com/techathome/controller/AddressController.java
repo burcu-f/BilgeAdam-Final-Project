@@ -1,17 +1,21 @@
 package com.techathome.controller;
 
-import com.techathome.config.UserInfoUserDetails;
-import com.techathome.entities.Account;
-import com.techathome.entities.Address;
-import com.techathome.services.AccountService;
-import com.techathome.services.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.techathome.config.IMapper;
+import com.techathome.config.UserInfoUserDetails;
+import com.techathome.entities.Address;
+import com.techathome.entities.AddressForm;
+import com.techathome.services.AddressService;
 
 
 
@@ -22,7 +26,7 @@ public class AddressController {
     private AddressService addressService;
     
     @Autowired
-    private AccountService accountService;
+    private IMapper mapper;
     
     @GetMapping("")
     public ModelAndView showAddressPage() {
@@ -31,12 +35,13 @@ public class AddressController {
         return modelAndView;
     }
 
-    @GetMapping("/user")
-    public ResponseEntity<Address> getUserAddress(Authentication authentication) {
+    @GetMapping("/getByAccountId")
+    public ResponseEntity<AddressForm> getUserAddress(Authentication authentication) {
         try {
             UserInfoUserDetails userDetails = (UserInfoUserDetails) authentication.getPrincipal();
-            Address address = userDetails.getAccount().getAddress(); // Assuming the address is associated with the account
-            return ResponseEntity.ok().body(address);
+            Address address = addressService.getAddressByAccountId(userDetails.getAccount().getAccountId());
+            AddressForm form = mapper.fromAddressEntity(address);
+            return ResponseEntity.ok().body(form);
         } catch (Exception e) {
             e.printStackTrace(); // Print stack trace for debugging
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -44,12 +49,13 @@ public class AddressController {
     }
     
     @PostMapping("/saveAddress")
-    public ResponseEntity<Void> saveUserAddress(@RequestBody Address address, Authentication authentication) {
+    public ResponseEntity<AddressForm> saveUserAddress(@RequestBody Address address, Authentication authentication) {
         try {
             UserInfoUserDetails userDetails = (UserInfoUserDetails) authentication.getPrincipal();
-            Long accountId = userDetails.getAccount().getAccountId();
-            accountService.saveUserAddress(accountId, address);
-            return ResponseEntity.ok().build();
+            address.setAccount(userDetails.getAccount());
+            addressService.saveAddress(address);
+            AddressForm form = mapper.fromAddressEntity(address);
+            return ResponseEntity.ok().body(form);
         } catch (Exception e) {
             e.printStackTrace(); // Print stack trace for debugging
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

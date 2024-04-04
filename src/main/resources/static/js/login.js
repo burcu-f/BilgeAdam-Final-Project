@@ -50,3 +50,8 @@ function submitForm() {
     window.location.href = "/"; // Redirect to the home page
 }
 
+$(document).ready(function() {
+	if ($('#message').val()) {
+		alertify.success($('#message').val());
+	}
+});

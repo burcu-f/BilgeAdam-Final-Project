@@ -1,22 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout}"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	th:with="lang=${#locale.language}" th:lang="${lang}">
 <head>
-	<object th:replace="fragments/header"></object>
-	<title>Order Management</title>
-	<!-- Custom CSS -->
-	<link rel="stylesheet" href="/css/user-management.css">
-	<!-- Custom JS -->
+	<title>TechAtHome | Order Management</title>
 	<script src="/js/order-management.js"></script>
 </head>
 <body>
 
+<div layout:fragment="content">
 <div class="container">
   <div class="row">
     <div class="col-md-12">
       <h2>Order Management</h2>
       <div class="pull-right">
         <!-- Add Order Button -->
-        <button class="btn btn-success" id="btnAddOrder">Add Order</button>
+<!--         <button class="btn btn-success" id="btnAddOrder">Add Order</button> -->
         <!-- Back to Admin Panel Button -->
         <a href="/admin" class="btn btn-primary">Home</a>
       </div>
@@ -26,9 +27,9 @@
           <tr>
             <th>#</th>
             <th>Account</th>
+            <th>Date</th>
             <th>Total Amount</th>
             <th>Address</th>
-            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -128,6 +129,6 @@
   </div>
 </div>
 
-
+</div>
 </body>
 </html>

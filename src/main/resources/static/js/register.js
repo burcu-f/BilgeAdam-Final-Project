@@ -6,30 +6,22 @@ function register() {
         surname: document.getElementById('surname').value,
         password: document.getElementById('password').value,
     };
-
-    console.log('form datası çekildiğinde: ', formData)
-    //TODO: API'ye Post atmam lazım
-
-    fetch('http://localhost:8080/api/auth/signup', {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
+	
+	Common.ajax({
+        url: '/register',
+        type: 'POST',
+        data: JSON.stringify(formData),
+        contentType: 'application/json',
+        success: function(response) {
+			window.location = '/login?message=Registeration successful.';
         },
-        body: JSON.stringify(formData)
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log("response for register : ", data)
-        window.location.href = "login.html"
-    })
-    .catch(error => {
-        console.error("Error", error)
-    })
-    
-    
+        error: function(xhr, status, error) {
+            console.error('Error adding product to cart:', error);
+            alert('Error adding product to cart. Please try again later.');
+        }
+    });
 }
 
 function goToHomePage() {
-                window.location.href = "index.html";
-            }
+    window.location.href = "/";
+}

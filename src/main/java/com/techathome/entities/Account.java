@@ -15,17 +15,14 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
-@Builder
 @AllArgsConstructor
 @Entity
 public class Account implements UserDetails {
@@ -45,8 +42,7 @@ public class Account implements UserDetails {
     @Enumerated(EnumType.STRING)
     private AccountType accountType; // Enum for UserType: CUSTOMER, ADMIN
     
-    @ManyToOne
-    @JoinColumn(name = "address_id")
+    @OneToOne(mappedBy = "account")
     private Address address;
 
     @Transient

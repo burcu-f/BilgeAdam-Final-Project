@@ -1,6 +1,10 @@
 Common = window.Common || {};
 window.Common = Common;
 
+Common.isAuthenticated = () => {
+	return $('#isAuthenticated').val() ? true : false;
+}
+
 Common.ajax = ({url, type, success, error, data, options}) => {
 	let params = {
 	    url: url,
@@ -13,17 +17,19 @@ Common.ajax = ({url, type, success, error, data, options}) => {
 	    success: function(response) {
 			if (success) {
 				success(response);
+				return;
 			}
+			alertify.success('İşlem başarılı.');
 		},
-	    //error: error ? error(xhr, status, error) : function(xhr, status, error) {
-			
-		error: function(xhr, status, error) {  // Adjusted error handling function
+		error: function(xhr, status, error) {
             if (error) {
-                error(xhr, status, error);  // Call the provided error function
+                error(xhr, status, error);
             } else {
-	        console.error("Error refreshing list: " + error);
-	    }
-	}
+				let errMsg = error || xhr.getResponseHeader("errorMessage") || 'Hata oluştu!';
+		        console.error("Error refreshing list: " + errMsg);
+		        alertify.error(errMsg);
+		    }
+		}
 	};
 	if (data) {
 		params.data = data;

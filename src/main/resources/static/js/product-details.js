@@ -1,8 +1,8 @@
 $(document).ready(function() {
     // Function to fetch product details
-    function fetchProductDetails(productId) {
+    function fetchProductDetails() {
         $.ajax({
-            url: '/product/' + productId,
+            url: '/product/' + $('#productId').val(),
             type: 'GET',
             contentType: "application/json",
             headers: {
@@ -21,7 +21,7 @@ $(document).ready(function() {
                     // Add event listener for "Add to cart" button
                     $('.custom-btn').click(function() {
                         // Call addToCart function directly
-                        addToCart(productId);
+                        Cart.addToCart($('#productId').val());
                     });
                 } else {
                     console.log("No product found.");
@@ -34,28 +34,10 @@ $(document).ready(function() {
     }
 
     // Get the productId from the URL
-    var urlParams = new URLSearchParams(window.location.search);
-    var productId = urlParams.get('productId');
+//    var urlParams = new URLSearchParams(window.location.search);
+//    var productId = urlParams.get('productId');
 
     // Call fetchProductDetails function with productId
-    fetchProductDetails(productId);
-
-    // Function to add product to cart with optional quantity
-    function addToCart(productId, quantity = 1) {
-        $.ajax({
-            url: '/cart/add',
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify({ productId: productId, quantity: quantity }),
-            success: function(response) {
-                alert('Product added to cart successfully!');
-                updateCartCount();
-            },
-            error: function(xhr, status, error) {
-                console.error('Error adding product to cart:', error);
-                alert('Error adding product to cart. Please try again later.');
-            }
-        });
-    }
+    fetchProductDetails($('#productId').val());
 });
 

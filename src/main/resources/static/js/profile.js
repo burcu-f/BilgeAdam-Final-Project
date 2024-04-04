@@ -1,7 +1,7 @@
-document.getElementById("ordersLink").addEventListener("click", function(event) {
-    event.preventDefault(); // Prevent the default link behavior
-    fetchOrders();
-});
+//document.getElementById("ordersLink").addEventListener("click", function(event) {
+//    event.preventDefault(); // Prevent the default link behavior
+//    fetchOrders();
+//});
 function fetchOrders() {
     // Replace accountId with the actual ID of the logged-in user
     const accountId = 18; // Example ID, replace with actual value

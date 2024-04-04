@@ -17,7 +17,7 @@ public class OrderDetailService {
     }
     
     public List<OrderDetail> getOrderDetailsByOrderId(Long orderId) {
-        return orderDetailRepository.findByOrderOrderId(orderId);
+        return orderDetailRepository.findByOrderId(orderId);
     }
 
     public OrderDetail getOrderDetailById(Long orderDetailId) {

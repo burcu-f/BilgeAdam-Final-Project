@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.techathome.config.IMapper;
 import com.techathome.entities.Product;
@@ -58,6 +59,13 @@ public class ProductController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @GetMapping("/product-details/{productId}")
+    public ModelAndView getProductDetailsPage(@PathVariable("productId") Long productId) {
+    	ModelAndView modelAndView = new ModelAndView("product-details");
+    	modelAndView.addObject("productId", productId);
+    	return modelAndView;
     }
 
 }

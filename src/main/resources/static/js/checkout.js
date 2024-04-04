@@ -21,42 +21,6 @@ function populateOrder(orderItems) {
     $('#totalAmount').text('$' + totalAmount.toFixed(2));
 }
 
-// Function to fetch cart data from the server and populate the order table
-function fetchCartData() {
-    Common.ajax({
-        url: '/cart/getCartByAccount',
-        method: 'GET',
-        success: function (response) {
-            if (response && response.cartDetails) {
-                populateOrder(response.cartDetails);
-            }
-        },
-        error: function (xhr, status, error) {
-            console.error('Failed to fetch cart data:', error);
-            alert('Failed to fetch cart data. Please try again.');
-        }
-    });
-}
-
-// Function to fetch and populate the user's saved address
-function fetchUserAddress() {
-    Common.ajax({
-        url: '/account/getAddress', // Endpoint to fetch user's address
-        method: 'GET',
-        success: function (response) {
-            if (response && response.address) {
-                // Populate address form with saved data
-                $('#city').val(response.address.city);
-                $('#district').val(response.address.district);
-                $('#addressLine').val(response.address.addressLine);
-            }
-        },
-        error: function (xhr, status, error) {
-            console.error('Failed to fetch user address:', error);
-            alert('Failed to fetch user address. Please try again.');
-        }
-    });
-}
 
 // Function to handle saving/updating user's address
 function saveUserAddress() {
@@ -65,6 +29,7 @@ function saveUserAddress() {
     let addressLine = $('#addressLine').val();
 
     let addressData = {
+        id: $('#addressId').val(),
         city: city,
         district: district,
         addressLine: addressLine
@@ -76,7 +41,9 @@ function saveUserAddress() {
         contentType: 'application/json',
         data: JSON.stringify(addressData),
         success: function (response) {
-            alert('Address saved successfully!');
+			debugger;
+			alertify.success('Adres başarıyla kaydedildi.');
+			populateAddress(response);
         },
         error: function (xhr, status, error) {
             console.error('Failed to save user address:', error);
@@ -85,12 +52,60 @@ function saveUserAddress() {
     });
 }
 
+function populateAddress(address) {
+	debugger;
+	$("#addressWarning").hide();
+	$('#addressId').val(address.id);	
+	$('#city').val(address.city);	
+	$('#district').val(address.district);	
+	$('#addressLine').val(address.addressLine);	
+}
+
 // Event listener for the Save button in the address form
 $(document).ready(function () {
-    fetchCartData(); // Fetch cart data when the page is loaded
-    fetchUserAddress(); // Fetch user's saved address
+     Cart.fetchCartData((response) => {
+		Cart.populateCart(response.cartDetails, false);
+	});
 
     $('#saveAddressBtn').click(function () {
         saveUserAddress(); // Save/update user's address when Save button is clicked
     });
+
+	Common.ajax({
+        url: '/address/getByAccountId', // Endpoint to fetch user's address
+        type: 'GET',
+        contentType: 'application/json',
+        success: function (response) {
+			debugger;
+			if (!response) {
+				$('#addressWarning').show();
+				return; 
+			}
+			populateAddress(response);
+        },
+        error: function (xhr, status, error) {
+            console.error('Failed to fetch user address:', error);
+            alert('Failed to fetch user address. Please try again.');
+        }
+    });
+    
+    $('#completeOrderBtn').click(function() {
+		if (!$('#addressId').val()) {
+			alertify.error("There is no registered address, please add one!");
+			return;
+		}
+		Common.ajax({
+	        url: '/order/createOrder', // Endpoint to fetch user's address
+	        type: 'GET',
+	        contentType: 'application/json',
+	        success: function (response) {
+				window.location = '/order/order-completed/' + response.id;
+	        },
+	        error: function (xhr, status, error) {
+	            console.error('Failed to fetch user address:', error);
+	            alert('Failed to fetch user address. Please try again.');
+	        }
+	    });
+	});    
+    
 });

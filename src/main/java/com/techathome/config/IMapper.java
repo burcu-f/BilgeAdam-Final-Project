@@ -3,6 +3,10 @@ package com.techathome.config;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
+import com.techathome.entities.Account;
+import com.techathome.entities.AccountForm;
+import com.techathome.entities.Address;
+import com.techathome.entities.AddressForm;
 import com.techathome.entities.Brand;
 import com.techathome.entities.BrandForm;
 import com.techathome.entities.Cart;
@@ -11,6 +15,8 @@ import com.techathome.entities.CartDetailForm;
 import com.techathome.entities.CartForm;
 import com.techathome.entities.Category;
 import com.techathome.entities.CategoryForm;
+import com.techathome.entities.Order;
+import com.techathome.entities.OrderForm;
 import com.techathome.entities.Product;
 import com.techathome.entities.ProductForm;
 import com.techathome.entities.Subcategory;
@@ -55,4 +61,14 @@ public interface IMapper {
     CartDetail toCartDetailEntity(CartDetailForm source);
     @Mapping(target = "cart.cartDetails", ignore = true)
     CartDetailForm fromCartDetailEntity(CartDetail source);
+
+    Address toAddressEntity(AddressForm source);
+    AddressForm fromAddressEntity(Address source);
+
+    Order toOrderEntity(OrderForm source);
+    OrderForm fromOrderEntity(Order source);
+
+    Account toAccountEntity(AccountForm source);
+    AccountForm fromAccountEntity(Account source);
+    
 }

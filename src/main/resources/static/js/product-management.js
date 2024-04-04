@@ -1,6 +1,5 @@
 $(document).ready(function() {
 	$("#image, #updatedImage").on('change',function(){
-		debugger;
 		var selectedFile = this.files[0];
 		selectedFile.convertToBase64(function(base64){
 			$('#imgBase64, #updatedImgBase64').attr('src', base64);
@@ -314,7 +313,6 @@ $("#btnUpdateProductModal").click(function() {
 	            url: "/subcategory/list?categoryId=" + categoryId,
 	            type: "GET",
 	            success: function(subcategories) {
-					debugger;
 	                if (subcategories && subcategories.length > 0) {
 	                    subcategories.forEach(function(subcategory) {
 	                        let option = $('<option>', {
@@ -338,7 +336,6 @@ $("#btnUpdateProductModal").click(function() {
 	
 	// Kategori seçimi değiştiğinde alt kategorileri yükle
 	$('select#updatedCategoryId, select#categoryId').change(function() {
-		debugger;
 	    let selectedCategoryId = $(this).val();
 	    populateSubcategoryCombo(selectedCategoryId);
 	});

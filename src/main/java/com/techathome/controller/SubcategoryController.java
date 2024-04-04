@@ -18,7 +18,6 @@ import com.techathome.services.SubcategoryService;
 
 @Controller
 @RequestMapping("/subcategory")
-//@PreAuthorize("hasRole('USER')")
 public class SubcategoryController {
 
 	@Autowired

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout}"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	th:with="lang=${#locale.language}" th:lang="${lang}">
+<head>
+	<title>TechAtHome|Product Details</title>
+	<script src="/js/home.js"></script>
+	<script src="/js/product-details.js"></script>
+</head>
+<body>
+
+<div layout:fragment="content">
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-5">
+            <div class="main-img">
+                <!-- Single product image -->
+                <img id="image" class="img-fluid" src="" alt="Product">
+            </div>
+        </div>
+        <div class="col-md-7">
+            <div class="main-description px-2">
+                <!-- Product title -->
+                <div id="productName" class="product-title text-bold my-3">
+                </div>
+
+                <!-- Brand name -->
+                <div id="brand" class="brand text-bold my-3">
+                </div>
+
+                <!-- Price -->
+                <div id="price" class="price-area my-4">
+                </div>
+
+                <!-- Add to cart button -->
+                <div class="buttons d-flex my-5">
+                    <div class="block">
+                        <button class="shadow btn custom-btn">Add to cart</button>
+                    </div>
+                </div>
+
+                <!-- Product details -->
+                <div id="productDescription" class="product-details my-4">
+                </div>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id="productId" th:value="${productId}"/>
+</div>
+</div>
+</body>
+</html>

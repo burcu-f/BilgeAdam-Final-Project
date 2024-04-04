@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	th:with="lang=${#locale.language}" th:lang="${lang}">
+<head>
+	<title layout:title-pattern="$LAYOUT_TITLE :&nbsp;:&nbsp; $CONTENT_TITLE">TW</title>
+	<object th:replace="fragments/header"></object>
+    <meta charset="UTF-8">
+	<script th:inline="javascript">
+	</script>
+</head>
+<body>
+	<div class="page">
+		<div class="page-main">
+			<div sec:authorize="isAuthenticated()">
+				<input type="hidden" id="isAuthenticated" value="1"></input>
+			</div>
+			<!-- Menu -->
+			<object th:replace="fragments/menu"></object>
+			<div>
+	       		<div layout:fragment="content"></div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

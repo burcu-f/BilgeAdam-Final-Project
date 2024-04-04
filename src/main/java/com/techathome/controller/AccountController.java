@@ -4,10 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,19 +19,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.techathome.config.UserInfoUserDetails;
+import com.techathome.config.IMapper;
 import com.techathome.entities.Account;
-import com.techathome.entities.Address;
+import com.techathome.entities.AccountForm;
 import com.techathome.enums.AccountType;
 import com.techathome.services.AccountService;
 
 @Controller
 @RequestMapping("/admin/user-management")
-//@PreAuthorize("hasRole('ADMIN')")
+@PreAuthorize("hasRole('ADMIN')")
 public class AccountController {
 
     @Autowired
     private AccountService accountService;
+
+    @Autowired
+    private IMapper mapper;
 
     @GetMapping("")
     public ModelAndView userManagementPage() {
@@ -43,10 +45,11 @@ public class AccountController {
 
     // Method to retrieve all accounts
     @GetMapping("/list")
-    public ResponseEntity<List<Account>> getAllAccounts() {
+    public ResponseEntity<List<AccountForm>> getAllAccounts() {
         List<Account> accounts = accountService.getAllAccounts();
+        List<AccountForm> formList = accounts.stream().map(c -> mapper.fromAccountEntity(c)).toList();
         if (!accounts.isEmpty()) {
-            return ResponseEntity.ok().body(accounts);
+            return ResponseEntity.ok().body(formList);
         } else {
             return ResponseEntity.noContent().build();
         }
@@ -54,10 +57,10 @@ public class AccountController {
 
     // Method to retrieve a specific account by its ID
     @GetMapping("/{accountId}")
-    public ResponseEntity<Account> getAccountById(@PathVariable("accountId") Long accountId) {
+    public ResponseEntity<AccountForm> getAccountById(@PathVariable("accountId") Long accountId) {
         Account account = accountService.getAccountById(accountId);
         if (account != null) {
-            return ResponseEntity.ok().body(account);
+            return ResponseEntity.ok().body(mapper.fromAccountEntity(account));
         } else {
             return ResponseEntity.notFound().build();
         }
@@ -65,10 +68,11 @@ public class AccountController {
 
     // Method to retrieve accounts by their type (e.g., CUSTOMER or ADMIN)
     @GetMapping("/type/{accountType}")
-    public ResponseEntity<List<Account>> getAccountsByType(@PathVariable("accountType") AccountType accountType) {
+    public ResponseEntity<List<AccountForm>> getAccountsByType(@PathVariable("accountType") AccountType accountType) {
         List<Account> accounts = accountService.getAccountsByType(accountType);
+        List<AccountForm> formList = accounts.stream().map(c -> mapper.fromAccountEntity(c)).toList();
         if (!accounts.isEmpty()) {
-            return ResponseEntity.ok().body(accounts);
+            return ResponseEntity.ok().body(formList);
         } else {
             return ResponseEntity.notFound().build();
         }
@@ -76,10 +80,11 @@ public class AccountController {
 
     // Method to retrieve accounts by some other criteria (e.g., email)
     @GetMapping("/search")
-    public ResponseEntity<Optional<Account>> searchAccounts(@RequestParam("email") String email) {
+    public ResponseEntity<Optional<AccountForm>> searchAccounts(@RequestParam("email") String email) {
         Optional<Account> account = accountService.getAccountByEmail(email);
         if (account.isPresent()) {
-            return ResponseEntity.ok().body(account);
+        	AccountForm fromAccountEntity = mapper.fromAccountEntity(account.get());
+            return ResponseEntity.ok().body(Optional.of(fromAccountEntity));
         } else {
             return ResponseEntity.notFound().build();
         }
@@ -88,18 +93,18 @@ public class AccountController {
 
     // Method to create a new account
     @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Account> createAccount(@RequestBody Account account) {
+    public ResponseEntity<AccountForm> createAccount(@RequestBody Account account) {
         Account savedAccount = accountService.saveAccount(account);
-        return ResponseEntity.ok().body(savedAccount);
+        return ResponseEntity.ok().body(mapper.fromAccountEntity(savedAccount));
     }
 
 
     // Method to update an existing account
     @PutMapping("/{accountId}")
-    public ResponseEntity<Account> updateAccount(@PathVariable("accountId") Long accountId,
+    public ResponseEntity<AccountForm> updateAccount(@PathVariable("accountId") Long accountId,
                                                  @RequestBody Account updatedAccount) {
         Account account = accountService.updateAccount(accountId, updatedAccount);
-        return ResponseEntity.ok().body(account);
+        return ResponseEntity.ok().body(mapper.fromAccountEntity(account));
     }
 
     // Method to delete an existing account
@@ -110,22 +115,22 @@ public class AccountController {
         return ResponseEntity.noContent().build();
     }
     
-    @GetMapping(value = "/address", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Address> getUserAddress(Authentication authentication) {
-        try {
-            UserInfoUserDetails userDetails = (UserInfoUserDetails) authentication.getPrincipal();
-            Address address = userDetails.getAccount().getAddress(); // Assuming the address is associated with the account
-            return ResponseEntity.ok().body(address);
-        } catch (Exception e) {
-            e.printStackTrace(); // Print stack trace for debugging
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
-    @PostMapping("/{accountId}/address")
-    public ResponseEntity<Void> saveUserAddress(@PathVariable("accountId") Long accountId,
-                                                 @RequestBody Address address) {
-        accountService.saveUserAddress(accountId, address);
-        return ResponseEntity.ok().build();
-    }
+//    @GetMapping(value = "/address", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<Address> getUserAddress(Authentication authentication) {
+//        try {
+//            UserInfoUserDetails userDetails = (UserInfoUserDetails) authentication.getPrincipal();
+//            Address address = userDetails.getAccount().getAddresses().get(0); // Assuming the address is associated with the account
+//            return ResponseEntity.ok().body(address);
+//        } catch (Exception e) {
+//            e.printStackTrace(); // Print stack trace for debugging
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+//        }
+//    }
+//
+//    @PostMapping("/{accountId}/address")
+//    public ResponseEntity<Void> saveUserAddress(@PathVariable("accountId") Long accountId,
+//                                                 @RequestBody Address address) {
+//        accountService.saveUserAddress(accountId, address);
+//        return ResponseEntity.ok().build();
+//    }
 }

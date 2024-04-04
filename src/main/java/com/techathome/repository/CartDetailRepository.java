@@ -11,4 +11,6 @@ import org.springframework.stereotype.Repository;
 public interface CartDetailRepository extends JpaRepository <CartDetail, Long> {
 
 	Optional<CartDetail> findByCartCartIdAndProductProductId(Long cartId, Long productId);
+
+	void deleteByCartCartId(Long cartId);
 }

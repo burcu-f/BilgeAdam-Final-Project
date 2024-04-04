@@ -11,8 +11,6 @@ public class CartForm {
 
     private Long cartId;
 
-    private Account account;
-    
     private List<CartDetailForm> cartDetails;
     
 }

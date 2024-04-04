@@ -24,4 +24,8 @@ public class AddressService {
     public void saveAddress(Address address) {
         addressRepository.save(address);
     }
+
+	public Address getAddressByAccountId(Long accountId) {
+		return addressRepository.findByAccountAccountId(accountId).orElse(null);
+	}
 }

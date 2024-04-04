@@ -80,7 +80,7 @@ public class CartController {
             return ResponseEntity.status(HttpStatus.OK).body(cartForm);
         } catch (Exception e) {
             e.printStackTrace(); // Print stack trace for debugging
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).header("errorMessage", e.getMessage()).build();
         }
     }
     

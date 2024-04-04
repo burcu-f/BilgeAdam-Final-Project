@@ -19,13 +19,13 @@ public class AuthenticationController {
         this.authenticationService = authenticationService;
     }
 
-    @PostMapping("/signup")
-    public ResponseEntity<LoginDTO> signup(@RequestBody SignUpRequest request) {
-        return ResponseEntity.ok(authenticationService.signup(request));
-    }
-
-    @PostMapping(path = "/signin", produces = "application/json")
-    public ResponseEntity<LoginDTO> signin(@RequestBody SignInRequest request) {
-        return ResponseEntity.ok(authenticationService.signIn(request));
-    }
+//    @PostMapping("/signup")
+//    public ResponseEntity<LoginDTO> signup(@RequestBody SignUpRequest request) {
+//        return ResponseEntity.ok(authenticationService.signup(request));
+//    }
+//
+//    @PostMapping(path = "/signin", produces = "application/json")
+//    public ResponseEntity<LoginDTO> signin(@RequestBody SignInRequest request) {
+//        return ResponseEntity.ok(authenticationService.signIn(request));
+//    }
 }

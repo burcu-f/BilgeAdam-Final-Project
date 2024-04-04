@@ -1,13 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout}"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	th:with="lang=${#locale.language}" th:lang="${lang}">
 <head>
-	<object th:replace="fragments/header"></object>
-	<title>Category Management</title>
-	<!-- Custom CSS -->
-	<link rel="stylesheet" type="text/css" href="/css/category-management.css">
+	<title>TechAtHome | Category Management</title>
 	<script src="/js/category-management.js"></script>
+	<link rel="stylesheet" type="text/css" href="/css/category-management.css">
 </head>
 <body>
+
+<div layout:fragment="content">
 
 <div class="container">
   <div class="row">
@@ -110,6 +114,6 @@
     </div>
   </div>
 </div>
-
+</div>
 </body>
 </html>

@@ -10,9 +10,10 @@ import com.techathome.entities.Account;
 import com.techathome.entities.Cart;
 import com.techathome.entities.CartDetail;
 import com.techathome.entities.Product;
-import com.techathome.repository.AccountRepository;
 import com.techathome.repository.CartDetailRepository;
 import com.techathome.repository.CartRepository;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class CartService {
@@ -21,9 +22,6 @@ public class CartService {
     
     @Autowired
     private ProductService productService;
-    
-    @Autowired
-    private AccountRepository accountRepository;
     
     @Autowired
     private CartDetailRepository cartDetailRepository;
@@ -110,19 +108,13 @@ public class CartService {
 		return cart;
 	}
 	
+	@Transactional
 	public void removeItemFromCart(Long cartDetailId) {
-        // Find the CartDetail entity by its ID
-        Optional<CartDetail> optionalCartDetail = cartDetailRepository.findById(cartDetailId);
-        
-        // Check if the CartDetail exists
-       if (optionalCartDetail.isPresent()) {
-            CartDetail cartDetail = optionalCartDetail.get();
-            
-            // Remove the CartDetail from the cart
-            cartDetailRepository.delete(cartDetail);
-			
-			 } else { throw new IllegalArgumentException("CartDetail not found with ID: "
-			  + cartDetailId); }
-			 
+		cartDetailRepository.deleteById(cartDetailId);
     }
+
+	@Transactional
+	public void emptyCart(Long cartId) {
+		cartDetailRepository.deleteByCartCartId(cartId);
+	}
 }

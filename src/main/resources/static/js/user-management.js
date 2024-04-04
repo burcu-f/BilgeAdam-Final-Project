@@ -54,7 +54,6 @@ function updateUser(accountId) {
 			Accept: "application/json",
 		},
 		success: function(user) {
-			debugger;
 			// Populate the modal with user details
 			$("#updateUserId").val(user.accountId);
 			$("#updateName").val(user.name);
@@ -117,7 +116,7 @@ function deleteUser(accountId) {
 		$("#btnConfirmDelete").off("click").on("click", function() {
 			// Send an AJAX request to delete the user
 			$.ajax({
-				url: "/user-management/" + accountId,
+				url: "/admin/user-management/" + accountId,
 				type: "DELETE",
 				headers: {
 					Accept: "application/json",

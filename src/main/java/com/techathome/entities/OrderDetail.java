@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Data
 @Entity
+@Table(name = "t_order_detail")
 public class OrderDetail {
     @Id
     @GeneratedValue(generator = "order_detail_id_generator")
@@ -12,15 +13,15 @@ public class OrderDetail {
     private Long orderDetailId;
 
     @ManyToOne
-    @JoinColumn(name = "orderId")
-    private TOrder order;
+    @JoinColumn(name = "order_id")
+    private Order order;
 
     @ManyToOne
     @JoinColumn(name = "productId")
     private Product product;
 
-    private int quantity;
-    private double itemPrice;
+    private Integer quantity;
+    private Double itemPrice;
     //private double totalPrice;
 
 }
